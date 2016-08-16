@@ -106,10 +106,10 @@ public class RotationGizmo : MonoBehaviour
 				}
 			}
 		}
+        
+    }
 
-	}
-
-	IEnumerator Rotate(float x, float y, float z)
+    IEnumerator Rotate(float x, float y, float z)
 	{
 		// Integration for battery power.
 		if(!tutorialOn) {
@@ -203,4 +203,57 @@ public class RotationGizmo : MonoBehaviour
 		transform.position = toRotate.transform.position;
 		return objectToRotate;
 	}
+
+    public void GestureControl(self_defined_gesture_type gesture,Vector3 velocity)
+    {
+        switch (gesture)
+        {
+            case self_defined_gesture_type.rotate_one_hand_x_clockwise:
+                xRots++;
+                if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
+                    StartCoroutine(Rotate(90f, 0f, 0f));
+                else
+                    StartCoroutine(Rotate(-90f, 0f, 0f));
+                break;
+            case self_defined_gesture_type.rotate_one_hand_x_counterclockwise:
+                xRots++;
+                if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
+                    StartCoroutine(Rotate(-90f, 0f, 0f));
+                else
+                    StartCoroutine(Rotate(90f, 0f, 0f));
+                break;
+
+            case self_defined_gesture_type.rotate_one_hand_y_clockwise:
+                yRots++;
+                StartCoroutine(Rotate(0f, 90f, 0f));
+                break;
+
+            case self_defined_gesture_type.rotate_one_hand_y_counterclockwise:
+                yRots++;
+                StartCoroutine(Rotate(0f, -90f, 0f));
+                break;
+
+            case self_defined_gesture_type.rotate_one_hand_z_clockwise:
+                zRots++;
+                if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
+                    StartCoroutine(Rotate(0f, 0f, -90f));
+                else
+                    StartCoroutine(Rotate(0f, 0f, 90f));
+                break;
+
+            case self_defined_gesture_type.rotate_one_hand_z_counterclockwise:
+                zRots++;
+                if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
+                    StartCoroutine(Rotate(0f, 0f, 90f));
+                else
+                    StartCoroutine(Rotate(0f, 0f, -90f));
+                break;
+
+            case self_defined_gesture_type.move_one_hand:
+                toRotate.transform.position+=velocity*6;
+                break;
+            default:
+                break;
+        }
+    }
 }
