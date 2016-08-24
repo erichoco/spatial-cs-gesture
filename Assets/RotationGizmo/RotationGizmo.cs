@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System;
 public class RotationGizmo : MonoBehaviour
 {
 	public GameObject mainCamera;
@@ -13,6 +13,9 @@ public class RotationGizmo : MonoBehaviour
 	public int xRots = 0;
 	public int yRots = 0;
 	public int zRots = 0;
+
+    private int timeGap = 0;
+    private Vector3[] velocityList = new Vector3[5];
 
 	bool rotating = false;
 
@@ -250,7 +253,28 @@ public class RotationGizmo : MonoBehaviour
                 break;
 
             case self_defined_gesture_type.move_one_hand:
-                toRotate.transform.position+=velocity*6;
+                velocityList[timeGap] = velocity;
+                if (timeGap == 1)
+                {
+                    velocity = new Vector3(0, 0, 0);
+                    foreach(Vector3 v in velocityList)//count the average of these velocities
+                    {
+                        velocity += v;
+                    }
+                    try
+                    {
+                        toRotate.transform.position += 10 * (velocity / 2);
+                    }catch(Exception ex)
+                    {
+
+                    }
+                    timeGap = 0;
+                }
+                else
+                {
+                    timeGap++;
+                }
+                
                 break;
             default:
                 break;

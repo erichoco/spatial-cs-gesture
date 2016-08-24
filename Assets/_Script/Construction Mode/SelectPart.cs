@@ -238,4 +238,14 @@ public class SelectPart : MonoBehaviour {
 
 	}
 
+    public void setSelectedObject(GameObject selected)
+    {
+        selectedObject = selected;
+    }
+
+    public void setSelectedFuseTo(GameObject selected)
+    {
+        selectedFuseTo = selected;
+    }
+
 }

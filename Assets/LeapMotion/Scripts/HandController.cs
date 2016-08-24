@@ -5,6 +5,8 @@
 \******************************************************************************/
 
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems; 
 using System.Collections.Generic;
 using Leap;
 using System;
@@ -281,6 +283,10 @@ public class HandController : MonoBehaviour
     private Hand rightHand;
 
     public int active_object;
+    //UI
+    private GameObject bottomPanel;
+    private List<String> constructionObject = new List<string>();
+    private int numConstructionObject = 5;
 
     float angle_v2(Vector3 v, int plane = 0)
     {//0-x,1-y,2-z
@@ -351,7 +357,7 @@ public class HandController : MonoBehaviour
 
     bool ifGrab(Hand hand)
     {
-        if (hand.GrabStrength > 0.05 && hand.GrabStrength < 0.8)
+        if (hand.GrabStrength > 0.05 && hand.GrabStrength < 1)
         {
             return true;
             //Debug.Log("Now grab!");
@@ -424,17 +430,15 @@ public class HandController : MonoBehaviour
         //Configuration for one hand gesture
         //leap_controller_.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
         leap_controller_.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
-        leap_controller_.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
+        //leap_controller_.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
 
-        leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 20.0f);
-        leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
-        leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1f);
+        //leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 20.0f);
+        //leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
+        //leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1f);
 
-        leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", 200.0f);
+        leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", 100.0f);
         leap_controller_.Config.SetFloat("Gesture.Swipe.MinVelocity", 900f);
 
-        leap_controller_.Config.SetFloat("Gesture.Circle.MinRadius", 80.0f);
-        leap_controller_.Config.SetFloat("Gesture.Circle.MinArc", 4.0f);
         leap_controller_.Config.Save();
 
         handController = GameObject.Find("HandController");
@@ -448,7 +452,33 @@ public class HandController : MonoBehaviour
         createPart = (CreatePart)GameObject.Find("EventSystem").GetComponent(typeof(CreatePart));
 
         active_object = 0;
-        
+
+        bottomPanel = GameObject.Find("bottom panel");
+        bottomPanel.SetActive(false);
+        GameObject.Find("BatteryIndicator").SetActive(false);
+        GameObject.Find("Back Button").SetActive(false);
+        GameObject.Find("rotate panel").SetActive(false);
+        try
+        {
+
+            GameObject.Find("SliderX").SetActive(false);
+            GameObject.Find("RingX").SetActive(false);
+            GameObject.Find("SliderY").SetActive(false);
+            GameObject.Find("RingY").SetActive(false);
+            GameObject.Find("SliderZ").SetActive(false);
+            GameObject.Find("RingZ").SetActive(false);
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
+        constructionObject.Add("Body");
+        constructionObject.Add("Calf");
+        constructionObject.Add("Trim");
+        constructionObject.Add("Toe");
+        constructionObject.Add("ToeSole");
+
+
         /*** end of this part ***/
     }
 
@@ -809,6 +839,7 @@ public class HandController : MonoBehaviour
     /** Updates the graphics objects. */
     protected virtual void Update()
     {
+        
         UpdateRecorder();
         Frame frame = GetFrame();
 
@@ -850,6 +881,7 @@ public class HandController : MonoBehaviour
          *** author:Yuan Yao ****
          *** implementation *****
          ************************/
+
         curr_operation_time++;
 
         if (frame.Hands.Count == 2)
@@ -872,15 +904,15 @@ public class HandController : MonoBehaviour
             if (ifFeast(leftHand))//select mode
             {
                 prev_connect_state = 0;
-                prev_rotate_x_state = 0;
-                prev_rotate_y_state = 0;
+                //prev_rotate_x_state = 0;
+                //prev_rotate_y_state = 0;
                 curr_connect_state = 0;
-                curr_rotate_x_state = 0;
-                curr_rotate_y_state = 0;
+                //curr_rotate_x_state = 0;
+                //curr_rotate_y_state = 0;
                 gesture_duration = 0;
                 num_in_array = 0;
-
-                Debug.Log("Now the active object is :" + active_object);
+                bottomPanel.SetActive(true);
+                //Debug.Log("Now the active object is :" + active_object);
 
                 if (ifFeast(rightHand))
                 {
@@ -952,14 +984,16 @@ public class HandController : MonoBehaviour
 
                         break;
                     }
-                    active_object = (active_object + 5) % 5;
-
+                    active_object = (active_object + numConstructionObject) % numConstructionObject;
+                    EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+                    eventSystem.SetSelectedGameObject(GameObject.Find(constructionObject[active_object]), new BaseEventData(eventSystem));
+                    //Game/*Object.Find(constructionObject[active_object]).transform.s;*/
                 }
 
             }
             else if (ifGrab(leftHand) && ifGrab(rightHand))
             {
-
+                bottomPanel.SetActive(false);
                 Hand grabHand = leftHand;
                 Vector velocity_grab = grabHand.PalmVelocity;
                 //Vector3 velocity_grab = handController.transform.TransformPoint(grabHand.PalmVelocity.ToUnityScaled());
@@ -969,6 +1003,7 @@ public class HandController : MonoBehaviour
             }
             else//control mode 
             {
+                bottomPanel.SetActive(false);
                 left_palm_position_array[num_in_array] = handController.transform.TransformPoint(leftHand.PalmPosition.ToUnityScaled());
                 right_palm_position_array[num_in_array] = handController.transform.TransformPoint(rightHand.PalmPosition.ToUnityScaled());
 
@@ -1021,66 +1056,67 @@ public class HandController : MonoBehaviour
                             {
                                 curr_connect_state = 1;
                             }
-                            else if (angle_v2(right_palm_direction + stick_direction, 1) > angle_v2(stick_direction, 1) && angle_v2(zero_vector - stick_direction + left_palm_direction, 1) > angle_v2(zero_vector - stick_direction, 1))
-                            {//rotate gesture - counterclockwise 
-                                curr_rotate_y_state = 1;
-                                rotate_clockwise = false;
-                            }
-                            else if (angle_v2(right_palm_direction + stick_direction, 1) < angle_v2(stick_direction, 1) && angle_v2(zero_vector - stick_direction + left_palm_direction, 1) < angle_v2(zero_vector - stick_direction, 1))
-                            {
-                                curr_rotate_y_state = 2;//clockwise
-                                rotate_clockwise = true;
-                            }
+                            //else if (angle_v2(right_palm_direction + stick_direction, 1) > angle_v2(stick_direction, 1) && angle_v2(zero_vector - stick_direction + left_palm_direction, 1) > angle_v2(zero_vector - stick_direction, 1))
+                            //{//rotate gesture - counterclockwise 
+                            //    curr_rotate_y_state = 1;
+                            //    rotate_clockwise = false;
+                            //}
+                            //else if (angle_v2(right_palm_direction + stick_direction, 1) < angle_v2(stick_direction, 1) && angle_v2(zero_vector - stick_direction + left_palm_direction, 1) < angle_v2(zero_vector - stick_direction, 1))
+                            //{
+                            //    curr_rotate_y_state = 2;//clockwise
+                            //    rotate_clockwise = true;
+                            //}
                         }
-                        else if (
-                            (
-                            Math.Abs(stick_direction.x) < Math.Abs(stick_direction.y) || Math.Abs(stick_direction.x) < Math.Abs(stick_direction.z)
-                            ) && (
-                            Math.Abs(left_palm_direction.x) < Math.Abs(left_palm_direction.y) || Math.Abs(left_palm_direction.x) < Math.Abs(left_palm_direction.z)
-                            ) && (
-                            Math.Abs(right_palm_direction.x) < Math.Abs(right_palm_direction.y) || Math.Abs(right_palm_direction.x) < Math.Abs(right_palm_direction.z)
-                            )
-                            )
-                        {
-                            //Debug.Log("Now moving in the y-z plane.");
-                            if (angle_v2(right_palm_direction + stick_direction, 0) > angle_v2(stick_direction, 0) && angle_v2(zero_vector - stick_direction + left_palm_direction, 0) > angle_v2(zero_vector - stick_direction, 0))
-                            {
-                                curr_rotate_x_state = 1;
-                                rotate_clockwise = false;
-                            }
-                            else if (angle_v2(right_palm_direction + stick_direction, 0) < angle_v2(stick_direction, 0) && angle_v2(zero_vector - stick_direction + left_palm_direction, 0) < angle_v2(zero_vector - stick_direction, 0))
-                            {
-                                curr_rotate_x_state = 2;//clockwise
-                                rotate_clockwise = true;
-                            }
-                        }
+                        //else if (
+                        //    (
+                        //    Math.Abs(stick_direction.x) < Math.Abs(stick_direction.y) || Math.Abs(stick_direction.x) < Math.Abs(stick_direction.z)
+                        //    ) && (
+                        //    Math.Abs(left_palm_direction.x) < Math.Abs(left_palm_direction.y) || Math.Abs(left_palm_direction.x) < Math.Abs(left_palm_direction.z)
+                        //    ) && (
+                        //    Math.Abs(right_palm_direction.x) < Math.Abs(right_palm_direction.y) || Math.Abs(right_palm_direction.x) < Math.Abs(right_palm_direction.z)
+                        //    )
+                        //    )
+                        //{
+                        //    //Debug.Log("Now moving in the y-z plane.");
+                        //    if (angle_v2(right_palm_direction + stick_direction, 0) > angle_v2(stick_direction, 0) && angle_v2(zero_vector - stick_direction + left_palm_direction, 0) > angle_v2(zero_vector - stick_direction, 0))
+                        //    {
+                        //        curr_rotate_x_state = 1;
+                        //        rotate_clockwise = false;
+                        //    }
+                        //    else if (angle_v2(right_palm_direction + stick_direction, 0) < angle_v2(stick_direction, 0) && angle_v2(zero_vector - stick_direction + left_palm_direction, 0) < angle_v2(zero_vector - stick_direction, 0))
+                        //    {
+                        //        curr_rotate_x_state = 2;//clockwise
+                        //        rotate_clockwise = true;
+                        //    }
+                        //}
 
                         //gesture is working or not
-                        if (curr_rotate_y_state == 1 || curr_rotate_y_state == 2)
-                        {
-                            if (prev_rotate_y_state == 0)
-                            {
-                                gesture_duration = 0.02f;
-                            }
-                            else if (prev_rotate_y_state == curr_rotate_y_state)
-                            {
-                                gesture_duration += 0.02f;
-                            }
-                            rotate_angle += angle_v2(curr_right_palm_position - curr_left_palm_position, 1) - angle_v2(stick_direction, 1);
-                        }
-                        else if (curr_rotate_x_state == 1 || curr_rotate_x_state == 2)
-                        {
-                            if (prev_rotate_x_state == 0)
-                            {
-                                gesture_duration = 0.02f;
-                            }
-                            else if (prev_rotate_x_state == curr_rotate_x_state)
-                            {
-                                gesture_duration += 0.02f;
-                            }
-                            rotate_angle += angle_v2(curr_right_palm_position - curr_left_palm_position, 1) - angle_v2(stick_direction, 1);
-                        }
-                        else if (curr_connect_state == 1)
+                        //if (curr_rotate_y_state == 1 || curr_rotate_y_state == 2)
+                        //{
+                        //    if (prev_rotate_y_state == 0)
+                        //    {
+                        //        gesture_duration = 0.02f;
+                        //    }
+                        //    else if (prev_rotate_y_state == curr_rotate_y_state)
+                        //    {
+                        //        gesture_duration += 0.02f;
+                        //    }
+                        //    rotate_angle += angle_v2(curr_right_palm_position - curr_left_palm_position, 1) - angle_v2(stick_direction, 1);
+                        //}
+                        //else if (curr_rotate_x_state == 1 || curr_rotate_x_state == 2)
+                        //{
+                        //    if (prev_rotate_x_state == 0)
+                        //    {
+                        //        gesture_duration = 0.02f;
+                        //    }
+                        //    else if (prev_rotate_x_state == curr_rotate_x_state)
+                        //    {
+                        //        gesture_duration += 0.02f;
+                        //    }
+                        //    rotate_angle += angle_v2(curr_right_palm_position - curr_left_palm_position, 1) - angle_v2(stick_direction, 1);
+                        //}
+                        //else 
+                        if (curr_connect_state == 1)
                         {
                             if (prev_connect_state == 0)
                             {
@@ -1100,65 +1136,66 @@ public class HandController : MonoBehaviour
 
                         //check if success
                         //rotation y and connect
-                        if (gesture_duration >= 1f)
+                        if (gesture_duration >= 1.5f)
                         {
-                            rotate_angle = 0f;
+                            //rotate_angle = 0f;
                             gesture_duration = 0f;
                         }
-                        else if (rotate_angle >= 35)
-                        {//success
-                            if (rotate_clockwise)
-                            {
-                                //Debug.Log("A clockwise rotation gesture found !!!!!");
-                                if (curr_rotate_x_state == 2)
-                                {
-                                    //panDown.transform.GetComponent<Button>().onClick.Invoke();
-                                    Debug.Log("gesture:x-axis clockwise");
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_x_clockwise);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                                else if (curr_rotate_y_state == 2)
-                                {
-                                    //panRight.transform.GetComponent<Button>().onClick.Invoke();
-                                    Debug.Log("gesture:y-axis clockwise");
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_y_clockwise);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //Debug.Log("A counterclockwise rotation gesture found !!!!!");
-                                if (curr_rotate_x_state == 1)
-                                {
-                                    //panUp.transform.GetComponent<Button>().onClick.Invoke();
-                                    Debug.Log("gesture:x-axis counterclockwise");
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_x_counterclockwise);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                                else if (curr_rotate_y_state == 1)
-                                {
-                                    //panLeft.transform.GetComponent<Button>().onClick.Invoke();
-                                    Debug.Log("gesture:y-axis counterclockwise");
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_y_counterclockwise);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                            }
-                            rotate_angle = 0f;
-                            gesture_duration = 0f;
-                        }
-                        else if (Vector3.Distance(curr_right_palm_position, curr_left_palm_position) < 18f && curr_connect_state == 1)
+                        //else if (rotate_angle >= 35)
+                        //{//success
+                        //    if (rotate_clockwise)
+                        //    {
+                        //        //Debug.Log("A clockwise rotation gesture found !!!!!");
+                        //        if (curr_rotate_x_state == 2)
+                        //        {
+                        //            //panDown.transform.GetComponent<Button>().onClick.Invoke();
+                        //            Debug.Log("gesture:x-axis clockwise");
+                        //            if (ifGestureGapEnough())
+                        //            {
+                        //                //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_x_clockwise);
+                        //                prev_operation_time = curr_operation_time;
+                        //            }
+                        //        }
+                        //        else if (curr_rotate_y_state == 2)
+                        //        {
+                        //            //panRight.transform.GetComponent<Button>().onClick.Invoke();
+                        //            Debug.Log("gesture:y-axis clockwise");
+                        //            if (ifGestureGapEnough())
+                        //            {
+                        //                //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_y_clockwise);
+                        //                prev_operation_time = curr_operation_time;
+                        //            }
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        //Debug.Log("A counterclockwise rotation gesture found !!!!!");
+                        //        if (curr_rotate_x_state == 1)
+                        //        {
+                        //            //panUp.transform.GetComponent<Button>().onClick.Invoke();
+                        //            Debug.Log("gesture:x-axis counterclockwise");
+                        //            if (ifGestureGapEnough())
+                        //            {
+                        //                //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_x_counterclockwise);
+                        //                prev_operation_time = curr_operation_time;
+                        //            }
+                        //        }
+                        //        else if (curr_rotate_y_state == 1)
+                        //        {
+                        //            //panLeft.transform.GetComponent<Button>().onClick.Invoke();
+                        //            Debug.Log("gesture:y-axis counterclockwise");
+                        //            if (ifGestureGapEnough())
+                        //            {
+                        //                //cameraControl.GestureControl(self_defined_gesture_type.rotate_two_hand_y_counterclockwise);
+                        //                prev_operation_time = curr_operation_time;
+                        //            }
+                        //        }
+                        //    }
+                        //    rotate_angle = 0f;
+                        //    gesture_duration = 0f;
+                        //}
+                        //else 
+                        else if (Vector3.Distance(curr_right_palm_position, curr_left_palm_position) < 10f && curr_connect_state == 1)
                         {//success
                          //Debug.Log("A connect gesture found!!!");
                             gesture_duration = 0f;
@@ -1179,7 +1216,7 @@ public class HandController : MonoBehaviour
                     }
                     catch (Exception ex)
                     {
-
+                        Debug.Log(ex.Message);
                     }
                     finally
                     {
@@ -1193,9 +1230,12 @@ public class HandController : MonoBehaviour
         }
         else if (frame.Hands.Count == 1)
         {
+            ////get rid of rotation gizmo
+            
+
             //Debug.Log("Now one hand.");
             flag_two_hand = false;
-
+            bottomPanel.SetActive(false);
             //state for two hand gesture is 0
             prev_connect_state = 0;
             prev_rotate_x_state = 0;
@@ -1301,28 +1341,7 @@ public class HandController : MonoBehaviour
                                 }
                             }
                             break;
-                        //case Gesture.GestureType.TYPECIRCLE:
-                        //    CircleGesture circlegesture = new CircleGesture(gesture);
-                        //    string clockwiseness;
-                        //    if (circlegesture.Pointable.Direction.AngleTo(circlegesture.Normal) <= Math.PI / 2)
-                        //    {
-                        //        clockwiseness = "clockwise";
-                        //        if (ifGestureGapEnough())
-                        //        {
-                        //            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_clockwise,zero_vector);
-                        //            prev_operation_time = curr_operation_time;
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        clockwiseness = "counterclockwise";
-                        //        if (ifGestureGapEnough())
-                        //        {
-                        //            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_counterclockwise,zero_vector);
-                        //            prev_operation_time = curr_operation_time;
-                        //        }
-                        //    }
-                        //    break;
+                        
                         default:
                             break;
                     }
