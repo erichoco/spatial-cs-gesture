@@ -43,14 +43,14 @@ public class SimpleData : MonoBehaviour
 	}
 
 	// Called when entering new exploration scenes to keep the data separate.
-	public static void CreateNewPositionFile()
+	public static void CreateNewPositionFile(string sceneName)
 	{
 		// Calculate path length.
 		WriteStringToFile( "MovementAnalysis.txt", Time.time + ",TOTAL_DISTANCE," + CalculatePathLength());
 
 		// Close and make a new file.
 		sw_Position.Close();
-		sw_Position = File.CreateText(folder + "/" + "PositionData_" + SceneManager.GetActiveScene().name + ".txt");
+		sw_Position = File.CreateText(folder + "/" + "PositionData_" + sceneName + ".txt");
 	}
 	
 	void Update ()
@@ -72,7 +72,7 @@ public class SimpleData : MonoBehaviour
 
 		// Timer for standing still, based on keypresses.
 		standstillTimer += Time.deltaTime;
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space))
+		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space) || Input.GetMouseButton(1))
 		{
 			if (standstillTimer > 5f)
 			{
