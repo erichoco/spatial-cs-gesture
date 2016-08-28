@@ -116,4 +116,11 @@ public class CameraControls : MonoBehaviour
         transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
 
     }
+
+    public void ScrollView(float delta)
+    {
+        distance -= delta * (distance / MAX_CAM_DISTANCE) * (zoomSpeed * 1000) * Time.deltaTime;
+        distance = Mathf.Clamp(distance, MIN_CAM_DISTANCE, MAX_CAM_DISTANCE);
+        transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
+    }
 }

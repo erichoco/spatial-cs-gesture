@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class FuseEvent : MonoBehaviour {
 
@@ -1220,4 +1221,24 @@ public class FuseEvent : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 		}
 	}
+
+    /*** For Gesture Ver. ***/
+    public bool ifFuseMapping(GameObject selectFuseTo, GameObject selectObject)
+    {
+        try
+        {
+            if (fuseMapping[selectObject.name].Contains(selectFuseTo.name))
+            {
+                return true;
+            }
+        }catch(Exception ex)
+        {
+
+        }
+        finally
+        {
+            
+        }
+        return false;
+    }
 }

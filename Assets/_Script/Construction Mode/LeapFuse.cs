@@ -21,6 +21,7 @@ public class LeapFuse : MonoBehaviour {
         "ToeSolePrefab(Clone)"
     };
     private GameObject toControl;
+    private GameObject eventSystem;
     private Dictionary<String,GameObject> fused = new Dictionary<string, GameObject>();
     private List<GameObject> fusedAttachList = new List<GameObject>() ;
     private List<GameObject> controlAttachList = new List<GameObject>();
@@ -60,7 +61,7 @@ public class LeapFuse : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        eventSystem = GameObject.Find("EventSystem");
 	}
 
    
@@ -113,12 +114,16 @@ public class LeapFuse : MonoBehaviour {
             {
                 //if (fusedAttach.name == "Body_Top_Attach" && controlAttach.name == "Calf_Bottom_Attach")
                 //Debug.Log("The distance between" + fusedAttach.name + " and " + controlAttach.name + " is :" + Vector3.Distance(fusedAttach.transform.position, controlAttach.transform.position));
-                
-
-                if (Vector3.Distance(controlAttach.transform.position, fusedAttach.transform.position) < 5 && !fusedAttach.GetComponent<FuseBehavior>().isFused)
+                if (fusedAttach.GetComponent<FuseBehavior>().isFused)
                 {
-                    GameObject.Find("EventSystem").GetComponent<SelectPart>().setSelectedFuseTo(fusedAttach);
-                    GameObject.Find("EventSystem").GetComponent<SelectPart>().setSelectedObject(controlAttach);
+                    fusedAttachList.Remove(fusedAttach);
+                    continue;
+                }
+
+                if (Vector3.Distance(controlAttach.transform.position, fusedAttach.transform.position) < 70 && eventSystem.GetComponent<FuseEvent>().ifFuseMapping(fusedAttach,controlAttach))
+                {
+                    eventSystem.GetComponent<SelectPart>().setSelectedFuseTo(fusedAttach);
+                    eventSystem.GetComponent<SelectPart>().setSelectedObject(controlAttach);
                 }
                 //Debug.Log("The parent of :"+fusedAttach.name+" is : "+fusedAttach.transform.parent.name);
             }
