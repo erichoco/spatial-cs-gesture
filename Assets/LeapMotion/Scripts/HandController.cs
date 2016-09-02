@@ -282,8 +282,14 @@ public class HandController : MonoBehaviour
     public int active_object;
     //UI
     private GameObject bottomPanel;
-    private List<String> constructionObject = new List<string>();
-    private int numConstructionObject = 5;
+
+    public void updateGestureConfig()
+    {
+        leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", LeapStatic.swipeMinDistance);
+        leap_controller_.Config.SetFloat("Gesture.Swipe.MinVelocity", LeapStatic.swipeMinVelocity);
+
+        leap_controller_.Config.Save();
+    }
 
     float angle_v2(Vector3 v, int plane = 0)
     {//0-x,1-y,2-z
@@ -433,10 +439,7 @@ public class HandController : MonoBehaviour
         //leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
         //leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1f);
 
-        leap_controller_.Config.SetFloat("Gesture.Swipe.MinLength", LeapStatic.swipeMinDistance);
-        leap_controller_.Config.SetFloat("Gesture.Swipe.MinVelocity", LeapStatic.swipeMinVeloctiy);
-
-        leap_controller_.Config.Save();
+        updateGestureConfig();
 
         handController = GameObject.Find("HandController");
 
@@ -452,12 +455,12 @@ public class HandController : MonoBehaviour
 
         bottomPanel = GameObject.Find("bottom panel");
         bottomPanel.SetActive(false);
-        GameObject.Find("BatteryIndicator").SetActive(false);
+        
         GameObject.Find("Back Button").SetActive(false);
         GameObject.Find("rotate panel").SetActive(false);
         try
         {
-
+            GameObject.Find("BatteryIndicator").SetActive(false);
             GameObject.Find("SliderX").SetActive(false);
             GameObject.Find("RingX").SetActive(false);
             GameObject.Find("SliderY").SetActive(false);
@@ -469,11 +472,7 @@ public class HandController : MonoBehaviour
         {
             Debug.Log(ex.Message);
         }
-        constructionObject.Add("Body");
-        constructionObject.Add("Calf");
-        constructionObject.Add("Trim");
-        constructionObject.Add("Toe");
-        constructionObject.Add("ToeSole");
+        
 
 
         /*** end of this part ***/
@@ -910,26 +909,7 @@ public class HandController : MonoBehaviour
 
                 if (ifFeast(rightHand))
                 {
-                    switch (active_object)
-                    {
-                        case 0:
-                            createPart.createBody();
-                            break;
-                        case 1:
-                            createPart.createCalf();
-                            break;
-                        case 2:
-                            createPart.createTrim();
-                            break;
-                        case 3:
-                            createPart.createToe();
-                            break;
-                        case 4:
-                            createPart.createToeSole();
-                            break;
-                        default:
-                            break;
-                    }
+                    LeapStatic.CreatePartLeap(active_object);
                 }
                 else
                 {
@@ -937,6 +917,7 @@ public class HandController : MonoBehaviour
                     foreach (Gesture gesture in currGestureList)
                     {
                         //Debug.Log("This gesture's type is :" + gesture.Type);
+                        SimpleData.WriteStringToFile("LeapData.txt", "The swipe gesture at " + Time.time + " in two hand mode detected.");
                         switch (gesture.Type)
                         {
                             case Gesture.GestureType.TYPESWIPE:
@@ -978,22 +959,22 @@ public class HandController : MonoBehaviour
 
                         break;
                     }
-                    active_object = (active_object + numConstructionObject) % numConstructionObject;
+                    active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
                     EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-                    eventSystem.SetSelectedGameObject(GameObject.Find(constructionObject[active_object]), new BaseEventData(eventSystem));
+                    eventSystem.SetSelectedGameObject(GameObject.Find(LeapStatic.constructionObject[active_object]), new BaseEventData(eventSystem));
 
                 }
 
             }
             else if (ifGrab(leftHand) && ifGrab(rightHand))
             {
+                SimpleData.WriteStringToFile("LeapData.txt", "The grab gesture at " + Time.time + " in two hand mode detected.");
                 bottomPanel.SetActive(false);
 
                 Hand grabHand = leftHand;
                 Vector velocity_grab = grabHand.PalmVelocity;
-                cameraControl.GrabView(velocity_grab.x / 500, -velocity_grab.y / 500);
-
-
+                cameraControl.GrabView(velocity_grab.x / LeapStatic.grabViewFactor, -velocity_grab.y / LeapStatic.grabViewFactor);
+                
             }
             else//control mode 
             {
@@ -1072,7 +1053,7 @@ public class HandController : MonoBehaviour
 
                         //check if success
                         //rotation y and connect
-                        if (gesture_duration >= 2f)
+                        if (gesture_duration >= LeapStatic.connectTimeLimited)
                         {
                             //rotate_angle = 0f;
                             gesture_duration = 0f;
@@ -1085,6 +1066,7 @@ public class HandController : MonoBehaviour
                             Debug.Log("gesture:connection");
                             if (ifGestureGapEnough())
                             {
+                                SimpleData.WriteStringToFile("LeapData.txt", "The connect gesture at " +Time.time+" in two hand mode detected.");
                                 fuseEvent.initiateFuse();
                                 prev_operation_time = curr_operation_time;
                             }
@@ -1126,6 +1108,7 @@ public class HandController : MonoBehaviour
 
             if (ifFeast(frame.Hands[0]))
             {
+                //LeapStatic.dataRecord("The drag gesture at " + Time.time + " in one hand mode detected.", @"D:\Coding\Projects\spatial-cs-v2\Assets\LeapData.txt");
                 Hand moveHand = frame.Hands[0];
                 Vector3 moveHandVelocity = new Vector3(moveHand.PalmVelocity.x / 1000, moveHand.PalmVelocity.y / 1000, -moveHand.PalmVelocity.z / 1000);
                 rotationGizmo.GestureControl(self_defined_gesture_type.move_one_hand, moveHandVelocity);
@@ -1148,7 +1131,8 @@ public class HandController : MonoBehaviour
                                 Math.Abs(swipe_direction_world.x) > 3 * Math.Abs(swipe_direction_world.z)
                                 )
                                 )
-                            {//y-axis
+                            {//x-axis move
+                                SimpleData.WriteStringToFile("LeapData.txt","The x-axis swipe gesture at " + Time.time + " in one hand mode detected.");
                                 if (
                                 swipe_direction_world.x < 0
                                 )
@@ -1156,6 +1140,7 @@ public class HandController : MonoBehaviour
                                     if (ifGestureGapEnough())
                                     {
                                         //Debug.Log("swipe gesture : y-clockwise");
+
                                         rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_clockwise, zero_vector);
                                         prev_operation_time = curr_operation_time;
                                     }
@@ -1178,6 +1163,7 @@ public class HandController : MonoBehaviour
                                 )
                                 )
                             {
+                                SimpleData.WriteStringToFile("LeapData.txt", "The y-axis swipe gesture at " + Time.time + " in one hand mode detected.");
                                 if (swipe_direction_world.y < 0)
                                 {
                                     if (ifGestureGapEnough())
@@ -1205,6 +1191,7 @@ public class HandController : MonoBehaviour
                                 )
                                 )
                             {//z-axis
+                                SimpleData.WriteStringToFile("LeapData.txt", "The z-axis swipe gesture at " + Time.time + " in one hand mode detected.");
                                 if (swipe_direction_world.z < 0)
                                 {
                                     if (ifGestureGapEnough())

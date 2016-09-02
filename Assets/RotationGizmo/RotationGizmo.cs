@@ -262,7 +262,7 @@ public class RotationGizmo : MonoBehaviour
 
             case self_defined_gesture_type.move_one_hand:
                 velocityList[timeGap] = velocity;
-                if (timeGap == 1)
+                if (timeGap == LeapStatic.dragStable-1)
                 {
                     velocity = new Vector3(0, 0, 0);
                     foreach(Vector3 v in velocityList)//count the average of these velocities
@@ -271,7 +271,7 @@ public class RotationGizmo : MonoBehaviour
                     }
                     try
                     {
-                        toRotate.transform.position += 10 * (velocity / 2);
+                        toRotate.transform.position += LeapStatic.dragVelocity * (velocity / LeapStatic.dragStable);
                     }catch(Exception ex)
                     {
 

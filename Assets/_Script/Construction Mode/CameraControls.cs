@@ -56,20 +56,20 @@ public class CameraControls : MonoBehaviour
 	void LateUpdate()
 	{
 		// orbits
-		if( Input.GetMouseButton(0) )
-		{
-			float rot_x = Input.GetAxis(INPUT_MOUSE_X);
-			float rot_y = -Input.GetAxis(INPUT_MOUSE_Y);
-			Vector3 eulerRotation = transform.localRotation.eulerAngles;
+		//if( Input.GetMouseButton(0) )
+		//{
+		//	float rot_x = Input.GetAxis(INPUT_MOUSE_X);
+		//	float rot_y = -Input.GetAxis(INPUT_MOUSE_Y);
+		//	Vector3 eulerRotation = transform.localRotation.eulerAngles;
 
-			eulerRotation.x += rot_y * orbitSpeed;
-			eulerRotation.y += rot_x * orbitSpeed;
+		//	eulerRotation.x += rot_y * orbitSpeed;
+		//	eulerRotation.y += rot_x * orbitSpeed;
 
-			eulerRotation.z = 0f;
+		//	eulerRotation.z = 0f;
 
-			transform.localRotation = Quaternion.Euler( eulerRotation );
-			transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
-		}
+		//	transform.localRotation = Quaternion.Euler( eulerRotation );
+		//	transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
+		//}
 
 		if( Input.GetAxis(INPUT_MOUSE_SCROLLWHEEL) != 0f )
 		{

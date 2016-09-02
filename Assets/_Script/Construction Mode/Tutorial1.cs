@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -60,7 +61,9 @@ public class Tutorial1 : MonoBehaviour {
 				bcollide.enabled = false;
 			}
 		}
-	}
+        SimpleData.WriteStringToFile("LeapData.txt", "***This is another try at " + DateTime.Now.ToString() + ".");
+        LeapStatic.resetConstructionObject("tutorial1");
+    }
 
 	// Update is called once per frame
 	void Update () {

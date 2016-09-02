@@ -103,14 +103,15 @@ public class FuseEvent : MonoBehaviour {
 				{
 					case "tutorial1":
 						ConversationTrigger.AddToken("done_with_tutorial_1");
-						LoadUtils.LoadScene("tutorial2");
+						LoadUtils.LoadScene("construction");
 						LoadUtils.UnloadScene("tutorial1");
-						break;
+                        LeapStatic.resetConstructionObject("construction");
+                        break;
 					case "tutorial2":
 						ConversationTrigger.AddToken("done_with_tutorial_2");
 						LoadUtils.LoadScene("construction");
 						LoadUtils.UnloadScene("tutorial2");
-						break;
+						break; 
 					case "boot":
 						RocketBoots.ActivateBoots();
 						InventoryController.items.Remove("Rocket Boots Sole");

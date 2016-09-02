@@ -11,25 +11,39 @@ public class LeapFuse : MonoBehaviour {
     private GameObject toe;
     private GameObject toeSole;
 
-    private String[] objectName =
-    {
-        "rocket_boots_start",
-        "BodyPrefab(Clone)",
-        "calfPrefab(Clone)",
-        "trimPrefab(Clone)",
-        "ToePrefab(Clone)",
-        "ToeSolePrefab(Clone)"
-    };
     private GameObject toControl;
     private GameObject eventSystem;
+
+    private GameObject attached;
+    private bool attachedFound = false;
+
+
     private Dictionary<String,GameObject> fused = new Dictionary<string, GameObject>();
     private List<GameObject> fusedAttachList = new List<GameObject>() ;
     private List<GameObject> controlAttachList = new List<GameObject>();
+    
 
     void AddToList(GameObject parent, List<GameObject> list)
     {
         switch (parent.name)
         {
+            //tutorial1
+            case "tutorial1_box":
+                list.Add(GameObject.Find("box_cone_attach"));
+                list.Add(GameObject.Find("box_pyr_attach"));
+                list.Add(GameObject.Find("box_tri_attach"));
+                break;
+            case "tutorial1_conePrefab(Clone)":
+                list.Add(GameObject.Find("cone_box_attach"));
+                break;
+            case "tutorial1_pyrPrefab(Clone)":
+                list.Add(GameObject.Find("pyr_box_attach"));
+            break;
+            case "tutorial1_triPrefab(Clone)":
+                list.Add(GameObject.Find("tri_box_attach"));
+                break;
+
+            //construction
             case "BodyPrefab(Clone)":
                 list.Add(GameObject.Find("Body_Bottom_Attach"));
                 list.Add(GameObject.Find("Body_Top_Attach"));
@@ -59,10 +73,11 @@ public class LeapFuse : MonoBehaviour {
         }
     }
 
+
     // Use this for initialization
     void Start () {
         eventSystem = GameObject.Find("EventSystem");
-	}
+    }
 
    
 
@@ -71,7 +86,7 @@ public class LeapFuse : MonoBehaviour {
         controlAttachList.Clear();
     
         //find the object controlling and add the object which already be fused into fused dictionary
-        foreach (String part in objectName)
+        foreach (String part in LeapStatic.objectName)
         {
             if (!fused.ContainsKey(part))
             {
@@ -116,7 +131,8 @@ public class LeapFuse : MonoBehaviour {
                 //Debug.Log("The distance between" + fusedAttach.name + " and " + controlAttach.name + " is :" + Vector3.Distance(fusedAttach.transform.position, controlAttach.transform.position));
                 if (fusedAttach.GetComponent<FuseBehavior>().isFused)
                 {
-                    fusedAttachList.Remove(fusedAttach);
+                    attached = fusedAttach;
+                    attachedFound = true;
                     continue;
                 }
 
@@ -127,9 +143,18 @@ public class LeapFuse : MonoBehaviour {
                 }
                 //Debug.Log("The parent of :"+fusedAttach.name+" is : "+fusedAttach.transform.parent.name);
             }
-            //Debug.Log("Attach object " + controlAttach.name + "'s position is " + controlAttach.transform.position.x + " " + controlAttach.transform.position.y + " " + controlAttach.transform.position.z);
+            //if already attached
+            if (attachedFound)
+            {
+                fusedAttachList.Remove(attached);
+                attachedFound = false;
+            }
             
+            //Debug.Log("Attach object " + controlAttach.name + "'s position is " + controlAttach.transform.position.x + " " + controlAttach.transform.position.y + " " + controlAttach.transform.position.z);
+
         }
+
+
         
     }
 }
