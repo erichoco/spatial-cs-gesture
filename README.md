@@ -30,8 +30,12 @@ Now here are the list of all the gestures.
 #####  One Hand :  
 1. **Swipe Gesture**  
 
-**
-All the swipe gestures should be parallel to the corresponding axis because of such codes :
+Swipe your hand to rotate the object. The three direction are corresponding to three DoF of rotation. And the coordinate system is **Unity's coordinate system**.
+- Up or Down ( Swipe along with **Y-axis** ) : Clockwise ( direction > 0 ) or Counterclockwise ( direction < 0 ) rotation around **Z-axis**.
+- Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**.
+- Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**.
+
+***Attention :*** ++All the swipe gestures should be parallel to the corresponding axis++ because of such codes :
 
 ```C++
 if (
@@ -47,8 +51,24 @@ This condition sentence check whether your hand's movement is along the X-axis, 
 
 
 
-    1. Up or Down
-
 2. **Feast Gesture**
+
+Make your hand become a feast and the object can move as long as your feast move.  
+
+***Attention :*** Make sure **Leap Motion** can ++see all of your fingers++, for example do not do like this :
+
+![image](http://note.youdao.com/favicon.ico)
+
+and this would be better :
+
+![image](http://note.youdao.com/favicon.ico)
+
+#####  Two Hands :
+
+1. **Left Hand Feast Gesture**  
+
+Make your left become a feast then you will enter selection mode which will call the menu. 
+
+***Attention : *** To keep this menu, you should always keep your left hand feast
 
 #### Implementation :
