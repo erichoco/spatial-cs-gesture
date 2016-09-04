@@ -35,6 +35,7 @@ public class SimpleData : MonoBehaviour
 	void Awake ()
 	{
 		// Create the initial folder for this session.
+		// print("INFO: Simple data " + Application.persistentDataPath);
 		folder = Application.persistentDataPath + "/" + "Player_at_time_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second;
 		Directory.CreateDirectory(folder);
 
@@ -52,15 +53,15 @@ public class SimpleData : MonoBehaviour
 		sw_Position.Close();
 		sw_Position = File.CreateText(folder + "/" + "PositionData_" + sceneName + ".txt");
 	}
-	
+
 	void Update ()
 	{
-		// Press minus to load and display data.		
+		// Press minus to load and display data.
 		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			LoadData();
 		}
-		
+
 		// Timer for recording positional data points.
 		timer += Time.deltaTime;
 		if (timer >= dataInterval)
