@@ -1835,13 +1835,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a46c1fd8ddd17499252d2a860e3d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &383955188
+--- !u!114 &383955186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 383955184}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0b94c0c9f5df7345b95bb36a1d64ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataInterval: 1
+  fileToLoad: 
+--- !u!114 &383955188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 383955184}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a5c193e179152e4a9033f40d3179f74, type: 3}
   m_Name: 
@@ -6795,6 +6808,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

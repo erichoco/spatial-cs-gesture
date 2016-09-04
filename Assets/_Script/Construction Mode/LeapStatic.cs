@@ -12,7 +12,7 @@ public class LeapStatic : MonoBehaviour {
     public static float swipeMinDistance = 150f;
     public static float dragVelocity = 10f;
     public static int dragStable = 2;
-    
+
     //two hands
     public static float grabViewFactor = 500f; //higher -> less sensitive
     public static float connectTimeLimited = 2f; //higher -> velocity lower allowed
@@ -139,10 +139,10 @@ public class LeapStatic : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        
-        
+
+
     }
-	
+
 	// Update is called once per frame
 	void Update () {
         //Debug.Log("Now the scene is :" + SceneManager.SetActiveScene);
