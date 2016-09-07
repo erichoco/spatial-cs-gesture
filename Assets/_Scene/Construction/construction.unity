@@ -2207,6 +2207,7 @@ GameObject:
   - 114: {fileID: 1321869684}
   - 114: {fileID: 1321869686}
   - 114: {fileID: 1321869685}
+  - 114: {fileID: 1321869687}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2361,6 +2362,17 @@ MonoBehaviour:
   rotateForwardButton: {fileID: 1383566440}
   rotateAcrossButton: {fileID: 660833761}
   rotateGizmo: {fileID: 0}
+--- !u!114 &1321869687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1321869678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb7df1dc2f814f9d83bbe98c99ce670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1354454465
 GameObject:
   m_ObjectHideFlags: 0
