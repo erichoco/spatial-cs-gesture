@@ -51,7 +51,7 @@ This condition sentence check whether your hand's movement is along the X-axis, 
 
 
 
-2. **Feast Gesture**
+2. **Fist Gesture**
 
 Make your hand become a feast and the object can move as long as your feast move.  
 
@@ -65,10 +65,14 @@ and this would be better :
 
 #####  Two Hands :
 
-1. **Left Hand Feast Gesture**  
+1. **Left Hand Fist Gesture**  
 
-Make your left become a feast then you will enter selection mode which will call the menu. 
+Make your left become a fist then you will enter selection mode which will call the menu. 
 
-***Attention : *** To keep this menu, you should always keep your left hand feast
+***Attention :*** To keep this menu, you should always keep your left hand as a fist.  
+
+2. **Grab Gesture** 
+
+Make your 
 
 #### Implementation :
