@@ -2,11 +2,11 @@
 **Author :** Yuan Yao  
 **Last Update :** 2016.09.02
 
-#### Introduction :
+#### I. Introduction :
 This is the gesture version of the game **Construction Mode**. It aims to help people practice their spatial reasoning skills. We used **Leap Motion** to detect the movement of user's hands and created a set of gestures as the input of the game.   
 You can check the [demo](https://www.youtube.com/watch?v=Uku7eHwejqo) to briefly see how it works.
 
-#### Operating Guide :
+#### II. Operating Guide :
 The set of gestures can be separated into two class : **one hand** and **two hands**. 
 
 ***Attention :*** The **one hand** class gesture ++only can be detected  when there is only one hand on the screen++, similarly **two hands** class gesture ++only can be detected when two hands appear on the screen++. The reason is because of the codes(HandController.cs) :
@@ -69,10 +69,16 @@ and this would be better :
 
 Make your left become a fist then you will enter selection mode which will call the menu. 
 
-***Attention :*** To keep this menu, you should always keep your left hand as a fist.  
+***Attention :*** To keep this menu, you should always keep your left hand as a fist and both of your two hands be presented on the screen.  
 
-2. **Grab Gesture** 
+2. **Left Hand Fist Right Hand Swipe Gesture**  
+ 
+Keep left hand as a fist and swipe your right hand, you will be able to make different objects highlighted.
 
-Make your 
+3. **Grab Gesture** 
 
-#### Implementation :
+Keep your two hands' fingers blending and move in the x-y plane, then the view will change as long as you move.  
+
+***Attention :*** Grab gesture is different from fist, which means you should not blend your fingers too much. Also the directions of the movements of your hands should be the same.
+
+#### III. Implementation :
