@@ -34,16 +34,20 @@ Swipe your hand to rotate the object. The three direction are corresponding to t
 **Leap Motion :** 
 <img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/leap-coordinate.png" alt="Drawing" style="height: 100px;"/>  
 
-**Unity :** <img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/unity-coordinate.png" alt="Drawing" style="height: 100px;"/>  
+**Unity :** 
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/unity-coordinate.png" alt="Drawing" style="height: 100px;"/>  
 
 - Up or Down ( Swipe along with **Y-axis** ) : Clockwise ( direction > 0 ) or Counterclockwise ( direction < 0 ) rotation around **Z-axis**.  
+
 <img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-y.png" alt="Drawing" style="height: 100px;"/>
 
-- Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**.  
+- Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**. 
+
 <img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-x.png" alt="Drawing" style="height: 100px;"/>  
 
-- Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**.  
-<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-z.png" alt="Drawing" style="height: 100px;"/>  
+- Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**. 
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-z.png" alt="Drawing" style="height:100px;"/>  
 
 ***Attention :*** ++All the swipe gestures should be parallel to the corresponding axis++ because of such codes :
 
