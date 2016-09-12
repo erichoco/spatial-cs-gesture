@@ -79,7 +79,11 @@ Make your hand become a feast and the object can move as long as your feast move
 
 Make your left become a fist then you will enter selection mode which will call the menu.  
 
-<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/select.png" alt="Drawing" style="height: 100px;"/>  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/leftfist.png" alt="Drawing" style="height: 100px;"/>  
+
+The actual result is as follow :
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/callmenu.png" alt="Drawing" style="height: 100px;"/>  
 
 ***Attention :*** To keep this menu, you should always keep your left hand as a fist and both of your two hands be presented on the screen.  
 
@@ -87,13 +91,17 @@ Make your left become a fist then you will enter selection mode which will call 
  
 Keep left hand as a fist and swipe your right hand, you will be able to make different objects highlighted.
 
-<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/select.png" alt="Drawing" style="height: 100px;"/>  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/select.png" alt="Drawing" style="height: 100px;"/>   
+
+The actual result is as follow :
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/selectobject.png" alt="Drawing" style="height: 100px;"/>  
 
 3. **Grab Gesture** 
 
 Keep your two hands' fingers blending and move in the x-y plane, then the view will change as long as you move.  
 
-<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/grab-twp.png" alt="Drawing" style="height: 100px;"/>  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/grab-two.png" alt="Drawing" style="height: 100px;"/>  
 
 The actual result is as follow :
 
