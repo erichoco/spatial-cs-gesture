@@ -1,6 +1,6 @@
 # Construction Mode - Gesture Ver.
 **Author :** Yuan Yao  
-**Last Update :** 2016.09.02
+**Last Update :** 2016.09.11
 
 #### I. Introduction :
 This is the gesture version of the game **Construction Mode**. It aims to help people practice their spatial reasoning skills. We used **Leap Motion** to detect the movement of user's hands and created a set of gestures as the input of the game.   
@@ -30,12 +30,20 @@ Now here are the list of all the gestures.
 #####  One Hand :  
 1. **Swipe Gesture**  
 
-Swipe your hand to rotate the object. The three direction are corresponding to three DoF of rotation. And the coordinate system is **Unity's coordinate system**. The difference between Leap Motion coordinate system and Unity system can seen as follows :  
-<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/leap-coordinate.png" alt="Drawing" style="width: 200px;"/>  
-<!--![image](http://note.youdao.com/favicon.ico)-->
-- Up or Down ( Swipe along with **Y-axis** ) : Clockwise ( direction > 0 ) or Counterclockwise ( direction < 0 ) rotation around **Z-axis**.
-- Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**.
-- Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**.
+Swipe your hand to rotate the object. The three direction are corresponding to three DoF of rotation. And the coordinate system is **Unity's coordinate system**. The difference between Leap Motion coordinate system and Unity system can seen as follows.  
+**Leap Motion :** 
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/leap-coordinate.png" alt="Drawing" style="height: 100px;"/>  
+
+**Unity :** <img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/unity-coordinate.png" alt="Drawing" style="height: 100px;"/>  
+
+- Up or Down ( Swipe along with **Y-axis** ) : Clockwise ( direction > 0 ) or Counterclockwise ( direction < 0 ) rotation around **Z-axis**.  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-y.png" alt="Drawing" style="height: 100px;"/>
+
+- Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**.  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-x.png" alt="Drawing" style="height: 100px;"/>  
+
+- Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**.  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/swipe-z.png" alt="Drawing" style="height: 100px;"/>  
 
 ***Attention :*** ++All the swipe gestures should be parallel to the corresponding axis++ because of such codes :
 
@@ -55,21 +63,23 @@ This condition sentence check whether your hand's movement is along the X-axis, 
 
 2. **Fist Gesture**
 
-Make your hand become a feast and the object can move as long as your feast move.  
+Make your hand become a feast and the object can move as long as your feast move.   
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/fist.png" alt="Drawing" style="height: 100px;"/>  
 
 ***Attention :*** Make sure **Leap Motion** can ++see all of your fingers++, for example do not do like this :
 
-![image](http://note.youdao.com/favicon.ico)
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/fist-error.png" alt="Drawing" style="height: 100px;"/>  
 
-and this would be better :
 
-![image](http://note.youdao.com/favicon.ico)
 
 #####  Two Hands :
 
 1. **Left Hand Fist Gesture**  
 
-Make your left become a fist then you will enter selection mode which will call the menu. 
+Make your left become a fist then you will enter selection mode which will call the menu.  
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/select.png" alt="Drawing" style="height: 100px;"/>  
 
 ***Attention :*** To keep this menu, you should always keep your left hand as a fist and both of your two hands be presented on the screen.  
 
@@ -77,10 +87,18 @@ Make your left become a fist then you will enter selection mode which will call 
  
 Keep left hand as a fist and swipe your right hand, you will be able to make different objects highlighted.
 
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/select.png" alt="Drawing" style="height: 100px;"/>  
+
 3. **Grab Gesture** 
 
 Keep your two hands' fingers blending and move in the x-y plane, then the view will change as long as you move.  
 
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/grab-twp.png" alt="Drawing" style="height: 100px;"/>  
+
+The actual result is as follow :
+
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/dragview.png" alt="Drawing" style="height: 100px;"/>  
+
 ***Attention :*** Grab gesture is different from fist, which means you should not blend your fingers too much. Also the directions of the movements of your hands should be the same.
 
-#### III. Implementation :
+<!--#### III. Implementation :-->
