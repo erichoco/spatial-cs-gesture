@@ -30,7 +30,9 @@ Now here are the list of all the gestures.
 #####  One Hand :  
 1. **Swipe Gesture**  
 
-Swipe your hand to rotate the object. The three direction are corresponding to three DoF of rotation. And the coordinate system is **Unity's coordinate system**.
+Swipe your hand to rotate the object. The three direction are corresponding to three DoF of rotation. And the coordinate system is **Unity's coordinate system**. The difference between Leap Motion coordinate system and Unity system can seen as follows :  
+<img src="https://github.com/rozentill/spatial-cs-gesture/blob/master/Assets/_Image/leap-coordinate.png" alt="Drawing" style="width: 200px;"/>  
+<!--![image](http://note.youdao.com/favicon.ico)-->
 - Up or Down ( Swipe along with **Y-axis** ) : Clockwise ( direction > 0 ) or Counterclockwise ( direction < 0 ) rotation around **Z-axis**.
 - Left or Right ( Swipe along with **X-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **Y-axis**.
 - Forward or Backward ( Swipe along with **Z-axis** ) : Clockwise ( direction < 0 ) or Counterclockwise ( direction > 0 ) rotation around **X-axis**.
