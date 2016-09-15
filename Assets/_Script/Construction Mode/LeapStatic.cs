@@ -48,6 +48,29 @@ public class LeapStatic : MonoBehaviour {
 
             }
         }
+        else if (currScene == "tutorial2")
+        {
+            CreatePartTutorial2 createPart;
+            createPart = (CreatePartTutorial2)GameObject.Find("EventSystem").GetComponent(typeof(CreatePartTutorial2));
+            switch (active)
+            {
+                case 0:
+                    createPart.createSmallboxYellow();
+                    break;
+                case 1:
+                    createPart.createTallbox();
+                    break;
+                case 2:
+                    createPart.createSmallboxBlue();
+                    break;
+                case 3:
+                    createPart.createBigbox();
+                    break;
+                default:
+                    break;
+
+            }
+        }
         else if (currScene == "construction")
         {
             CreatePart createPart;
@@ -95,6 +118,20 @@ public class LeapStatic : MonoBehaviour {
                 objectName.Add("tutorial1_triPrefab(Clone)");
 
                 break;
+            case "tutorial2":
+                constructionObject.Add("SmallboxYellow");
+                constructionObject.Add("Tallbox");
+                constructionObject.Add("SmallboxBlue");
+                constructionObject.Add("Bigbox");
+                numConstructionObject = 4;
+
+                objectName.Add("tutorial2_longbox");
+                objectName.Add("tutorial2_smallbox_yellowPrefab(Clone)");
+                objectName.Add("tutorial2_tallboxPrefab(Clone)");
+                objectName.Add("tutorial2_smallbox_bluePrefab(Clone)");
+                objectName.Add("tutorial2_bigboxPrefab(Clone)");
+
+                break;
             case "construction":
                 constructionObject.Add("Body");
                 constructionObject.Add("Calf");
@@ -110,18 +147,43 @@ public class LeapStatic : MonoBehaviour {
                 objectName.Add("ToePrefab(Clone)");
                 objectName.Add("ToeSolePrefab(Clone)");
                 break;
+            case "axe":
+                constructionObject.Add("Haft");
+                constructionObject.Add("BottomPoint");
+                constructionObject.Add("Head");
+                constructionObject.Add("TopPoint");
+                constructionObject.Add("Trapezoid");
+                numConstructionObject = 5;
+
+                objectName.Add("startObject");
+                objectName.Add("haftPrefab(Clone)");
+                objectName.Add("headPrefab(Clone)");
+                objectName.Add("top_pointPrefab(Clone)");
+                objectName.Add("trapezoidPrefab(Clone)");
+                objectName.Add("bottom_pointPrefab(Clone)");
+                break;
+            case "key1":
+                constructionObject.Add("UprightL");
+                constructionObject.Add("UprightT");
+                constructionObject.Add("Waluigi");
+                constructionObject.Add("WalkingPants");
+                constructionObject.Add("UprightRect");
+                numConstructionObject = 5;
+
+                objectName.Add("dangly_T_complete");
+                objectName.Add("upright_LPrefab(Clone)");
+                objectName.Add("upright_LPrefab(Clone)");
+                objectName.Add("waluigiPrefab(Clone)");
+                objectName.Add("walking_pantsPrefab(Clone)");
+                objectName.Add("upright_rectPrefab(Clone)");
+                break;
             default:
                 break;
 
         }
 
-        recordParams();
+        //recordParams();
     }
-
-    //public static void dataRecord(string message, string filename)
-    //{
-    //    File.WriteAllText(filename, message);
-    //}
 
     public static void recordParams()
     {
@@ -130,11 +192,6 @@ public class LeapStatic : MonoBehaviour {
         SimpleData.WriteStringToFile("LeapData.txt", "The dragVelocity is :" + dragVelocity + ".");
         SimpleData.WriteStringToFile("LeapData.txt", "The grabViewFactor is :" + grabViewFactor + ".");
         SimpleData.WriteStringToFile("LeapData.txt", "The connectTimeLimited is :" + connectTimeLimited + ".");
-        //dataRecord("The swipeMinVeloctiy is :" + swipeMinVelocity+, filename);
-        //dataRecord("The swipeMinDistance is :" + swipeMinDistance + ".\n", filename);
-        //dataRecord("The dragVelocity is :" + dragVelocity + ".\n", filename);
-        //dataRecord("The grabViewFactor is :" + grabViewFactor + ".\n", filename);
-        //dataRecord("The connectTimeLimited is :" + connectTimeLimited + ".\n", filename);
     }
 
     // Use this for initialization
@@ -145,7 +202,6 @@ public class LeapStatic : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("Now the scene is :" + SceneManager.SetActiveScene);
-        //LeapStatic.resetConstructionObject();
+
     }
 }
