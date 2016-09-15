@@ -17,7 +17,6 @@ public class LeapFuse : MonoBehaviour {
     private GameObject attached;
     private bool attachedFound = false;
 
-
     private Dictionary<String,GameObject> fused = new Dictionary<string, GameObject>();
     private List<GameObject> fusedAttachList = new List<GameObject>() ;
     private List<GameObject> controlAttachList = new List<GameObject>();
@@ -41,6 +40,26 @@ public class LeapFuse : MonoBehaviour {
             break;
             case "tutorial1_triPrefab(Clone)":
                 list.Add(GameObject.Find("tri_box_attach"));
+                break;
+
+            //tutorial2
+            case "tutorial2_longbox":
+                list.Add(GameObject.Find("longbox_bigbox_attach"));
+                list.Add(GameObject.Find("longbox_smallbox_yellow_attach"));
+                list.Add(GameObject.Find("longbox_tallbox_attach"));
+                break;
+            case "tutorial2_bigboxPrefab(Clone)":
+                list.Add(GameObject.Find("bigbox_longbox_attach"));
+                list.Add(GameObject.Find("bigbox_smallbox_blue_attach"));
+                break;
+            case "tutorial2_smallbox_bluePrefab(Clone)":
+                list.Add(GameObject.Find("smallbox_blue_bigbox_attach"));
+                break;
+            case "tutorial2_tallboxPrefab(Clone)":
+                list.Add(GameObject.Find("tallbox_longbox_attach"));
+                break;
+            case "tutorial2_smallbox_yellowPrefab(Clone)":
+                list.Add(GameObject.Find("smallbox_yellow_longbox_attach"));
                 break;
 
             //construction
@@ -68,6 +87,54 @@ public class LeapFuse : MonoBehaviour {
                 list.Add(GameObject.Find("Sole_Heel_Top_Attach"));
                 list.Add(GameObject.Find("Sole_Heel_Side_Attach"));
                 break;
+
+            //axe
+            case "startObject":
+                list.Add(GameObject.Find("shaft_haft_attach"));
+                list.Add(GameObject.Find("shaft_trapezoid_attach"));
+                break;
+            case "bottom_pointPrefab(Clone)":
+                list.Add(GameObject.Find("bottom_point_head_attach"));
+                break;
+            case "trapezoidPrefab(Clone)":
+                list.Add(GameObject.Find("trapezoid_head_attach"));
+                list.Add(GameObject.Find("trapezoid_shaft_attach"));
+                break;
+            case "top_pointPrefab(Clone)":
+                list.Add(GameObject.Find("top_point_head_attach"));
+                break;
+            case "headPrefab(Clone)":
+                list.Add(GameObject.Find("head_bottom_point_attach"));
+                list.Add(GameObject.Find("head_top_point_attach"));
+                list.Add(GameObject.Find("head_trapezoid_attach"));
+                break;
+            case "haftPrefab(Clone)":
+                list.Add(GameObject.Find("haft_shaft_attach"));
+                break;
+
+            //key 1
+            case "dangly_T_complete":
+                list.Add(GameObject.Find("dangly_T_upright_L_attach"));
+                list.Add(GameObject.Find("dangly_T_upright_T_attach"));
+                list.Add(GameObject.Find("dangly_T_walking_pants_attach"));
+                break;
+            case "upright_rectPrefab(Clone)":
+                list.Add(GameObject.Find("upright_rect_walking_pants_attach"));
+                break;
+            case "upright_LPrefab(Clone)":
+                list.Add(GameObject.Find("upright_L_dangly_T_attach"));
+                list.Add(GameObject.Find("upright_L_waluigi_attach"));
+                break;
+            case "upright_TPrefab(Clone)":
+                list.Add(GameObject.Find("upright_T_dangly_T_attach"));
+                break;
+            case "waluigiPrefab(Clone)":
+                list.Add(GameObject.Find("waluigi_upright_L_attach"));
+                break;
+            case "walking_pantsPrefab(Clone)":
+                list.Add(GameObject.Find("walking_pants_dangly_T_attach"));
+                list.Add(GameObject.Find("walking_pants_upright_rect_attach"));
+                break;
             default:
                 break;
         }
@@ -84,7 +151,7 @@ public class LeapFuse : MonoBehaviour {
     void FixedUpdate () {
         //clear the control attach list
         controlAttachList.Clear();
-    
+        GameObject tmpObject;
         //find the object controlling and add the object which already be fused into fused dictionary
         foreach (String part in LeapStatic.objectName)
         {
@@ -92,7 +159,7 @@ public class LeapFuse : MonoBehaviour {
             {
                 try
                 {
-                    GameObject tmpObject = GameObject.Find(part);
+                    tmpObject = GameObject.Find(part);
                     if (tmpObject.GetComponent<IsFused>().isFused)
                     {
                         fused.Add(part, tmpObject);
@@ -100,13 +167,13 @@ public class LeapFuse : MonoBehaviour {
                         AddToList(tmpObject, fusedAttachList);
 
                         Debug.Log("Add " + tmpObject.name + " to fused list.");
-
+                        
                         toControl = null;
+
                     }
                     else
                     {
                         toControl = tmpObject;
-                        //Debug.Log("The controlled object is :" + toControl.name);
                     }
                 }
                 catch (Exception ex)
@@ -115,20 +182,18 @@ public class LeapFuse : MonoBehaviour {
                 }
             }
         }
+       
+
         try//if toControl is null, there is an exception
         {
             AddToList(toControl, controlAttachList);
         }catch(Exception ex) {
-            //Debug.Log(ex.Message);
         }
 
         foreach (GameObject controlAttach in controlAttachList)
         {
-            //Debug.Log("This controled attach is :" + controlAttach.name);
             foreach (GameObject fusedAttach in fusedAttachList)
             {
-                //if (fusedAttach.name == "Body_Top_Attach" && controlAttach.name == "Calf_Bottom_Attach")
-                //Debug.Log("The distance between" + fusedAttach.name + " and " + controlAttach.name + " is :" + Vector3.Distance(fusedAttach.transform.position, controlAttach.transform.position));
                 if (fusedAttach.GetComponent<FuseBehavior>().isFused)
                 {
                     attached = fusedAttach;
@@ -136,12 +201,12 @@ public class LeapFuse : MonoBehaviour {
                     continue;
                 }
 
-                if (Vector3.Distance(controlAttach.transform.position, fusedAttach.transform.position) < 70 && eventSystem.GetComponent<FuseEvent>().ifFuseMapping(fusedAttach,controlAttach))
+                if (Vector3.Distance(controlAttach.transform.position, fusedAttach.transform.position) < 100 && eventSystem.GetComponent<FuseEvent>().ifFuseMapping(fusedAttach,controlAttach))
                 {
                     eventSystem.GetComponent<SelectPart>().setSelectedFuseTo(fusedAttach);
                     eventSystem.GetComponent<SelectPart>().setSelectedObject(controlAttach);
                 }
-                //Debug.Log("The parent of :"+fusedAttach.name+" is : "+fusedAttach.transform.parent.name);
+                
             }
             //if already attached
             if (attachedFound)
@@ -150,7 +215,6 @@ public class LeapFuse : MonoBehaviour {
                 attachedFound = false;
             }
             
-            //Debug.Log("Attach object " + controlAttach.name + "'s position is " + controlAttach.transform.position.x + " " + controlAttach.transform.position.y + " " + controlAttach.transform.position.z);
 
         }
 
