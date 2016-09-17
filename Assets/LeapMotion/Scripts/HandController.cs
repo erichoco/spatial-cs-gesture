@@ -48,17 +48,17 @@ public enum object_to_create
 * HandController is a Unity MonoBehavior instance that serves as the interface between your Unity application
 * and the Leap Motion service.
 *
-* The HandController script is attached to the HandController prefab. Drop a HandController prefab 
-* into a scene to add 3D, motion-controlled hands. The hands are placed above the prefab at their 
-* real-world relationship to the physical Leap device. You can change the transform of the prefab to 
-* adjust the orientation and the size of the hands in the scene. You can change the 
+* The HandController script is attached to the HandController prefab. Drop a HandController prefab
+* into a scene to add 3D, motion-controlled hands. The hands are placed above the prefab at their
+* real-world relationship to the physical Leap device. You can change the transform of the prefab to
+* adjust the orientation and the size of the hands in the scene. You can change the
 * HandController.handMovementScale property to change the range
 * of motion of the hands without changing the apparent model size.
 *
 * When the HandController is active in a scene, it adds the specified 3D models for the hands to the
 * scene whenever physical hands are tracked by the Leap Motion hardware. By default, these objects are
 * destroyed when the physical hands are lost and recreated when tracking resumes. The asset package
-* provides a variety of hands that you can use in conjunction with the hand controller. 
+* provides a variety of hands that you can use in conjunction with the hand controller.
 */
 public class HandController : MonoBehaviour
 {
@@ -218,7 +218,7 @@ public class HandController : MonoBehaviour
     private long prev_graphics_id_ = 0;
     private long prev_physics_id_ = 0;
 
-    /** The smoothed offset between the FixedUpdate timeline and the Leap timeline.  
+    /** The smoothed offset between the FixedUpdate timeline and the Leap timeline.
      * Used to provide temporally correct frames within FixedUpdate */
     private SmoothedFloat smoothedFixedUpdateOffset_ = new SmoothedFloat();
     /** The maximum offset calculated per frame */
@@ -305,7 +305,7 @@ public class HandController : MonoBehaviour
             }
         }
         else if (plane == 1)
-        {//x-z axis 
+        {//x-z axis
             if (v.z >= 0)
             {
                 return Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.z));
@@ -316,7 +316,7 @@ public class HandController : MonoBehaviour
             }
         }
         else if (plane == 2)
-        {//x-y 
+        {//x-y
             if (v.y >= 0)
             {
                 return Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.y));
@@ -380,7 +380,7 @@ public class HandController : MonoBehaviour
         Gizmos.DrawIcon(transform.position, "leap_motion.png");
     }
 
-    /** 
+    /**
     * Initializes the Leap Motion policy flags.
     * The POLICY_OPTIMIZE_HMD flag improves tracking for head-mounted devices.
     */
@@ -455,7 +455,7 @@ public class HandController : MonoBehaviour
 
         bottomPanel = GameObject.Find("bottom panel");
         bottomPanel.SetActive(false);
-        
+
         GameObject.Find("Back Button").SetActive(false);
         GameObject.Find("rotate panel").SetActive(false);
         try
@@ -472,13 +472,13 @@ public class HandController : MonoBehaviour
         {
             Debug.Log(ex.Message);
         }
-        
+
 
 
         /*** end of this part ***/
     }
 
-    /* Calling this sets this Hand Controller as the main Hand Controller.  If there was a previous main 
+    /* Calling this sets this Hand Controller as the main Hand Controller.  If there was a previous main
      * Hand Controller it is demoted and is no longer the main Hand Controller.
      */
     public void SetMain(bool shouldBeMain)
@@ -499,7 +499,7 @@ public class HandController : MonoBehaviour
 
     /**
     * Turns off collisions between the specified GameObject and all hands.
-    * Subject to the limitations of Unity Physics.IgnoreCollisions(). 
+    * Subject to the limitations of Unity Physics.IgnoreCollisions().
     * See http://docs.unity3d.com/ScriptReference/Physics.IgnoreCollision.html.
     */
     public void IgnoreCollisionsWithHands(GameObject to_ignore, bool ignore = true)
@@ -529,7 +529,7 @@ public class HandController : MonoBehaviour
         return hand_model;
     }
 
-    /** 
+    /**
     * Destroys a HandModel instance if HandController.destroyHands is true (the default).
     * If you set destroyHands to false, you must destroy the hand instances elsewhere in your code.
     */
@@ -546,12 +546,12 @@ public class HandController : MonoBehaviour
             hand_model.SetLeapHand(null);
     }
 
-    /** 
+    /**
     * Updates hands based on tracking data in the specified Leap HandList object.
     * Active HandModel instances are updated if the hand they represent is still
     * present in the Leap HandList; otherwise, the HandModel is removed. If new
-    * Leap Hand objects are present in the Leap HandList, new HandModels are 
-    * created and added to the HandController hand list. 
+    * Leap Hand objects are present in the Leap HandList, new HandModels are
+    * created and added to the HandController hand list.
     * @param all_hands The dictionary containing the HandModels to update.
     * @param leap_hands The list of hands from the a Leap Frame instance.
     * @param left_model The HandModel instance to use for new left hands.
@@ -629,12 +629,12 @@ public class HandController : MonoBehaviour
         return tool_model;
     }
 
-    /** 
+    /**
     * Updates tools based on tracking data in the specified Leap ToolList object.
     * Active ToolModel instances are updated if the tool they represent is still
     * present in the Leap ToolList; otherwise, the ToolModel is removed. If new
-    * Leap Tool objects are present in the Leap ToolList, new ToolModels are 
-    * created and added to the HandController tool list. 
+    * Leap Tool objects are present in the Leap ToolList, new ToolModels are
+    * created and added to the HandController tool list.
     * @param all_tools The dictionary containing the ToolModels to update.
     * @param leap_tools The list of tools from the a Leap Frame instance.
     * @param model The ToolModel instance to use for new tools.
@@ -711,7 +711,7 @@ public class HandController : MonoBehaviour
     *
     * If the recorder object is playing a recording, then the frame is taken from the recording.
     * Otherwise, the frame comes from the Leap Motion Controller itself.
-    * 
+    *
     * The returned frame does not contain any image data, use GetImageFrame() for that.
     */
     public virtual Frame GetFrame()
@@ -723,12 +723,12 @@ public class HandController : MonoBehaviour
         return curr_frame;
     }
 
-    /* Returns the latest frame object. 
-     * 
+    /* Returns the latest frame object.
+     *
      * This method returns a frame object that contains Image data.  It is the users responsibility to make sure
      * they dispose any objects they obtain from this frame, since it is linked to the images and could result
-     * in large memory increase if they are not disposed of properly.  
-     * 
+     * in large memory increase if they are not disposed of properly.
+     *
      * If the recorder object is playing a recording, then this method will return null.
      */
     public virtual Frame GetImageFrame()
@@ -759,39 +759,39 @@ public class HandController : MonoBehaviour
 
     /**
      * NOTE: This method should ONLY be called from within a FixedUpdate callback.
-     * 
+     *
      * Unity Physics runs at a constant frame step, where the physics time between each FixedUpdate is the same. However
      * there is a big difference between the physics timeline and the real timeline.  In Unity, these timelines can be
      * very skewed, where the actual times FixedUpdate is called can vary greatly.  For example, the graph below
-     * shows the real times when FixedUpdate was called.  
-     * 
+     * shows the real times when FixedUpdate was called.
+     *
      * \image html images/GetFixedFrame_FixedUpdateCluster_Graph.png
-     * 
+     *
      * The graph shows major clustering occuring of FixedUpdate calls, rather than an even spread.  Specifically, Unity
      * always executes all of the FixedUpdate calls at the *begining* of an Update frame, and then performs interpolation
      * to convert physics objects from the physics timeline to the real timeline.
-     * 
+     *
      * This causes an issue when we need to aquire a Leap Frame from within FixedUpdate, since we need to provide a Frame
      * to the physics timeline, but the Leap provides frames from the real timeline.  The image below shows what happens
      * when we simply sample controller.Frame() from within FixedUpdate.  The X axis represents Time.fixedTime, and the Y
      * axis represents the Frame.Timestamp
-     * 
+     *
      * \image html images/GetFixedFrame_Naive_Graph.png
-     * 
+     *
      * The graph shows how, from the perspective of the physics timeline, the Frames are arriving in a jagged way, staying
      * the same for a large amount of time before jumping a large amount forward.  Ideally we would be able to take advantage
-     * of the full 120FPS of frames the service provides, properly interpolated into the physics timeline.  
-     * 
+     * of the full 120FPS of frames the service provides, properly interpolated into the physics timeline.
+     *
      * GetFixedFrame attempts to establish a conversion from the real timeline to the physics timeline, to provide both
      * uniformly sampled Frames, as well as not introducing latency.  The graph below shows a comparison between the naive
      * method of sampling the most recent frame (red), and the usage of GetFixedFrame (green).  The X axis represents Time.fixedTime
      * while the Y axis represents the Frame.Timestamp obtained by the 2 methods
-     * 
+     *
      * \image html images/GetFixedFrame_Comparison_Graph.png
-     * 
+     *
      * As the graph shows, the GetFixedFrame method can significantly help solve the judder that can occur when sampling
      * controller.Frame while in FixedUpdate.
-     * 
+     *
      * ALSO: If the recorder object is playing a recording, then the frame is taken directly from the recording,
      * with no timeline synchronization performed.
      */
@@ -905,7 +905,7 @@ public class HandController : MonoBehaviour
                 gesture_duration = 0;
                 num_in_array = 0;
                 bottomPanel.SetActive(true);
-                //Debug.Log("Now the active object is :" + active_object);
+                // Debug.Log("Now the active object is :" + active_object);
 
                 if (ifFeast(rightHand))
                 {
@@ -943,7 +943,7 @@ public class HandController : MonoBehaviour
                                                 active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
                                                 choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
                                             } while (!choosedObject.GetComponent<Button>().interactable);
-                                            
+
                                             prev_operation_time = curr_operation_time;
                                         }
                                     }
@@ -970,7 +970,7 @@ public class HandController : MonoBehaviour
 
                         break;
                     }
-                    
+
 
                     EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
                     eventSystem.SetSelectedGameObject(choosedObject, new BaseEventData(eventSystem));
@@ -986,9 +986,9 @@ public class HandController : MonoBehaviour
                 Hand grabHand = leftHand;
                 Vector velocity_grab = grabHand.PalmVelocity;
                 cameraControl.GrabView(velocity_grab.x / LeapStatic.grabViewFactor, -velocity_grab.y / LeapStatic.grabViewFactor);
-                
+
             }
-            else//control mode 
+            else//control mode
             {
                 bottomPanel.SetActive(false);
                 left_palm_position_array[num_in_array] = handController.transform.TransformPoint(leftHand.PalmPosition.ToUnityScaled());
@@ -1392,7 +1392,7 @@ public class HandController : MonoBehaviour
         recorder_.Pause();
     }
 
-    /** 
+    /**
     * Saves the current recording to a new file, returns the path, and starts playback.
     * @return string The path to the saved recording.
     */
