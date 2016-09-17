@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
 
-public class ConstructionSetup : MonoBehaviour {
+public class axeSetup : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-        LeapStatic.resetConstructionObject("construction");
-	}
-
+        LeapStatic.resetConstructionObject("axe");
+    }
+	
 	// Update is called once per frame
 	void Update () {
-
+	
 	}
 }

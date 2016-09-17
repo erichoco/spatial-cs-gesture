@@ -97,6 +97,58 @@ public class LeapStatic : MonoBehaviour {
 
             }
         }
+        else if (currScene == "axe")
+        {
+            CreatePartAxe createPart;
+            createPart = (CreatePartAxe)GameObject.Find("EventSystem").GetComponent(typeof(CreatePartAxe));
+            switch (active)
+            {
+                case 0:
+                    createPart.createHaft();
+                    break;
+                case 1:
+                    createPart.createHead();
+                    break;
+                case 2:
+                    createPart.createTopPoint();
+                    break;
+                case 3:
+                    createPart.createTrapezoid();
+                    break;
+                case 4:
+                    createPart.createBottomPoint();
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        else if (currScene == "key1")
+        {
+            CreatePartKey1 createPart;
+            createPart = (CreatePartKey1)GameObject.Find("EventSystem").GetComponent(typeof(CreatePartKey1));
+            switch (active)
+            {
+                case 0:
+                    createPart.createUprightL();
+                    break;
+                case 1:
+                    createPart.createUprightT();
+                    break;
+                case 2:
+                    createPart.createWaluigi();
+                    break;
+                case 3:
+                    createPart.createWalkingPants();
+                    break;
+                case 4:
+                    createPart.createUprightRect();
+                    break;
+                default:
+                    break;
+
+            }
+        }
     }
 
     public static void resetConstructionObject(string sceneName)
@@ -107,6 +159,8 @@ public class LeapStatic : MonoBehaviour {
         switch (sceneName)
         {
             case "tutorial1":
+                //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0);//time,one/two,L/R,Gesture,Success,Scene
+
                 constructionObject.Add("Cone");
                 constructionObject.Add("Pyr");
                 constructionObject.Add("Tri");
@@ -119,6 +173,8 @@ public class LeapStatic : MonoBehaviour {
 
                 break;
             case "tutorial2":
+                //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 1);//time,one/two,L/R,Gesture,Success,Scene
+
                 constructionObject.Add("SmallboxYellow");
                 constructionObject.Add("Tallbox");
                 constructionObject.Add("SmallboxBlue");
@@ -133,6 +189,7 @@ public class LeapStatic : MonoBehaviour {
 
                 break;
             case "construction":
+                //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 2);//time,one/two,L/R,Gesture,Success,Scene
                 constructionObject.Add("Body");
                 constructionObject.Add("Calf");
                 constructionObject.Add("Trim");
@@ -148,6 +205,7 @@ public class LeapStatic : MonoBehaviour {
                 objectName.Add("ToeSolePrefab(Clone)");
                 break;
             case "axe":
+                //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 3);//time,one/two,L/R,Gesture,Success,Scene
                 constructionObject.Add("Haft");
                 constructionObject.Add("BottomPoint");
                 constructionObject.Add("Head");
@@ -163,6 +221,8 @@ public class LeapStatic : MonoBehaviour {
                 objectName.Add("bottom_pointPrefab(Clone)");
                 break;
             case "key1":
+                //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 4);//time,one/two,L/R,Gesture,Success,Scene
+
                 constructionObject.Add("UprightL");
                 constructionObject.Add("UprightT");
                 constructionObject.Add("Waluigi");
