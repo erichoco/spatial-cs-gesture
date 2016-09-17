@@ -6,7 +6,6 @@ public class ConstructionSetup : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
         LeapStatic.resetConstructionObject("construction");
 	}
 

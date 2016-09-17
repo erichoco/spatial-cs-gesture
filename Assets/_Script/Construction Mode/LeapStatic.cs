@@ -207,10 +207,10 @@ public class LeapStatic : MonoBehaviour {
             case "axe":
                 //SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 3);//time,one/two,L/R,Gesture,Success,Scene
                 constructionObject.Add("Haft");
-                constructionObject.Add("BottomPoint");
                 constructionObject.Add("Head");
                 constructionObject.Add("TopPoint");
                 constructionObject.Add("Trapezoid");
+                constructionObject.Add("BottomPoint");
                 numConstructionObject = 5;
 
                 objectName.Add("startObject");

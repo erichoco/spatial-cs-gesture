@@ -10,6 +10,6 @@ public class axeSetup : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    
 	}
 }
