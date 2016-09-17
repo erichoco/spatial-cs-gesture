@@ -1005,6 +1005,11 @@ public class HandController : MonoBehaviour
             }
             else if (ifGrab(leftHand) && ifGrab(rightHand))
             {
+                if (Time.time - lastLogTime >= 0.1)
+                {
+                    SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 3 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                    lastLogTime = Time.time;
+                }
                 //SimpleData.WriteStringToFile("LeapData.txt", "The grab gesture at " + Time.time + " in two hand mode detected.");
                 bottomPanel.SetActive(false);
 
@@ -1065,6 +1070,11 @@ public class HandController : MonoBehaviour
                             //connect gesture
                             if ((330 < angle_v2(left_palm_direction, 1) || angle_v2(left_palm_direction, 1) < 30) && (angle_v2(right_palm_direction, 1) > 150 && angle_v2(right_palm_direction, 1) < 210))
                             {
+                                if (Time.time - lastLogTime >= 0.1)
+                                {
+                                    SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 4 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                    lastLogTime = Time.time;
+                                }
                                 curr_connect_state = 1;
                             }
 
@@ -1103,7 +1113,11 @@ public class HandController : MonoBehaviour
                             Debug.Log("gesture:connection");
                             if (ifGestureGapEnough())
                             {
-                                //SimpleData.WriteStringToFile("LeapData.txt", "The connect gesture at " +Time.time+" in two hand mode detected.");
+                                if (Time.time - lastLogTime >= 0.1)
+                                {
+                                    SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 4 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                    lastLogTime = Time.time;
+                                }
                                 fuseEvent.initiateFuse();
                                 prev_operation_time = curr_operation_time;
                             }
