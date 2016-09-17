@@ -228,6 +228,8 @@ public class HandController : MonoBehaviour
      *** author:Yuan Yao ****
      *** declaration ********
      ************************/
+    private float lastLogTime = Time.time;
+
     public static float prev_operation_time = 0f;
     public static float curr_operation_time = 0f;
     public static self_defined_gesture_type gesture_type_detected; //0 - one hand
@@ -898,6 +900,12 @@ public class HandController : MonoBehaviour
 
             if (ifFeast(leftHand))//select mode
             {
+                if (Time.time - lastLogTime >= 0.1)
+                {
+                    SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 0 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                    lastLogTime = Time.time;
+                }
+
                 prev_connect_state = 0;
 
                 curr_connect_state = 0;
@@ -905,19 +913,31 @@ public class HandController : MonoBehaviour
                 gesture_duration = 0;
                 num_in_array = 0;
                 bottomPanel.SetActive(true);
-                //Debug.Log("Now the active object is :" + active_object);
 
                 if (ifFeast(rightHand))
                 {
+                    if (Time.time - lastLogTime >= 0.1)
+                    {
+                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 1 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                        lastLogTime = Time.time;
+                    }
+
                     LeapStatic.CreatePartLeap(active_object);
                 }
                 else
                 {
+                    if (Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                    {
+                        if (Time.time - lastLogTime >= 0.1)
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+                    }                   
+
                     GestureList currGestureList = frame.Gestures();
                     foreach (Gesture gesture in currGestureList)
                     {
-                        //Debug.Log("This gesture's type is :" + gesture.Type);
-                        //SimpleData.WriteStringToFile("LeapData.txt", "The swipe gesture at " + Time.time + " in two hand mode detected.");
                         switch (gesture.Type)
                         {
                             case Gesture.GestureType.TYPESWIPE:
@@ -931,6 +951,11 @@ public class HandController : MonoBehaviour
                                     )
                                     )
                                 {//y-axis
+                                    if (Time.time-lastLogTime>=0.1)
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
                                     if (
                                     swipe_direction_world.x < 0
                                     )
@@ -1104,15 +1129,11 @@ public class HandController : MonoBehaviour
         }
         else if (frame.Hands.Count == 1)
         {
-            ////get rid of rotation gizmo
 
-
-            //Debug.Log("Now one hand.");
             flag_two_hand = false;
             bottomPanel.SetActive(false);
             //state for two hand gesture is 0
             prev_connect_state = 0;
-
             curr_connect_state = 0;
 
             gesture_duration = 0;
@@ -1120,6 +1141,20 @@ public class HandController : MonoBehaviour
 
             if (ifFeast(frame.Hands[0]))
             {
+                if (Time.time - lastLogTime >= 0.1)
+                {
+                    if (frame.Hands[0].IsLeft)
+                    {
+                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 +";" + 0 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                        lastLogTime = Time.time;
+                    }
+                    else
+                    {
+                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 0 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                        lastLogTime = Time.time;
+                    }
+                    
+                }
                 //LeapStatic.dataRecord("The drag gesture at " + Time.time + " in one hand mode detected.", @"D:\Coding\Projects\spatial-cs-v2\Assets\LeapData.txt");
                 Hand moveHand = frame.Hands[0];
                 Vector3 moveHandVelocity = new Vector3(moveHand.PalmVelocity.x / 1000, moveHand.PalmVelocity.y / 1000, -moveHand.PalmVelocity.z / 1000);
@@ -1127,6 +1162,59 @@ public class HandController : MonoBehaviour
             }
             else
             {
+
+                if (Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                {
+                    if (Time.time - lastLogTime >= 0.1)
+                    {
+                        if (frame.Hands[0].IsLeft)
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+                        else
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+                        
+                    }
+                }
+                else if (Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.x) && Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                {
+                    if (Time.time - lastLogTime >= 0.1)
+                    {
+                        if (frame.Hands[0].IsLeft)
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+                        else
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+
+                    }
+                }
+                else if (Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.x))
+                {
+                    if (Time.time - lastLogTime >= 0.1)
+                    {
+                        if (frame.Hands[0].IsLeft)
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+                        else
+                        {
+                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                            lastLogTime = Time.time;
+                        }
+
+                    }
+                }
+
                 GestureList currGestureList = frame.Gestures();
                 foreach (Gesture gesture in currGestureList)
                 {
@@ -1144,7 +1232,20 @@ public class HandController : MonoBehaviour
                                 )
                                 )
                             {//x-axis move
-                                //SimpleData.WriteStringToFile("LeapData.txt","The x-axis swipe gesture at " + Time.time + " in one hand mode detected.");
+                                if (Time.time - lastLogTime >= 0.1)
+                                {
+                                    if (swipeGesture.Hands[0].IsLeft)
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 1 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+                                    else
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 1 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+                                    
+                                }
                                 if (
                                 swipe_direction_world.x < 0
                                 )
@@ -1175,7 +1276,20 @@ public class HandController : MonoBehaviour
                                 )
                                 )
                             {
-                                //SimpleData.WriteStringToFile("LeapData.txt", "The y-axis swipe gesture at " + Time.time + " in one hand mode detected.");
+                                if (Time.time - lastLogTime >= 0.1)
+                                {
+                                    if (swipeGesture.Hands[0].IsLeft)
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+                                    else
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+
+                                }
                                 if (swipe_direction_world.y < 0)
                                 {
                                     if (ifGestureGapEnough())
@@ -1203,7 +1317,20 @@ public class HandController : MonoBehaviour
                                 )
                                 )
                             {//z-axis
-                                //SimpleData.WriteStringToFile("LeapData.txt", "The z-axis swipe gesture at " + Time.time + " in one hand mode detected.");
+                                if (Time.time - lastLogTime >= 0.1)
+                                {
+                                    if (swipeGesture.Hands[0].IsLeft)
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 3 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+                                    else
+                                    {
+                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 3 + ";" + 1);//time,one/two,L/R,Gesture,Success
+                                        lastLogTime = Time.time;
+                                    }
+
+                                }
                                 if (swipe_direction_world.z < 0)
                                 {
                                     if (ifGestureGapEnough())
