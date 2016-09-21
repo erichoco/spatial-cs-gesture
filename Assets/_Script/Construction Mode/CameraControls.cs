@@ -80,7 +80,7 @@ public class CameraControls : MonoBehaviour
 			transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
 		}
 
-       
+
     }
 
     public void GestureControl(self_defined_gesture_type gesture)

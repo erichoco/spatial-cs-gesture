@@ -861,11 +861,8 @@ public class HandController : MonoBehaviour
         }
 
         /** fix hand position @erichoco **/
-        // Debug.Log("Hand position: " + transform.position);
-        // transform.LookAt(cameraTrans);
-        // transform.position = new Vector3(transform.position.x, transform.position.y, -transform.position.z);
-        transform.position = new Vector3(cameraTrans.position.x, cameraTrans.position.y, cameraTrans.position.z + 70);
         transform.rotation = cameraTrans.rotation;
+        transform.position = cameraTrans.position - transform.up * 20 + transform.forward * 60;
 
         //perFrameFixedUpdateOffset_ contains the maximum offset of this Update cycle
         smoothedFixedUpdateOffset_.Update(perFrameFixedUpdateOffset_, Time.deltaTime);
