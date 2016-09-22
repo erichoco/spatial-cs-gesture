@@ -103,15 +103,16 @@ public class FuseEvent : MonoBehaviour {
 				{
 					case "tutorial1":
 						ConversationTrigger.AddToken("done_with_tutorial_1");
-						LoadUtils.LoadScene("construction");
+						LoadUtils.LoadScene("tutorial2");
 						LoadUtils.UnloadScene("tutorial1");
-                        LeapStatic.resetConstructionObject("construction");
+                        LeapStatic.resetConstructionObject("tutorial2");
                         break;
 					case "tutorial2":
 						ConversationTrigger.AddToken("done_with_tutorial_2");
 						LoadUtils.LoadScene("construction");
 						LoadUtils.UnloadScene("tutorial2");
-						break; 
+                        LeapStatic.resetConstructionObject("construction");
+                        break; 
 					case "boot":
 						RocketBoots.ActivateBoots();
 						InventoryController.items.Remove("Rocket Boots Sole");
@@ -124,6 +125,7 @@ public class FuseEvent : MonoBehaviour {
 						//RecipesDB.unlockedRecipes.Remove(RecipesDB.RocketBoots);
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("construction");
+                        LeapStatic.resetConstructionObject(InventoryController.levelName);
 						break;
 					case "axe":
 						Sledgehammer.ActivateSledgehammer();
@@ -136,7 +138,8 @@ public class FuseEvent : MonoBehaviour {
 						InventoryController.ConvertInventoryToTokens();
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("axe");
-						break;
+                        LeapStatic.resetConstructionObject(InventoryController.levelName);
+                        break;
 					case "key1":
 						ConversationTrigger.AddToken("player_has_key1");
 						InventoryController.items.Remove("Key 1 Dangly T");
@@ -148,7 +151,8 @@ public class FuseEvent : MonoBehaviour {
 						InventoryController.ConvertInventoryToTokens();
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("key1");
-						break;
+                        LeapStatic.resetConstructionObject(InventoryController.levelName);
+                        break;
 					default:
 						Debug.Log("Not Yet Implemented: " + mode);
 						break;
