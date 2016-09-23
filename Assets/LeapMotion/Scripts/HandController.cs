@@ -379,6 +379,126 @@ public class HandController : MonoBehaviour
     }
     /*** end of this part ***/
 
+    /*** @erichoco refactorization ***/
+
+    // swipe_direction_world could be just a local var
+    int checkSwipeDirection(Vector3 swipeDirection)
+    {
+        double x = Math.Abs(swipeDirection.x);
+        double y = Math.Abs(swipeDirection.y);
+        double z = Math.Abs(swipeDirection.z);
+        double factor = 1;
+        if (x > factor * y && x > factor * z)
+        {
+            return 0;
+        }
+        else if (y > factor * x && y > factor * z)
+        {
+            return 1;
+        }
+        else if (z > factor * x && z > factor * y)
+        {
+            return 2;
+        }
+        return -1;
+    }
+
+    void performSwipe(Gesture gesture, int handCount)
+    {
+        SwipeGesture swipeGesture = new SwipeGesture(gesture);
+        swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
+
+        int swipeDirection = checkSwipeDirection(swipe_direction_world);
+
+        // Log
+        if (Time.time - lastLogTime >= 0.1 && swipeDirection != -1)
+        {
+            // L = 1, R = 2
+            int hand = 0;
+            if (handCount == 1)
+            {
+                hand = (swipeGesture.Hands[0].IsLeft) ? 1 : 2;
+            }
+            // Log format: time, one/two, L/R, Gesture, Success
+            SimpleData.WriteStringToFile("LeapData.txt",
+                Time.time + ";" + handCount + ";" + hand + ";" + swipeDirection + ";" + 1);
+            lastLogTime = Time.time;
+        }
+
+        if (handCount == 2)
+        {
+            if (swipeDirection == 0)
+            {
+                if (swipe_direction_world.x < 0) //clockwise
+                {
+                    do
+                    {
+                        active_object--;
+                        active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
+                        choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
+                    } while (!choosedObject.GetComponent<Button>().interactable);
+                }
+                else
+                {
+                    do
+                    {
+                        active_object++;
+                        active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
+                        choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
+                    } while (!choosedObject.GetComponent<Button>().interactable);
+                }
+            }
+            return;
+        }
+
+        // handCount == 1
+        switch (swipeDirection)
+        {
+            // x-axis move
+            case 0:
+                if (swipe_direction_world.x < 0) //clockwise
+                {
+                    //Debug.Log("swipe gesture : y-clockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_clockwise, zero_vector);
+                }
+                else
+                {
+                    //Debug.Log("swipe gesture : y-counterclockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_counterclockwise, zero_vector);
+                }
+                break;
+
+            case 1:
+                if (swipe_direction_world.y < 0)
+                {
+                    //Debug.Log("swipe gesture : z-counterclockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_counterclockwise, zero_vector);
+                }
+                else
+                {
+                    //Debug.Log("swipe gesture : z-clockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_clockwise, zero_vector);
+                }
+                break;
+            case 2:
+                if (swipe_direction_world.z < 0)
+                {
+                    //Debug.Log("swipe gesture : x-clockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_counterclockwise, zero_vector);
+                }
+                else
+                {
+                    //Debug.Log("swipe gesture : x-counterclockwise");
+                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_clockwise, zero_vector);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
     /** Draws the Leap Motion gizmo when in the Unity editor. */
     void OnDrawGizmos()
     {
@@ -957,52 +1077,11 @@ public class HandController : MonoBehaviour
                         switch (gesture.Type)
                         {
                             case Gesture.GestureType.TYPESWIPE:
-                                SwipeGesture swipeGesture = new SwipeGesture(gesture);
-                                swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
-                                if (
-                                    (
-                                    Math.Abs(swipe_direction_world.x) > 3 * Math.Abs(swipe_direction_world.y)
-                                    ) && (
-                                    Math.Abs(swipe_direction_world.x) > 3 * Math.Abs(swipe_direction_world.z)
-                                    )
-                                    )
-                                {//y-axis
-                                    if (Time.time-lastLogTime>=0.1)
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 2 + ";" + 0 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-                                    if (
-                                    swipe_direction_world.x < 0
-                                    )
-                                    {//clockwise
-                                        if (ifGestureGapEnough())
-                                        {
-                                            do
-                                            {
-                                                active_object--;
-                                                active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
-                                                choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
-                                            } while (!choosedObject.GetComponent<Button>().interactable);
-
-                                            prev_operation_time = curr_operation_time;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (ifGestureGapEnough())
-                                        {
-                                            do
-                                            {
-                                                active_object++;
-                                                active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
-                                                choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
-                                            } while (!choosedObject.GetComponent<Button>().interactable);
-                                            prev_operation_time = curr_operation_time;
-                                        }
-                                    }
+                                if (ifGestureGapEnough())
+                                {
+                                    performSwipe(gesture, 2);
+                                    prev_operation_time = curr_operation_time;
                                 }
-
                                 break;
 
                             default:
@@ -1248,137 +1327,13 @@ public class HandController : MonoBehaviour
                 GestureList currGestureList = frame.Gestures();
                 foreach (Gesture gesture in currGestureList)
                 {
-                    //Debug.Log("This gesture's type is :" + gesture.Type);
                     switch (gesture.Type)
                     {
                         case Gesture.GestureType.TYPESWIPE:
-                            SwipeGesture swipeGesture = new SwipeGesture(gesture);
-                            swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
-                            if (
-                                (
-                                Math.Abs(swipe_direction_world.x) > 3 * Math.Abs(swipe_direction_world.y)
-                                ) && (
-                                Math.Abs(swipe_direction_world.x) > 3 * Math.Abs(swipe_direction_world.z)
-                                )
-                                )
-                            {//x-axis move
-                                if (Time.time - lastLogTime >= 0.1)
-                                {
-                                    if (swipeGesture.Hands[0].IsLeft)
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 1 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-                                    else
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 1 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-
-                                }
-                                if (
-                                swipe_direction_world.x < 0
-                                )
-                                {//clockwise
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : y-clockwise");
-
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_clockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                                else
-                                {
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : y-counterclockwise");
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_counterclockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                            }
-                            else if (
-                                (
-                                Math.Abs(swipe_direction_world.y) > 3 * Math.Abs(swipe_direction_world.x)
-                                ) && (
-                                Math.Abs(swipe_direction_world.y) > 3 * Math.Abs(swipe_direction_world.z)
-                                )
-                                )
+                            if (ifGestureGapEnough())
                             {
-                                if (Time.time - lastLogTime >= 0.1)
-                                {
-                                    if (swipeGesture.Hands[0].IsLeft)
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-                                    else
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 2 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-
-                                }
-                                if (swipe_direction_world.y < 0)
-                                {
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : z-counterclockwise");
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_counterclockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                                else
-                                {
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : z-clockwise");
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_clockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                            }
-                            else if (
-                                (
-                                Math.Abs(swipe_direction_world.z) > 3 * Math.Abs(swipe_direction_world.x)
-                                ) && (
-                                Math.Abs(swipe_direction_world.z) > 3 * Math.Abs(swipe_direction_world.y)
-                                )
-                                )
-                            {//z-axis
-                                if (Time.time - lastLogTime >= 0.1)
-                                {
-                                    if (swipeGesture.Hands[0].IsLeft)
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 3 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-                                    else
-                                    {
-                                        SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 3 + ";" + 1);//time,one/two,L/R,Gesture,Success
-                                        lastLogTime = Time.time;
-                                    }
-
-                                }
-                                if (swipe_direction_world.z < 0)
-                                {
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : x-clockwise");
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_counterclockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
-                                else
-                                {
-                                    if (ifGestureGapEnough())
-                                    {
-                                        //Debug.Log("swipe gesture : x-counterclockwise");
-                                        rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_clockwise, zero_vector);
-                                        prev_operation_time = curr_operation_time;
-                                    }
-                                }
+                                performSwipe(gesture, 1);
+                                prev_operation_time = curr_operation_time;
                             }
                             break;
 
