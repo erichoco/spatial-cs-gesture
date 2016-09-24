@@ -38,7 +38,7 @@ public class Tutorial2 : MonoBehaviour {
 		conversationSystem = GameObject.Find("ConversationSystem");
 		done = false;
 
-        LeapStatic.resetConstructionObject("tutorial2");
+		LeapStatic.resetConstructionObject("tutorial2");
 	}
 
 	// Update is called once per frame

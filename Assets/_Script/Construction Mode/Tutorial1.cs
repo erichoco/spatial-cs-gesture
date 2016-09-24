@@ -103,7 +103,7 @@ public class Tutorial1 : MonoBehaviour {
 			// seventh event: Dresha flashes part buttons ("Click on this!")
 			// highlight until button is clicked
 			foreach (Button b in partButtons) {
-				Highlighter.Highlight(b.gameObject);
+				// Highlighter.Highlight(b.gameObject);
 			}
 			ConversationTrigger.AddToken("dreshaFlashedPyrButton");
 
@@ -119,7 +119,7 @@ public class Tutorial1 : MonoBehaviour {
 		} else if(!triggersFinished[8] && ConversationTrigger.tokens.Contains("dreshaReadyToFlashBox")) {
 			triggersFinished[8] = true;
 			//ninth event: Dresha flashes Box
-			Highlighter.Highlight(GameObject.Find("box")); 
+			Highlighter.Highlight(GameObject.Find("box"));
 			ConversationTrigger.AddToken("dreshaFlashedBox");
 
 		} else if(!triggersFinished[9] && ConversationTrigger.tokens.Contains("playerReadyToMoveCamera")
@@ -184,9 +184,9 @@ public class Tutorial1 : MonoBehaviour {
 			ConversationTrigger.AddToken("wrongRotationDreshaFlashedObj");
 
 		} else if(triggersFinished[17] && ConversationTrigger.GetToken("playerAttachedWrongFace") && !ConversationTrigger.GetToken("wrongFaceDreshaReadyToFlashBox")) {
-			// wrong shape - Dresha just finished tryDifferentShape1 and 
+			// wrong shape - Dresha just finished tryDifferentShape1 and
 			// will now flash box and part menu for 2 seconds
-			highlightPartButtons();
+			// highlightPartButtons();
 			highlighter.HighlightTimed(GameObject.Find("box"), 1);
 
 		} else if (ConversationTrigger.GetToken("showNextLevelButton")) {
@@ -202,8 +202,8 @@ public class Tutorial1 : MonoBehaviour {
 
 		}
 
-	
-	}  
+
+	}
 
 	//disables/enables connect-related conversation tokens
 	//to prevent infinite triggers since they aren't oneshots
@@ -220,7 +220,7 @@ public class Tutorial1 : MonoBehaviour {
 			ConversationTrigger.RemoveToken("blockTryRotatingAgain2"); // to stop infinite triggers
 			ConversationTrigger.RemoveToken("playerAttachedWrongFace"); // to stop infinite triggers
 			ConversationTrigger.RemoveToken("wrongFaceDreshaReadyToFlashBox"); // to stop infinite triggers
-			ConversationTrigger.RemoveToken("playerAttachedSuccessfully");	
+			ConversationTrigger.RemoveToken("playerAttachedSuccessfully");
 			ConversationTrigger.RemoveToken("wrongRotationDreshaFlashedObj"); // to stop infinite triggers
 
 			if(fuseStatus.Equals("wrongFace")) {
@@ -322,11 +322,11 @@ public class Tutorial1 : MonoBehaviour {
 		GameObject activePart = selectPart.getActivePart();
 		Debug.Log("Selected Obj to highlight: " + activePart);
 		if(activePart.name.Equals("tutorial1_triPrefab(Clone)")) {
-			highlighter.HighlightTimed(GameObject.Find("tri"), sec); 
+			highlighter.HighlightTimed(GameObject.Find("tri"), sec);
 		} else if(activePart.name.Equals("tutorial1_pyrPrefab(Clone)")) {
-			highlighter.HighlightTimed(GameObject.Find("pyr"), sec); 
+			highlighter.HighlightTimed(GameObject.Find("pyr"), sec);
 		} else {
-			highlighter.HighlightTimed(GameObject.Find("cone"), sec); 
+			highlighter.HighlightTimed(GameObject.Find("cone"), sec);
 		}
 	}
 
@@ -335,11 +335,11 @@ public class Tutorial1 : MonoBehaviour {
 		GameObject activePart = selectPart.getActivePart();
 		Debug.Log("Selected Obj to highlight: " + activePart);
 		if(activePart.name.Equals("tutorial1_triPrefab(Clone)")) {
-			Highlighter.Highlight(GameObject.Find("tri")); 
+			Highlighter.Highlight(GameObject.Find("tri"));
 		} else if(activePart.name.Equals("tutorial1_pyrPrefab(Clone)")) {
-			Highlighter.Highlight(GameObject.Find("pyr")); 
+			Highlighter.Highlight(GameObject.Find("pyr"));
 		} else {
-			Highlighter.Highlight(GameObject.Find("cone")); 
+			Highlighter.Highlight(GameObject.Find("cone"));
 		}
 	}
 
@@ -347,18 +347,18 @@ public class Tutorial1 : MonoBehaviour {
 		GameObject activePart = selectPart.getActivePart();
 		Debug.Log("Selected Obj to UNhighlight: " + activePart);
 		if(activePart.name.Equals("tutorial1_triPrefab(Clone)")) {
-			Highlighter.Highlight(GameObject.Find("tri")); 
+			Highlighter.Highlight(GameObject.Find("tri"));
 		} else if(activePart.name.Equals("tutorial1_pyrPrefab(Clone)")) {
-			Highlighter.Unhighlight(GameObject.Find("pyr")); 
+			Highlighter.Unhighlight(GameObject.Find("pyr"));
 		} else {
-			Highlighter.Unhighlight(GameObject.Find("cone")); 
+			Highlighter.Unhighlight(GameObject.Find("cone"));
 		}
 	}
 
 	IEnumerator highlightGizmoWait() {
 		// maybe should highlight only the sliders instead?
 		foreach(Transform child in rotationGizmo.transform) {
-			highlighter.HighlightTimed(child.gameObject, 2); 
+			highlighter.HighlightTimed(child.gameObject, 2);
 		}
 		yield return new WaitForSeconds(1f);
 		ConversationTrigger.AddToken("dreshaFlashedGizmo");
@@ -369,5 +369,5 @@ public class Tutorial1 : MonoBehaviour {
 		goToNextTutorial.gameObject.SetActive(true);
 
 	}
-		
+
 }
