@@ -8,7 +8,7 @@ using System.IO;
 public class LeapStatic : MonoBehaviour {
     //parameters
     //one hand
-    public static float swipeMinVelocity = 800f;
+    public static float swipeMinVelocity = 1000f;
     public static float swipeMinDistance = 150f;
     public static float dragVelocity = 10f;
     public static int dragStable = 2;
