@@ -1098,6 +1098,15 @@ public class HandController : MonoBehaviour
                     }
 
                     choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
+               
+                        
+                    while (!choosedObject.GetComponent<Button>().interactable)
+                    {
+                        active_object--;
+                        active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
+                        choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
+
+                    }
                     EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
                     eventSystem.SetSelectedGameObject(choosedObject, new BaseEventData(eventSystem));
 
