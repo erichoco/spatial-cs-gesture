@@ -787,6 +787,8 @@ public class FuseEvent : MonoBehaviour {
 		//foreach(string s in fuseMapping[selectedObject.name]) {
 		//	print (s);
 		//}
+		Debug.Log("select object: " + selectedObject);
+		Debug.Log("select fuse to: " + selectedFuseTo);
 		if(selectedObject == null) {
 			//player tries to connect when there is no active part (only at beginning)
 			//print ("Select the black regions you want to join together!");
@@ -803,8 +805,6 @@ public class FuseEvent : MonoBehaviour {
 			fuseStatus="success";
 			source.PlayOneShot (success);
 			selectedObject.GetComponent<FuseBehavior>().fuse(selectedFuseTo.name, selectedFuseTo.transform.parent.gameObject.GetComponent<IsFused>().locationTag);
-
-
 
 			fuseCleanUp();
 			fuseCount++;

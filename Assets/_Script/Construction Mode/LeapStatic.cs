@@ -153,6 +153,7 @@ public class LeapStatic : MonoBehaviour {
 
     public static void resetConstructionObject(string sceneName)
     {
+    	Debug.Log("reseting");
         currScene = sceneName;
         constructionObject.Clear();
         objectName.Clear();

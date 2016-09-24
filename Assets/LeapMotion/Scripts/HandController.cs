@@ -1073,6 +1073,8 @@ public class HandController : MonoBehaviour
                 num_in_array = 0;
                 bottomPanel.SetActive(true);
 
+                // Debug.Log("Now the active object is :" + active_object);
+
                 if (ifFeast(rightHand))
                 {
                     if (Time.time - lastLogTime >= 0.1)
