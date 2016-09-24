@@ -511,10 +511,9 @@ public class HandController : MonoBehaviour
             (Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
             (connect.x + connect.z) < 5)
         {
-            Debug.Log("left: " + left);
-            Debug.Log("right: " + right);
             return true;
         }
+        // original connect gesture
         // if ((330 < angle_v2(left, 1) || angle_v2(left, 1) < 30) && (angle_v2(right, 1) > 150 && angle_v2(right, 1) < 210)) {
 
         //     return true;
