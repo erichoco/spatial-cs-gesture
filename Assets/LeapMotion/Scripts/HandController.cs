@@ -387,7 +387,7 @@ public class HandController : MonoBehaviour
         double x = Math.Abs(swipeDirection.x);
         double y = Math.Abs(swipeDirection.y);
         double z = Math.Abs(swipeDirection.z);
-        double factor = 1;
+        double factor = 2;
         if (x > factor * y && x > factor * z)
         {
             return 0;
