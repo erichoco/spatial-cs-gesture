@@ -387,7 +387,7 @@ public class HandController : MonoBehaviour
         double x = Math.Abs(swipeDirection.x);
         double y = Math.Abs(swipeDirection.y);
         double z = Math.Abs(swipeDirection.z);
-        double factor = 2;
+        double factor = 1;
         if (x > factor * y && x > factor * z)
         {
             return 0;
@@ -502,6 +502,24 @@ public class HandController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    bool checkConnectGesture(Vector3 left, Vector3 right)
+    {
+        Vector3 connect = left + right;
+        if ((Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
+            (Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
+            (connect.x + connect.z) < 5)
+        {
+            Debug.Log("left: " + left);
+            Debug.Log("right: " + right);
+            return true;
+        }
+        // if ((330 < angle_v2(left, 1) || angle_v2(left, 1) < 30) && (angle_v2(right, 1) > 150 && angle_v2(right, 1) < 210)) {
+
+        //     return true;
+        // }
+        return false;
     }
 
 
@@ -1178,7 +1196,7 @@ public class HandController : MonoBehaviour
                             //Debug.Log("Now moving in the x-z plane.");
 
                             //connect gesture
-                            if ((330 < angle_v2(left_palm_direction, 1) || angle_v2(left_palm_direction, 1) < 30) && (angle_v2(right_palm_direction, 1) > 150 && angle_v2(right_palm_direction, 1) < 210))
+                            if (checkConnectGesture(left_palm_direction, right_palm_direction))
                             {
                                 if (Time.time - lastLogTime >= 0.1)
                                 {
