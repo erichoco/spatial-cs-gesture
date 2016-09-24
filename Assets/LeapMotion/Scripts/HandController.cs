@@ -406,7 +406,13 @@ public class HandController : MonoBehaviour
     void performSwipe(Gesture gesture, int handCount)
     {
         SwipeGesture swipeGesture = new SwipeGesture(gesture);
-        swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
+        if (handCount == 1)
+        {
+            swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
+        }else if (handCount == 2)
+        {
+            swipe_direction_world = new Vector3(swipeGesture.Direction.x, swipeGesture.Direction.y, swipeGesture.Direction.z);
+        }
 
         int swipeDirection = checkSwipeDirection(swipe_direction_world);
 
