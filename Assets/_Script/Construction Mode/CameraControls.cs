@@ -71,14 +71,14 @@ public class CameraControls : MonoBehaviour
 		//	transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
 		//}
 
-		if( Input.GetAxis(INPUT_MOUSE_SCROLLWHEEL) != 0f )
-		{
-			float delta = Input.GetAxis(INPUT_MOUSE_SCROLLWHEEL);
+		//if( Input.GetAxis(INPUT_MOUSE_SCROLLWHEEL) != 0f )
+		//{
+		//	float delta = Input.GetAxis(INPUT_MOUSE_SCROLLWHEEL);
 
-			distance -= delta * (distance/MAX_CAM_DISTANCE) * (zoomSpeed * 1000) * Time.deltaTime;
-			distance = Mathf.Clamp(distance, MIN_CAM_DISTANCE, MAX_CAM_DISTANCE);
-			transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
-		}
+		//	distance -= delta * (distance/MAX_CAM_DISTANCE) * (zoomSpeed * 1000) * Time.deltaTime;
+		//	distance = Mathf.Clamp(distance, MIN_CAM_DISTANCE, MAX_CAM_DISTANCE);
+		//	transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
+		//}
 
 
     }

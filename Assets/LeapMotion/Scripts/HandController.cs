@@ -1272,56 +1272,63 @@ public class HandController : MonoBehaviour
             else
             {
 
-                if (Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                try
                 {
-                    if (Time.time - lastLogTime >= 0.1)
+                    if (Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.x) > 2 * Math.Abs(rightHand.PalmVelocity.z))
                     {
-                        if (frame.Hands[0].IsLeft)
+                        if (Time.time - lastLogTime >= 0.1)
                         {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
-                        else
-                        {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
+                            if (frame.Hands[0].IsLeft)
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
+                            else
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 1 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
 
+                        }
+                    }
+                    else if (Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.x) && Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                    {
+                        if (Time.time - lastLogTime >= 0.1)
+                        {
+                            if (frame.Hands[0].IsLeft)
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
+                            else
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
+
+                        }
+                    }
+                    else if (Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.x))
+                    {
+                        if (Time.time - lastLogTime >= 0.1)
+                        {
+                            if (frame.Hands[0].IsLeft)
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
+                            else
+                            {
+                                SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
+                                lastLogTime = Time.time;
+                            }
+
+                        }
                     }
                 }
-                else if (Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.x) && Math.Abs(rightHand.PalmVelocity.y) > 2 * Math.Abs(rightHand.PalmVelocity.z))
+                catch (Exception ex)
                 {
-                    if (Time.time - lastLogTime >= 0.1)
-                    {
-                        if (frame.Hands[0].IsLeft)
-                        {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
-                        else
-                        {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 2 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
 
-                    }
-                }
-                else if (Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.y) && Math.Abs(rightHand.PalmVelocity.z) > 2 * Math.Abs(rightHand.PalmVelocity.x))
-                {
-                    if (Time.time - lastLogTime >= 0.1)
-                    {
-                        if (frame.Hands[0].IsLeft)
-                        {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 1 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
-                        else
-                        {
-                            SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 1 + ";" + 2 + ";" + 3 + ";" + 0);//time,one/two,L/R,Gesture,Success
-                            lastLogTime = Time.time;
-                        }
-
-                    }
                 }
 
                 GestureList currGestureList = frame.Gestures();
