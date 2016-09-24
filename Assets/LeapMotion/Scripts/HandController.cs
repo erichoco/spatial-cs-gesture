@@ -1098,8 +1098,8 @@ public class HandController : MonoBehaviour
                     }
 
                     choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
-               
-                        
+
+
                     while (!choosedObject.GetComponent<Button>().interactable)
                     {
                         active_object--;
@@ -1281,8 +1281,9 @@ public class HandController : MonoBehaviour
                 }
                 //LeapStatic.dataRecord("The drag gesture at " + Time.time + " in one hand mode detected.", @"D:\Coding\Projects\spatial-cs-v2\Assets\LeapData.txt");
                 Hand moveHand = frame.Hands[0];
+
                 Vector3 moveHandVelocity = new Vector3(moveHand.PalmVelocity.x / 1000, moveHand.PalmVelocity.y / 1000, -moveHand.PalmVelocity.z / 1000);
-                rotationGizmo.GestureControl(self_defined_gesture_type.move_one_hand, moveHandVelocity);
+                rotationGizmo.GestureControl(self_defined_gesture_type.move_one_hand, transform.TransformDirection(moveHandVelocity));
             }
             else
             {
