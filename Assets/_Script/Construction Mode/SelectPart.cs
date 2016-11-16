@@ -48,7 +48,7 @@ public class SelectPart : MonoBehaviour {
 
 
 	}
-		
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown(0))
@@ -61,8 +61,8 @@ public class SelectPart : MonoBehaviour {
 			//	print ("Active part: " + activePart);
 				Transform objectParent = objectToSelect.transform.parent;
 
-				if(objectParent != null && 
-				   objectToSelect.GetComponent<SelectBehavior>() != null && 
+				if(objectParent != null &&
+				   objectToSelect.GetComponent<SelectBehavior>() != null &&
 				   objectToSelect.transform.parent.gameObject.GetComponent<IsFused>().isFused) {
 					//fused part
 
@@ -73,23 +73,23 @@ public class SelectPart : MonoBehaviour {
 
 						//! CODE FOR REMOVING Marker FROM PREVIOUS PART. prevSelectedFuseTo
 						Destroy(prevSelectedFuseTo.GetComponent<SelectedEffect>());
-						
+
 					}
-					
+
 					selectedFuseTo = objectToSelect;
 					print("Currently Selected FuseTo: " + selectedFuseTo);
 					highTexture = selectedFuseTo.GetComponent<SelectBehavior>().highTex;
 					selectedFuseTo.GetComponent<Renderer>().material.mainTexture = highTexture;
 
 					//! CODE FOR ADDING MARKER TO SELECTED PART. selectedFuseTo
-					
+
 					if (GetComponent<SelectedEffect>() == null)
 					{
 						SelectedEffect sel = selectedFuseTo.AddComponent<SelectedEffect>();
 						sel.hitInfo = hitInfo;
 						sel.selected = selectedFuseTo;
 					}
-					
+
 
 					prevSelectedFuseTo = selectedFuseTo;
 
@@ -104,7 +104,7 @@ public class SelectPart : MonoBehaviour {
 
 						//! CODE FOR REMOVING MARKER FROM PREVIOUS PART. prevSelectedObject
 						Destroy(prevSelectedObject.GetComponent<SelectedEffect>());
-						
+
 					}
 
 					selectedObject = hitInfo.transform.gameObject;
@@ -118,14 +118,14 @@ public class SelectPart : MonoBehaviour {
 					print("Currently Selected Object: " + selectedObject);
 
 					//! CODE FOR ADDING MARKER TO SELECTED PART. selectedObject
-					
+
 					if (GetComponent<SelectedEffect>() == null)
 					{
 						SelectedEffect sel = selectedObject.AddComponent<SelectedEffect>();
 						sel.hitInfo = hitInfo;
 						sel.selected = selectedObject;
 					}
-					
+
 
 					prevSelectedObject = selectedObject;
 					//print ("prevSelected: " + prevSelectedObject.name);
@@ -168,7 +168,7 @@ public class SelectPart : MonoBehaviour {
 		Texture unhighlightedTex = prevSelectedObject.GetComponent<SelectBehavior>().unhighTex;
 		prevSelectedObject.GetComponent<Renderer>().material.mainTexture = unhighlightedTex;
 	}
-	
+
 	public void resetSelectedFuseTo() {
 		//! CODE FOR REMOVING GHOSTS ON CONNECT.
 		Destroy(selectedFuseTo.GetComponent<SelectedEffect>());
@@ -201,7 +201,7 @@ public class SelectPart : MonoBehaviour {
 			Texture highTexture = (Texture)Resources.Load (unhighTexture.name + "_h");
 			selectedObject.GetComponent<SelectBehavior>().highTex = highTexture;
 
-		} 
+		}
 		Texture highlightedTex = selectedObject.GetComponent<SelectBehavior>().highTex;
 		selectedObject.GetComponent<Renderer>().material.mainTexture = highlightedTex;
 
@@ -220,7 +220,7 @@ public class SelectPart : MonoBehaviour {
 			Texture highTexture = (Texture)Resources.Load (unhighTexture.name + "_h");
 			selectedFuseTo.GetComponent<SelectBehavior>().highTex = highTexture;
 
-		} 
+		}
 		Texture highlightedTex = selectedFuseTo.GetComponent<SelectBehavior>().highTex;
 		selectedFuseTo.GetComponent<Renderer>().material.mainTexture = highlightedTex;
 
@@ -229,11 +229,11 @@ public class SelectPart : MonoBehaviour {
 	public void newPartCreated(string part) {
 		if(selectedObject != null) {
 			GameObject parent = selectedObject.transform.parent.gameObject;
-			
+
 			if(!parent.GetComponent<IsFused>().isFused) {
 				destroySelectedObject();
 			}
-		} 
+		}
 		activePart = GameObject.Find (part);
 
 	}

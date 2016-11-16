@@ -408,8 +408,9 @@ public class HandController : MonoBehaviour
         SwipeGesture swipeGesture = new SwipeGesture(gesture);
         if (handCount == 1)
         {
-            swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
-        }else if (handCount == 2)
+            // swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
+            swipe_direction_world = new Vector3(swipeGesture.Direction.x, swipeGesture.Direction.y, swipeGesture.Direction.z);
+        } else if (handCount == 2)
         {
             swipe_direction_world = new Vector3(swipeGesture.Direction.x, swipeGesture.Direction.y, swipeGesture.Direction.z);
         }
@@ -511,8 +512,10 @@ public class HandController : MonoBehaviour
             (Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
             (connect.x + connect.z) < 5)
         {
+            // Debug.Log("left, right trying to connect");
             return true;
         }
+        // Debug.Log("left, right failed to connect");
         // original connect gesture
         // if ((330 < angle_v2(left, 1) || angle_v2(left, 1) < 30) && (angle_v2(right, 1) > 150 && angle_v2(right, 1) < 210)) {
 
@@ -1126,11 +1129,11 @@ public class HandController : MonoBehaviour
                         choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
 
                     }
+                    // Debug.Log("Choosed object: " + choosedObject);
                     EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
                     eventSystem.SetSelectedGameObject(choosedObject, new BaseEventData(eventSystem));
-
+                    // Debug.Log("Current selected: " + eventSystem.currentSelectedGameObject);
                 }
-
             }
             else if (ifGrab(leftHand) && ifGrab(rightHand))
             {
@@ -1234,7 +1237,7 @@ public class HandController : MonoBehaviour
                             //rotate_angle = 0f;
                             gesture_duration = 0f;
                         }
-                        else if (Vector3.Distance(curr_right_palm_position, curr_left_palm_position) < 10f && curr_connect_state == 1)
+                        else if (Vector3.Distance(curr_right_palm_position, curr_left_palm_position) < 15f && curr_connect_state == 1)
                         {//success
                          //Debug.Log("A connect gesture found!!!");
                             gesture_duration = 0f;
