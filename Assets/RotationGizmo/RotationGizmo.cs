@@ -31,7 +31,7 @@ public class RotationGizmo : MonoBehaviour
 		yRots = 0;
 		zRots = 0;
 	}
-	
+
 	void Update ()
 	{
 		// Restarting game while in construction mode.
@@ -117,7 +117,6 @@ public class RotationGizmo : MonoBehaviour
 				}
 			}
 		}
-        
     }
 
     IEnumerator Rotate(float x, float y, float z)
@@ -145,7 +144,7 @@ public class RotationGizmo : MonoBehaviour
 	IEnumerator CheckRotation()
 	{
 		yield return null;
-		
+
 		Vector3 rot = toRotate.transform.eulerAngles;
 
 		// X Rounding
@@ -215,6 +214,7 @@ public class RotationGizmo : MonoBehaviour
 		return objectToRotate;
 	}
 
+	// Gesture control
     public void GestureControl(self_defined_gesture_type gesture,Vector3 velocity)
     {
         switch (gesture)
@@ -262,19 +262,18 @@ public class RotationGizmo : MonoBehaviour
 
             case self_defined_gesture_type.move_one_hand:
                 velocityList[timeGap] = velocity;
-                if (timeGap == LeapStatic.dragStable-1)
+                if (timeGap == LeapStatic.dragStable - 1)
                 {
                     velocity = new Vector3(0, 0, 0);
-                    foreach(Vector3 v in velocityList)//count the average of these velocities
+                    foreach (Vector3 v in velocityList)//count the average of these velocities
                     {
                         velocity += v;
                     }
                     try
                     {
                         toRotate.transform.position += LeapStatic.dragVelocity * (velocity / LeapStatic.dragStable);
-                    }catch(Exception ex)
+                    } catch (Exception ex)
                     {
-
                     }
                     timeGap = 0;
                 }
@@ -282,8 +281,8 @@ public class RotationGizmo : MonoBehaviour
                 {
                     timeGap++;
                 }
-                
                 break;
+
             default:
                 break;
         }
