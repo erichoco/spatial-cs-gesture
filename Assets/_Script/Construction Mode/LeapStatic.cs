@@ -17,6 +17,11 @@ public class LeapStatic : MonoBehaviour {
     public static float grabViewFactor = 500f; //higher -> less sensitive
     public static float connectTimeLimited = 2f; //higher -> velocity lower allowed
 
+    public static float minGripTime = 0.15f;
+    public static float maxGripTime = 0.5f;
+    public static float minGrabTime = 0.1f;
+    public static float maxClapTime = 2f;
+
     //bottom panel
     public static int numConstructionObject;
     public static List<String> constructionObject = new List<String>();
