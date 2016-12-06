@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
@@ -10,6 +11,7 @@ public class LeapStatic : MonoBehaviour {
     //one hand
     public static float swipeMinVelocity = 1500f;
     public static float swipeMinDistance = 150f;
+    public static float minSwipeInterval = 1f;
     public static float dragVelocity = 10f;
     public static int dragStable = 2;
 
@@ -17,10 +19,10 @@ public class LeapStatic : MonoBehaviour {
     public static float grabViewFactor = 500f; //higher -> less sensitive
     public static float connectTimeLimited = 2f; //higher -> velocity lower allowed
 
-    public static float minGripTime = 0.15f;
+    public static float minGripTime = 0.1f;
     public static float maxGripTime = 0.5f;
-    public static float minGrabTime = 0.1f;
-    public static float maxClapTime = 2f;
+    public static float minGrabTime = 0.2f;
+    public static float maxClapTime = 2f; //higher -> velocity lower allowed
 
     //bottom panel
     public static int numConstructionObject;
@@ -31,7 +33,6 @@ public class LeapStatic : MonoBehaviour {
 
     //scene
     public static string currScene;
-
 
     public static void CreatePartLeap(int active){
         if(currScene == "tutorial1")
@@ -249,6 +250,15 @@ public class LeapStatic : MonoBehaviour {
         }
 
         //recordParams();
+    }
+
+    public static List<String> GetActiveObjects()
+    {
+    	List<String> activeObjects = new List<String>();
+    	foreach (String obj in constructionObject)
+    		if (GameObject.Find(obj).GetComponent<Button>().interactable)
+    			activeObjects.Add(obj);
+    	return activeObjects;
     }
 
     public static void recordParams()
