@@ -36,11 +36,11 @@ public enum GESTURE_TYPE
 {
     // Two-hand Gestures
     OPEN_MENU,
-    CLOSE_MENU,
     VIEW,
     CONNECT,
     // One-hand Gestures
     SELECT,
+    CLOSE_MENU,
     MOVE,
     ROTATE_X_CW,
     ROTATE_X_CCW,
@@ -249,75 +249,20 @@ public class HandController : MonoBehaviour
      *** author:Yuan Yao ****
      *** declaration ********
      ************************/
-    private float lastLogTime = Time.time;
-
-    public static float prev_operation_time = 0f;
-    public static float curr_operation_time = 0f;
-    public static self_defined_gesture_type gesture_type_detected; //0 - one hand
 
     private GameObject handController;
-
-    private bool flag_two_hand = false;
-
-    private int num_in_array = 0;
-
-    private int prev_connect_state = 0;
-    private int curr_connect_state = 0;
-
-    private Vector3[] left_palm_position_array;
-    private Vector3[] right_palm_position_array;
-
-    private Vector3 tmp_left = new Vector3(0, 0, 0);
-    private Vector3 tmp_right = new Vector3(0, 0, 0);
-
-    private Vector3 avg_left_palm_position;
-    private Vector3 avg_right_palm_position;
-    private Vector3 prev_left_palm_position;
-    private Vector3 curr_left_palm_position;
-    private Vector3 prev_right_palm_position;
-    private Vector3 curr_right_palm_position;
-
-    private Vector3 keyTap_tipPosition_world;
-    private Vector3 keyTap_tipPosition_screen;
-    private Vector3 swipe_direction_world;
-
-
-    public static Vector3 zero_vector = new Vector3(0, 0, 0);
-    private Vector3 x_axis = new Vector3(1, 0, 0);
-    private Vector3 y_axis = new Vector3(0, 1, 0);
-
-    private Vector3 left_palm_direction;
-    private Vector3 right_palm_direction;
-    private Vector3 stick_direction;
-
-    private float rotate_angle = 0f;
-    private float gesture_duration = 0f;
-    private bool rotate_clockwise = true;
-
     private RotationGizmo rotationGizmo;
+    private LeapGesture leapGesture;
+
     private CameraControls cameraControl;
     private FuseEvent fuseEvent;
-    private CreatePart createPart;
-
-    private Hand leftHand;
-    private Hand rightHand;
-
-    public int active_object;
-    //UI
-    private GameObject bottomPanel;
-    private GameObject choosedObject;
-
-    /* hand position fix @erichoco */
-    private Transform cameraTrans;
-
-    private bool is_menu_opened;
-
-    private bool isGrabbing = false;
-    private float grabDuration = 0f;
-
-    private GestureRecognizer gestureRecognizer;
-
     private EventSystem eventSystem;
+    private Transform cameraTrans;
+    private GameObject bottomPanel;
+
+    public static Vector3 zeroVector = new Vector3(0, 0, 0);
+    private Vector3 xAxis = new Vector3(1, 0, 0);
+    private Vector3 yAxis = new Vector3(0, 1, 0);
 
 
     public void updateGestureConfig()
@@ -327,76 +272,6 @@ public class HandController : MonoBehaviour
         leap_controller_.Config.Save();
     }
 
-    float angle_v2(Vector3 v, int plane = 0)
-    {//0-x,1-y,2-z
-        if (plane == 0)
-        {//z-y
-            if (v.y >= 0)
-            {
-                return Vector2.Angle(new Vector2(1, 0), new Vector2(v.z, v.y));
-            }
-            else
-            {
-                return 360 - Vector2.Angle(new Vector2(1, 0), new Vector2(v.z, v.y));
-            }
-        }
-        else if (plane == 1)
-        {//x-z axis
-            if (v.z >= 0)
-            {
-                return Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.z));
-            }
-            else
-            {
-                return 360 - Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.z));
-            }
-        }
-        else if (plane == 2)
-        {//x-y
-            if (v.y >= 0)
-            {
-                return Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.y));
-            }
-            else
-            {
-                return 360 - Vector2.Angle(new Vector2(1, 0), new Vector2(v.x, v.y));
-            }
-        }
-        else
-        {
-            return 0;
-        }
-
-    }
-
-    bool ifGestureGapEnough()
-    {
-        if (curr_operation_time - prev_operation_time > 25)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    bool ifFist(Hand hand)
-    {
-        //Debug.Log("The grab strength is :" + hand.GrabStrength);
-        return hand.GrabStrength == 1;
-    }
-
-    bool ifGrab(Hand hand)
-    {
-        // TODO: check grab strength value
-        return hand.GrabStrength > 0.05 && hand.GrabStrength < 1;
-    }
-    /*** end of this part ***/
-
-    /*** @erichoco refactorization ***/
-
-
     private int mapPositionToIndex(float pos, int count)
     {
         int posRange = 30;
@@ -405,138 +280,7 @@ public class HandController : MonoBehaviour
         return (int)(pos / Math.Ceiling((float)posRange/count));
     }
 
-    // swipe_direction_world could be just a local var
-    int checkDirection(Vector3 swipeDirection)
-    {
-        double x = Math.Abs(swipeDirection.x);
-        double y = Math.Abs(swipeDirection.y);
-        double z = Math.Abs(swipeDirection.z);
-        double factor = 1.5;
-        if (x > factor * y && x > factor * z)
-        {
-            return 0;
-        }
-        else if (y > factor * x && y > factor * z)
-        {
-            return 1;
-        }
-        else if (z > factor * x && z > factor * y)
-        {
-            return 2;
-        }
-        return -1;
-    }
-
-    void performSwipe(Gesture gesture, int handCount)
-    {
-        SwipeGesture swipeGesture = new SwipeGesture(gesture);
-        if (handCount == 1)
-        {
-            // swipe_direction_world = handController.transform.TransformDirection(swipeGesture.Direction.ToUnity(false));
-            swipe_direction_world = new Vector3(swipeGesture.Direction.x, swipeGesture.Direction.y, swipeGesture.Direction.z);
-        } else if (handCount == 2)
-        {
-            swipe_direction_world = new Vector3(swipeGesture.Direction.x, swipeGesture.Direction.y, swipeGesture.Direction.z);
-        }
-
-        int swipeDirection = checkDirection(swipe_direction_world);
-
-        // Log
-        if (Time.time - lastLogTime >= 0.1 && swipeDirection != -1)
-        {
-            // L = 1, R = 2
-            int hand = 0;
-            if (handCount == 1)
-            {
-                hand = (swipeGesture.Hands[0].IsLeft) ? 1 : 2;
-            }
-            // Log format: time, one/two, L/R, Gesture, Success
-            SimpleData.WriteStringToFile("LeapData.txt",
-                Time.time + ";" + handCount + ";" + hand + ";" + swipeDirection + ";" + 1);
-            lastLogTime = Time.time;
-        }
-
-        if (handCount == 2)
-        {
-            if (swipeDirection == 0)
-            {
-                // TODO: Check choosing object works
-                if (swipe_direction_world.x < 0) //clockwise
-                {
-                    do
-                    {
-                        active_object--;
-                        active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
-                        choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
-                    } while (!choosedObject.GetComponent<Button>().interactable);
-                }
-                else
-                {
-                    do
-                    {
-                        active_object++;
-                        active_object = (active_object + LeapStatic.numConstructionObject) % LeapStatic.numConstructionObject;
-                        choosedObject = GameObject.Find(LeapStatic.constructionObject[active_object]);
-                    } while (!choosedObject.GetComponent<Button>().interactable);
-                }
-            }
-            return;
-        }
-
-        // handCount == 1
-        switch (swipeDirection)
-        {
-            // x-axis move
-            case 0:
-                if (swipe_direction_world.x < 0) //clockwise
-                {
-                    //Debug.Log("swipe gesture : y-clockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_clockwise, zero_vector);
-                }
-                else
-                {
-                    //Debug.Log("swipe gesture : y-counterclockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_counterclockwise, zero_vector);
-                }
-                break;
-
-            case 1:
-                if (swipe_direction_world.y < 0)
-                {
-                    //Debug.Log("swipe gesture : z-counterclockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_counterclockwise, zero_vector);
-                }
-                else
-                {
-                    //Debug.Log("swipe gesture : z-clockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_clockwise, zero_vector);
-                }
-                break;
-            case 2:
-                if (swipe_direction_world.z < 0)
-                {
-                    //Debug.Log("swipe gesture : x-clockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_counterclockwise, zero_vector);
-                }
-                else
-                {
-                    //Debug.Log("swipe gesture : x-counterclockwise");
-                    rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_clockwise, zero_vector);
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    bool checkConnectGesture(Vector3 left, Vector3 right)
-    {
-        Vector3 connect = left + right;
-        return ((Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
-            (Math.Abs(left.x) + Math.Abs(left.z)) > 5 &&
-            (connect.x + connect.z) < 5);
-    }
+    /*** end of this part ***/
 
 
     /** Draws the Leap Motion gizmo when in the Unity editor. */
@@ -546,6 +290,8 @@ public class HandController : MonoBehaviour
         Gizmos.matrix = Matrix4x4.Scale(GIZMO_SCALE * Vector3.one);
         Gizmos.DrawIcon(transform.position, "leap_motion.png");
     }
+
+    /*** end of this part ***/
 
     /**
     * Initializes the Leap Motion policy flags.
@@ -597,34 +343,20 @@ public class HandController : MonoBehaviour
          *** author:Yuan Yao ****
          *** initialization *****
          ************************/
-        //Configuration for one hand gesture
-        //leap_controller_.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
+
+        // Configuration for one hand gesture
         leap_controller_.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
-        //leap_controller_.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
-
-        //leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDownVelocity", 20.0f);
-        //leap_controller_.Config.SetFloat("Gesture.KeyTap.HistorySeconds", .2f);
-        //leap_controller_.Config.SetFloat("Gesture.KeyTap.MinDistance", 1f);
-
         updateGestureConfig();
 
-        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
         handController = GameObject.Find("HandController");
-        gestureRecognizer = handController.GetComponent<GestureRecognizer>();
+        leapGesture = handController.GetComponent<LeapGesture>();
+        rotationGizmo = GameObject.Find("RotationGizmo").GetComponent<RotationGizmo>();
 
-
-        left_palm_position_array = new Vector3[5];
-        right_palm_position_array = new Vector3[5];
-
-        rotationGizmo = (RotationGizmo)GameObject.Find("RotationGizmo").GetComponent(typeof(RotationGizmo));
-        cameraControl = (CameraControls)GameObject.Find("ConstructionCamRig").GetComponent(typeof(CameraControls));
-        fuseEvent = (FuseEvent)GameObject.Find("EventSystem").GetComponent(typeof(FuseEvent));
-        createPart = (CreatePart)GameObject.Find("EventSystem").GetComponent(typeof(CreatePart));
-
+        cameraControl = GameObject.Find("ConstructionCamRig").GetComponent<CameraControls>();
+        fuseEvent = GameObject.Find("EventSystem").GetComponent<FuseEvent>();
+        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
         /* hand position fix @erichoco */
         cameraTrans = GameObject.Find("ConstructionCamRig").transform;
-
-        active_object = 0;
 
         bottomPanel = GameObject.Find("bottom panel");
         bottomPanel.SetActive(false);
@@ -645,8 +377,6 @@ public class HandController : MonoBehaviour
         {
             Debug.Log(ex.Message);
         }
-
-
 
         /*** end of this part ***/
     }
@@ -1059,7 +789,7 @@ public class HandController : MonoBehaviour
          *** implementation *****
          ************************/
 
-        GESTURE_TYPE gestureType = gestureRecognizer.Recognize(frame);
+        GESTURE_TYPE gestureType = leapGesture.Recognize(frame);
 
         if (gestureType != GESTURE_TYPE.NONE)
                 Debug.Log("Gesture Type: " + gestureType);
@@ -1105,37 +835,41 @@ public class HandController : MonoBehaviour
                 Hand moveHand = frame.Hands[0];
                 Vector3 moveHandVelocity = new Vector3(moveHand.PalmVelocity.x / 1000, moveHand.PalmVelocity.y / 1000,
                     -moveHand.PalmVelocity.z / 1000);
-                rotationGizmo.GestureControl(self_defined_gesture_type.move_one_hand, transform.TransformDirection(moveHandVelocity));
+                rotationGizmo.GestureControl(GESTURE_TYPE.MOVE, transform.TransformDirection(moveHandVelocity));
             }
             break;
 
             case GESTURE_TYPE.ROTATE_X_CW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_clockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_X_CW, zeroVector);
             break;
 
             case GESTURE_TYPE.ROTATE_X_CCW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_x_counterclockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_X_CCW, zeroVector);
             break;
 
             case GESTURE_TYPE.ROTATE_Y_CW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_clockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_Y_CW, zeroVector);
             break;
 
             case GESTURE_TYPE.ROTATE_Y_CCW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_y_counterclockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_Y_CCW, zeroVector);
             break;
 
             case GESTURE_TYPE.ROTATE_Z_CW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_clockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_Z_CW, zeroVector);
             break;
 
             case GESTURE_TYPE.ROTATE_Z_CCW:
-            rotationGizmo.GestureControl(self_defined_gesture_type.rotate_one_hand_z_counterclockwise, zero_vector);
+            rotationGizmo.GestureControl(GESTURE_TYPE.ROTATE_Z_CCW, zeroVector);
             break;
 
             default:
             break;
         }
+
+        /*** end of *************
+         *** construction mode **
+         ************************/
     }
 
     /** True, if the Leap Motion hardware is plugged in and this application is connected to the Leap Motion service. */

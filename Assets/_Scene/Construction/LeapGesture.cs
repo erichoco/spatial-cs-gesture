@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Leap;
 
-public class GestureRecognizer : MonoBehaviour {
+public class LeapGesture : MonoBehaviour {
 
 	private GameObject handController;
 	private GameObject menuPanel;

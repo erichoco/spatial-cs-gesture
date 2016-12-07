@@ -215,18 +215,18 @@ public class RotationGizmo : MonoBehaviour
 	}
 
 	// Gesture control
-	public void GestureControl(self_defined_gesture_type gesture,Vector3 velocity)
+	public void GestureControl(GESTURE_TYPE gesture, Vector3 velocity)
 	{
 		switch (gesture)
 		{
-			case self_defined_gesture_type.rotate_one_hand_x_clockwise:
+			case GESTURE_TYPE.ROTATE_X_CW:
 				xRots++;
 				if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
 					StartCoroutine(Rotate(90f, 0f, 0f));
 				else
 					StartCoroutine(Rotate(-90f, 0f, 0f));
 				break;
-			case self_defined_gesture_type.rotate_one_hand_x_counterclockwise:
+			case GESTURE_TYPE.ROTATE_X_CCW:
 				xRots++;
 				if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
 					StartCoroutine(Rotate(-90f, 0f, 0f));
@@ -234,17 +234,17 @@ public class RotationGizmo : MonoBehaviour
 					StartCoroutine(Rotate(90f, 0f, 0f));
 				break;
 
-			case self_defined_gesture_type.rotate_one_hand_y_clockwise:
+			case GESTURE_TYPE.ROTATE_Y_CW:
 				yRots++;
 				StartCoroutine(Rotate(0f, 90f, 0f));
 				break;
 
-			case self_defined_gesture_type.rotate_one_hand_y_counterclockwise:
+			case GESTURE_TYPE.ROTATE_Y_CCW:
 				yRots++;
 				StartCoroutine(Rotate(0f, -90f, 0f));
 				break;
 
-			case self_defined_gesture_type.rotate_one_hand_z_clockwise:
+			case GESTURE_TYPE.ROTATE_Z_CW:
 				zRots++;
 				if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
 					StartCoroutine(Rotate(0f, 0f, -90f));
@@ -252,7 +252,7 @@ public class RotationGizmo : MonoBehaviour
 					StartCoroutine(Rotate(0f, 0f, 90f));
 				break;
 
-			case self_defined_gesture_type.rotate_one_hand_z_counterclockwise:
+			case GESTURE_TYPE.ROTATE_Z_CCW:
 				zRots++;
 				if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
 					StartCoroutine(Rotate(0f, 0f, 90f));
@@ -260,27 +260,21 @@ public class RotationGizmo : MonoBehaviour
 					StartCoroutine(Rotate(0f, 0f, -90f));
 				break;
 
-			case self_defined_gesture_type.move_one_hand:
+			case GESTURE_TYPE.MOVE:
 				velocityList[timeGap] = velocity;
 				if (timeGap == LeapStatic.dragStable - 1)
 				{
 					velocity = new Vector3(0, 0, 0);
 					foreach (Vector3 v in velocityList)//count the average of these velocities
-					{
 						velocity += v;
-					}
 					try
 					{
 						toRotate.transform.position += LeapStatic.dragVelocity * (velocity / LeapStatic.dragStable);
-					} catch (Exception ex)
-					{
-					}
+					} catch (Exception ex) {}
 					timeGap = 0;
 				}
 				else
-				{
 					timeGap++;
-				}
 				break;
 
 			default:
