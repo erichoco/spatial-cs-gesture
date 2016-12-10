@@ -20,6 +20,8 @@ public class SelectPart : MonoBehaviour {
 
 	private Color prevColorSelectedFuseTo;
 
+	//tutorial variables
+	public bool tutorialOn;
 	public string mode;
 
 	public Button connectButton;
@@ -46,7 +48,7 @@ public class SelectPart : MonoBehaviour {
 
 
 	}
-		
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown(0))
@@ -59,11 +61,11 @@ public class SelectPart : MonoBehaviour {
 			//	print ("Active part: " + activePart);
 				Transform objectParent = objectToSelect.transform.parent;
 
-				if(objectParent != null && 
-				   objectToSelect.GetComponent<SelectBehavior>() != null && 
+				if(objectParent != null &&
+				   objectToSelect.GetComponent<SelectBehavior>() != null &&
 				   objectToSelect.transform.parent.gameObject.GetComponent<IsFused>().isFused) {
 					//fused part
-					globalHitInfo = hitInfo;
+
 					// unhighlight previously selected fused part
 					if(prevSelectedFuseTo != null) {
 						unhighTexture = prevSelectedFuseTo.GetComponent<SelectBehavior>().unhighTex;
@@ -71,23 +73,23 @@ public class SelectPart : MonoBehaviour {
 
 						//! CODE FOR REMOVING Marker FROM PREVIOUS PART. prevSelectedFuseTo
 						Destroy(prevSelectedFuseTo.GetComponent<SelectedEffect>());
-						
+
 					}
-					
+
 					selectedFuseTo = objectToSelect;
 					print("Currently Selected FuseTo: " + selectedFuseTo);
 					highTexture = selectedFuseTo.GetComponent<SelectBehavior>().highTex;
 					selectedFuseTo.GetComponent<Renderer>().material.mainTexture = highTexture;
 
 					//! CODE FOR ADDING MARKER TO SELECTED PART. selectedFuseTo
-					
+
 					if (GetComponent<SelectedEffect>() == null)
 					{
 						SelectedEffect sel = selectedFuseTo.AddComponent<SelectedEffect>();
 						sel.hitInfo = hitInfo;
 						sel.selected = selectedFuseTo;
 					}
-					
+
 
 					prevSelectedFuseTo = selectedFuseTo;
 
@@ -102,7 +104,7 @@ public class SelectPart : MonoBehaviour {
 
 						//! CODE FOR REMOVING MARKER FROM PREVIOUS PART. prevSelectedObject
 						Destroy(prevSelectedObject.GetComponent<SelectedEffect>());
-						
+
 					}
 
 					selectedObject = hitInfo.transform.gameObject;
@@ -116,79 +118,34 @@ public class SelectPart : MonoBehaviour {
 					print("Currently Selected Object: " + selectedObject);
 
 					//! CODE FOR ADDING MARKER TO SELECTED PART. selectedObject
-					
+
 					if (GetComponent<SelectedEffect>() == null)
 					{
 						SelectedEffect sel = selectedObject.AddComponent<SelectedEffect>();
 						sel.hitInfo = hitInfo;
 						sel.selected = selectedObject;
 					}
-					
+
 
 					prevSelectedObject = selectedObject;
 					//print ("prevSelected: " + prevSelectedObject.name);
 
 				}
-				if(selectedObject != null && selectedFuseTo != null) {
+				if(!tutorialOn && selectedObject != null && selectedFuseTo != null) {
 					connectButton.interactable = true;
-				} 
-
-				//! PART MOVEMENT.
-				// We ALWAYS need the hitinfo of selecting a part on the static object.
-				// To do this, globalHitInfo is set whenever we click on a fused part.
-				if (selectedFuseTo != null && selectedObject != null && objectToSelect.GetComponent<SelectBehavior>() != null)
-				{
-					SelectedEffect fuseToFX = selectedFuseTo.GetComponent<SelectedEffect>();
-					if (fuseToFX != null)
-					{
-						// Move it to the position of the fused object, offset by a multiple of the normal, 
-						// offset again by the scaled local positional difference of the connection face and the parent object.
-
-						//! DUE TO THE CRAZINESS: All parts with non-boxy attachment points will require box colliders roughly positioned at their center.'
-						if (selectedObject.GetComponent<BoxCollider>() == null)
-						{
-							BoxCollider boxy = selectedObject.AddComponent<BoxCollider>();
-							boxy.size = Vector3.zero;
-						}
-						if (selectedFuseTo.GetComponent<BoxCollider>() == null)
-						{
-							BoxCollider boxy = selectedFuseTo.AddComponent<BoxCollider>();
-							boxy.size = Vector3.zero;
-						}
-
-						// The actual location of the selected fuse marker... Wow.
-						Vector3 properFuseToPos = selectedFuseTo.transform.position + (Quaternion.Euler(selectedFuseTo.transform.eulerAngles) * (selectedFuseTo.transform.parent.localScale.x * (selectedFuseTo.GetComponent<BoxCollider>().center)));
-						// The actual offset of the object face from the object parent... Also wow.
-						Vector3 properOffset = Quaternion.Euler(selectedObject.transform.parent.localEulerAngles) * (selectedObject.transform.parent.localScale.x * (selectedObject.transform.localPosition + Quaternion.Euler(selectedObject.transform.localEulerAngles) * (selectedObject.GetComponent<BoxCollider>().center)));
-
-						//Debug.DrawLine(selectedObject.transform.parent.position, selectedObject.transform.parent.position + properOffset, Color.red, 25f, false);
-						//Debug.DrawLine(selectedFuseTo.transform.parent.position, properFuseToPos, Color.red, 25f, false);
-
-						StartCoroutine(SweepPosition(selectedObject.transform.parent.gameObject, properFuseToPos - properOffset + (15 * globalHitInfo.normal), 20));					
-					}
-					else
-					{
-						Debug.LogError("Uh oh, no fuse fx for some reason!");
-					}
+				} else {
+					connectButton.interactable = false;
 				}
-				//! END PART MOVEMENT
+
+
 			}
-
 		}
 	}
 
-	// This function is called by RotationGizmo.cs to make sure the alignment of the faces persists even when rotating the object.
-	// It's also the most ridiculous three lines of code this world has ever seen.
-	RaycastHit globalHitInfo;
-	public void AdjustPartAlignment(float x, float y, float z)
-	{
-		if (selectedFuseTo != null && selectedObject != null)
-		{
-			Vector3 properFuseToPos = selectedFuseTo.transform.position + (Quaternion.Euler(selectedFuseTo.transform.eulerAngles) * (selectedFuseTo.transform.parent.localScale.x * (selectedFuseTo.GetComponent<BoxCollider>().center)));
-			Vector3 properOffset = Quaternion.Euler(x, y, z) * Quaternion.Euler(selectedObject.transform.parent.localEulerAngles) * (selectedObject.transform.parent.localScale.x * (selectedObject.transform.localPosition + Quaternion.Euler(selectedObject.transform.localEulerAngles) * (selectedObject.GetComponent<BoxCollider>().center)));
-			StartCoroutine(SweepPosition(selectedObject.transform.parent.gameObject, properFuseToPos - properOffset + (10 * globalHitInfo.normal), 30));
-		}
+	public void setTutorialOn(bool isOn) {
+		tutorialOn = isOn;
 	}
+
 
 	public GameObject getSelectedObject() {
 		return selectedObject;
@@ -211,7 +168,7 @@ public class SelectPart : MonoBehaviour {
 		Texture unhighlightedTex = prevSelectedObject.GetComponent<SelectBehavior>().unhighTex;
 		prevSelectedObject.GetComponent<Renderer>().material.mainTexture = unhighlightedTex;
 	}
-	
+
 	public void resetSelectedFuseTo() {
 		//! CODE FOR REMOVING GHOSTS ON CONNECT.
 		Destroy(selectedFuseTo.GetComponent<SelectedEffect>());
@@ -244,7 +201,7 @@ public class SelectPart : MonoBehaviour {
 			Texture highTexture = (Texture)Resources.Load (unhighTexture.name + "_h");
 			selectedObject.GetComponent<SelectBehavior>().highTex = highTexture;
 
-		} 
+		}
 		Texture highlightedTex = selectedObject.GetComponent<SelectBehavior>().highTex;
 		selectedObject.GetComponent<Renderer>().material.mainTexture = highlightedTex;
 
@@ -263,7 +220,7 @@ public class SelectPart : MonoBehaviour {
 			Texture highTexture = (Texture)Resources.Load (unhighTexture.name + "_h");
 			selectedFuseTo.GetComponent<SelectBehavior>().highTex = highTexture;
 
-		} 
+		}
 		Texture highlightedTex = selectedFuseTo.GetComponent<SelectBehavior>().highTex;
 		selectedFuseTo.GetComponent<Renderer>().material.mainTexture = highlightedTex;
 
@@ -272,30 +229,23 @@ public class SelectPart : MonoBehaviour {
 	public void newPartCreated(string part) {
 		if(selectedObject != null) {
 			GameObject parent = selectedObject.transform.parent.gameObject;
-			
+
 			if(!parent.GetComponent<IsFused>().isFused) {
 				destroySelectedObject();
 			}
-		} 
+		}
 		activePart = GameObject.Find (part);
 
 	}
 
+    public void setSelectedObject(GameObject selected)
+    {
+        selectedObject = selected;
+    }
 
-	IEnumerator SweepPosition(GameObject toSweep, Vector3 targetPos, int frames)
-	{
-		// Interpolate.
-		Vector3 initialPos = toSweep.transform.position;
-		float iteration = 1 / (float)frames;
-		for (float i = 0.0f; i < 1; i += iteration)
-		{
-			toSweep.transform.position = Vector3.Lerp(initialPos, targetPos, i);
-			yield return null;
-		}
-
-		// Ensure it ends in the right place no matter what.
-		yield return null;
-		toSweep.transform.position = targetPos;
-	}
+    public void setSelectedFuseTo(GameObject selected)
+    {
+        selectedFuseTo = selected;
+    }
 
 }

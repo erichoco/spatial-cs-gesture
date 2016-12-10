@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections;
-
+using System;
 public class RotationGizmo : MonoBehaviour
 {
 	public GameObject mainCamera;
 	public GameObject toRotate;
 	public bool tutorialOn;
-	public SelectPart adjuster;
 
 	public GameObject xGizmo;
 	public GameObject yGizmo;
@@ -16,12 +14,13 @@ public class RotationGizmo : MonoBehaviour
 	public int yRots = 0;
 	public int zRots = 0;
 
+	private int timeGap = 0;
+	private Vector3[] velocityList = new Vector3[5];
+
 	bool rotating = false;
 
 	void Start ()
 	{
-		//adjuster = EventSystem.current.gameObject.GetComponent<SelectPart>();
-		//adjuster = GameObject.Find("EventSystem").GetComponent<SelectPart>();
 		Disable();
 	}
 
@@ -32,7 +31,7 @@ public class RotationGizmo : MonoBehaviour
 		yRots = 0;
 		zRots = 0;
 	}
-	
+
 	void Update ()
 	{
 		// Restarting game while in construction mode.
@@ -61,66 +60,12 @@ public class RotationGizmo : MonoBehaviour
 		zTemp.z = 90;
 		zGizmo.transform.localEulerAngles = zTemp;
 
-		// Object Itself
-		if (toRotate != null)
-			transform.position = toRotate.transform.position;
-
-
-		// Highlight raycasts.
-		RaycastHit mouseOver = new RaycastHit();
-		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out mouseOver))
-		{
-			switch (mouseOver.transform.name)
-			{
-				case "XUp":
-					Highlighter.Highlight(xGizmo);
-					Highlighter.Unhighlight(yGizmo);
-					Highlighter.Unhighlight(zGizmo);
-					break;
-
-				case "XDown":
-					Highlighter.Highlight(xGizmo);
-					Highlighter.Unhighlight(yGizmo);
-					Highlighter.Unhighlight(zGizmo);
-					break;
-
-				case "YLeft":
-					Highlighter.Highlight(yGizmo);
-					Highlighter.Unhighlight(xGizmo);
-					Highlighter.Unhighlight(zGizmo);
-					break;
-
-				case "YRight":
-					Highlighter.Highlight(yGizmo);
-					Highlighter.Unhighlight(xGizmo);
-					Highlighter.Unhighlight(zGizmo);
-					break;
-
-				case "ZUp":
-					Highlighter.Highlight(zGizmo);
-					Highlighter.Unhighlight(yGizmo);
-					Highlighter.Unhighlight(xGizmo);
-					break;
-
-				case "ZDown":
-					Highlighter.Highlight(zGizmo);
-					Highlighter.Unhighlight(yGizmo);
-					Highlighter.Unhighlight(xGizmo);
-					break;
-
-				default:
-					Highlighter.Unhighlight(xGizmo);
-					Highlighter.Unhighlight(yGizmo);
-					Highlighter.Unhighlight(zGizmo);
-					break;
-			}
-		}
 
 		// Raycasts.
 		if (Input.GetMouseButtonDown(0))
 		{
 			RaycastHit hitInfo = new RaycastHit();
-			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo) && (tutorialOn || BatterySystem.GetPower() > 0 || FuseEvent.runningJustConstructionMode) )
+			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo) && (tutorialOn || BatterySystem.GetPower() > 0))
 			{
 				//Debug.Log(hitInfo.transform.name);
 				switch(hitInfo.transform.name)
@@ -172,42 +117,34 @@ public class RotationGizmo : MonoBehaviour
 				}
 			}
 		}
-
 	}
 
 	IEnumerator Rotate(float x, float y, float z)
 	{
-		// Adjustment of alignment.
-		adjuster.AdjustPartAlignment(x, y, z);
-
 		// Integration for battery power.
 		if(!tutorialOn) {
 			BatterySystem.SubPower(1);
 		}
 
-		// Can only start rotating if not already rotating. Prevents bugs with part movement.
-		if (!rotating)
+		// Set rotate flag and start rotating.
+		// Flag is reset every frame to ensure the check only runs at the end of all queued rotations.
+		rotating = true;
+		for (int i = 0; i < 45; i++)
 		{
-			// Set rotate flag and start rotating.
-			// Flag is reset every frame to ensure the check only runs at the end of all queued rotations.
+			toRotate.transform.Rotate(x / 45f, y / 45f, z / 45f, Space.World);
 			rotating = true;
-			for (int i = 0; i < 30; i++)
-			{
-				toRotate.transform.Rotate(x / 30f, y / 30f, z / 30f, Space.World);
-				rotating = true;
-				yield return null;
-			}
-			rotating = false;
-			yield return null;  // Wait a frame to see if another active rotation resets this flag to true.
-			if (!rotating)
-				StartCoroutine(CheckRotation());
+			yield return null;
 		}
+		rotating = false;
+		yield return null;	// Wait a frame to see if another active rotation resets this flag to true.
+		if (!rotating)
+			StartCoroutine(CheckRotation());
 	}
 
 	IEnumerator CheckRotation()
 	{
 		yield return null;
-		
+
 		Vector3 rot = toRotate.transform.eulerAngles;
 
 		// X Rounding
@@ -277,7 +214,71 @@ public class RotationGizmo : MonoBehaviour
 		return objectToRotate;
 	}
 
+	// Gesture control
+	public void GestureControl(GESTURE_TYPE gesture, Vector3 velocity)
+	{
+		switch (gesture)
+		{
+			case GESTURE_TYPE.ROTATE_X_CW:
+				xRots++;
+				if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
+					StartCoroutine(Rotate(90f, 0f, 0f));
+				else
+					StartCoroutine(Rotate(-90f, 0f, 0f));
+				break;
+			case GESTURE_TYPE.ROTATE_X_CCW:
+				xRots++;
+				if (Mathf.Approximately(xGizmo.transform.localEulerAngles.y, 180f))
+					StartCoroutine(Rotate(-90f, 0f, 0f));
+				else
+					StartCoroutine(Rotate(90f, 0f, 0f));
+				break;
 
+			case GESTURE_TYPE.ROTATE_Y_CW:
+				yRots++;
+				StartCoroutine(Rotate(0f, 90f, 0f));
+				break;
 
+			case GESTURE_TYPE.ROTATE_Y_CCW:
+				yRots++;
+				StartCoroutine(Rotate(0f, -90f, 0f));
+				break;
 
+			case GESTURE_TYPE.ROTATE_Z_CW:
+				zRots++;
+				if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
+					StartCoroutine(Rotate(0f, 0f, -90f));
+				else
+					StartCoroutine(Rotate(0f, 0f, 90f));
+				break;
+
+			case GESTURE_TYPE.ROTATE_Z_CCW:
+				zRots++;
+				if (Mathf.Approximately(zGizmo.transform.localEulerAngles.y, 270f))
+					StartCoroutine(Rotate(0f, 0f, 90f));
+				else
+					StartCoroutine(Rotate(0f, 0f, -90f));
+				break;
+
+			case GESTURE_TYPE.MOVE:
+				velocityList[timeGap] = velocity;
+				if (timeGap == LeapStatic.dragStable - 1)
+				{
+					velocity = new Vector3(0, 0, 0);
+					foreach (Vector3 v in velocityList)//count the average of these velocities
+						velocity += v;
+					try
+					{
+						toRotate.transform.position += LeapStatic.dragVelocity * (velocity / LeapStatic.dragStable);
+					} catch (Exception ex) {}
+					timeGap = 0;
+				}
+				else
+					timeGap++;
+				break;
+
+			default:
+				break;
+		}
+	}
 }
