@@ -4,6 +4,136 @@ using UnityEngine;
 using Leap;
 
 public class GestureController : MonoBehaviour {
+	Controller controller;
+
+	// Clapping
+	const int POS_LIST_SIZE = 5;
+	List<Vector3> leftHandPosList;
+	List<Vector3> rightHandPosList;
+	Vector3 prevLeftHandPos;
+	Vector3 prevRightHandPos;
+	float maxClapTime;
+	float clapDuration;
+	bool isHandClapped;
+
+	// Game
+	FuseEvent fuseEvent;
+
+	void Start () {
+		controller = new Controller();
+
+		leftHandPosList = new List<Vector3>();
+		rightHandPosList = new List<Vector3>();
+		prevLeftHandPos = new Vector3();
+		prevRightHandPos = new Vector3();
+		isHandClapped = false;
+		maxClapTime = 2f;
+		clapDuration = 0f;
+
+		fuseEvent = GameObject.Find("EventSystem").GetComponent<FuseEvent>();
+
+		LeapStatic.resetConstructionObject("tutorial1");
+	}
+
+	void Update () {
+		Frame frame = controller.Frame();
+		HandList hands = frame.Hands;
+
+		if (hands.Count == 2) {
+			if (checkClapping(hands)) {
+				Debug.Log("Clapping");
+				fuseEvent.initiateFuse();
+			}
+		}
+
+	}
+
+	bool checkClapping (HandList hands) {
+		List<Vector3> curHandPos = getCurHandPos(hands);
+
+		if (curHandPos.Count < 2) {
+			return false;
+		}
+
+		Vector3 curLeftHandPos = curHandPos[0], curRightHandPos = curHandPos[1];
+
+		if (isHandClapped) {
+			// Clap released
+			if (Vector3.Distance(curLeftHandPos, curRightHandPos) > 20f)
+			{
+				isHandClapped = false;
+				clapDuration = 0f;
+				return true;
+			}
+		} else {
+			if (isClapping(curLeftHandPos, curRightHandPos))
+				clapDuration += 0.02f;
+
+			// Clapped (still need to release to complete gesture)
+			if (Vector3.Distance(curLeftHandPos, curRightHandPos) < 10f) {
+				if (clapDuration <= maxClapTime) {
+					isHandClapped = true;
+				}
+				clapDuration = 0f;
+			}
+		}
+		return false;
+	}
+
+	bool isClapping (Vector3 curLeftHandPos, Vector3 curRightHandPos) {
+		Vector3 stickDirection = prevRightHandPos - prevLeftHandPos;
+		Vector3 leftDirection = curLeftHandPos - prevLeftHandPos;
+		Vector3 rightDirection = curRightHandPos - prevRightHandPos;
+		Vector3 connectDirection = leftDirection + rightDirection;
+		int factor = 5;
+
+		prevLeftHandPos = curLeftHandPos;
+		prevRightHandPos = curRightHandPos;
+
+		return ((Mathf.Abs(stickDirection.y) < Mathf.Abs(stickDirection.x) || Mathf.Abs(stickDirection.y) < Mathf.Abs(stickDirection.z)) &&
+			(Mathf.Abs(leftDirection.y) < Mathf.Abs(leftDirection.x) || Mathf.Abs(leftDirection.y) < Mathf.Abs(leftDirection.z)) &&
+			(Mathf.Abs(rightDirection.y) < Mathf.Abs(rightDirection.x) || Mathf.Abs(rightDirection.y) < Mathf.Abs(rightDirection.z)) &&
+			(Mathf.Abs(leftDirection.x) + Mathf.Abs(leftDirection.z)) > factor &&
+			(Mathf.Abs(rightDirection.x) + Mathf.Abs(rightDirection.z)) > factor &&
+			(connectDirection.x + connectDirection.z) < factor);
+	}
+
+	List<Vector3> getCurHandPos (HandList hands) {
+		List<Vector3> curHandPos = new List<Vector3>();
+
+		Hand leftHand = hands[0], rightHand = hands[1];
+		if (hands[1].IsLeft)
+		{
+			leftHand = hands[1];
+			rightHand = hands[0];
+		}
+
+		leftHandPosList.Add(transform.TransformPoint(leftHand.PalmPosition.ToUnityScaled()));
+		rightHandPosList.Add(transform.TransformPoint(rightHand.PalmPosition.ToUnityScaled()));
+		if (leftHandPosList.Count != rightHandPosList.Count)
+		{
+			leftHandPosList.Clear();
+			rightHandPosList.Clear();
+		}
+		else if (leftHandPosList.Count == POS_LIST_SIZE)
+		{
+			curHandPos.Add(listAverage(leftHandPosList));
+			curHandPos.Add(listAverage(rightHandPosList));
+			leftHandPosList.RemoveAt(0);
+			rightHandPosList.RemoveAt(0);
+		}
+		return curHandPos;
+	}
+
+	Vector3 listAverage(List<Vector3> l) {
+		Vector3 sum = new Vector3(0, 0, 0);
+		foreach (Vector3 i in l) sum += i;
+		return sum / l.Count;
+	}
+
+}
+
+	/*
 	public enum State {
 		Inactive, // Hand not grabbing target
 		Active,   // Hand grabbing obejct, target allowed to rotate and translate
@@ -182,3 +312,4 @@ public class GestureController : MonoBehaviour {
 		origTargetRot = target.transform.rotation;
 	}
 }
+*/

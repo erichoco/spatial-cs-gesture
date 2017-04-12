@@ -91,7 +91,7 @@ public class FuseEvent : MonoBehaviour {
 
 		// Setup the back button.
 		Button backButton = GameObject.Find ("Back Button").GetComponent<Button>();
-		backButton.onClick.AddListener(() => 
+		backButton.onClick.AddListener(() =>
 		{
 			SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Incomplete_Construction");
 			//SimpleData.WriteStringToFile("ModeSwitches.txt", Time.time + ",MODESWITCH_TO," + InventoryController.levelName);
@@ -295,7 +295,7 @@ public class FuseEvent : MonoBehaviour {
 		//(active part, fused part)
 		HashSet<string> fuseSet1 = new HashSet<string>();
 		//CHANGE this if statement by adding a new else if onto the end of it for your new level.
-		// The name of the mode is the name of your level. You need to add key-value pairs to 
+		// The name of the mode is the name of your level. You need to add key-value pairs to
 		// fuseMapping where the keys are names of active part ACs and the values are
 		// HashSets containing the names of all fused part ACs that a given active part AC can attach to.
 		// Thus, fuseMapping["blah"] = the set of all fused part ACs that the active part "blah" can
@@ -589,12 +589,12 @@ public class FuseEvent : MonoBehaviour {
 
 		} else if (mode.Equals ("gloves")) {
 			//palm, fingers, thumb, armDec, palmDec
-			
+
 			//palm
 			HashSet<string> fuseToForPalm = new HashSet<string>();
 			fuseToForPalm.Add ("arm_palm_attach");
 			fuseMapping.Add ("palm_arm_attach", fuseToForPalm);
-			
+
 			//fingers
 			HashSet<string> fuseToForFingers = new HashSet<string>();
 			fuseToForFingers.Add ("palm_fingers_attach");
@@ -604,19 +604,19 @@ public class FuseEvent : MonoBehaviour {
 			HashSet<string> fuseToForThumb = new HashSet<string>();
 			fuseToForThumb.Add ("palm_thumb_attach");
 			fuseMapping.Add ("thumb_palm_attach", fuseToForThumb);
-			
+
 			//armDec
 			HashSet<string> fuseToForArmDec = new HashSet<string>();
 			fuseToForArmDec.Add ("arm_arm_dec_attach");
 			fuseMapping.Add ("arm_dec_arm_attach", fuseToForArmDec);
-			
+
 			//palmDec
 			HashSet<string> fuseToForPalmDec = new HashSet<string>();
 			fuseToForPalmDec.Add ("palm_palm_dec_attach");
 			fuseMapping.Add ("palm_dec_palm_attach", fuseToForPalmDec);
 		} else if (mode.Equals ("key2")) {
 			//c, hanging l, middle t, ul corner, zigzag
-			
+
 			//c
 			HashSet<string> fuseToForCBottom = new HashSet<string>();
 			HashSet<string> fuseToForCFront = new HashSet<string>();
@@ -635,7 +635,7 @@ public class FuseEvent : MonoBehaviour {
 			HashSet<string> fuseToforHangingL = new HashSet<string>();
 			fuseToforHangingL.Add ("post_hanging_l_attach");
 			fuseMapping.Add ("hanging_l_post_attach", fuseToforHangingL);
-			
+
 			//middle t
 			HashSet<string> fuseToForMiddleTTop = new HashSet<string>();
 			HashSet<string> fuseToForMiddleTBottom = new HashSet<string>();
@@ -654,7 +654,7 @@ public class FuseEvent : MonoBehaviour {
 			HashSet<string> fuseToForUlCorner = new HashSet<string>();
 			fuseToForUlCorner.Add ("c_ul_corner_attach");
 			fuseMapping.Add ("ul_corner_c_attach", fuseToForUlCorner);
-			
+
 			//zigzag
 			HashSet<string> fuseToForZigzag = new HashSet<string>();
 			fuseToForZigzag.Add ("post_zigzag_attach");
@@ -702,10 +702,10 @@ public class FuseEvent : MonoBehaviour {
 			//back axle, front left wheel
 			HashSet<string> fuseToForLeftWheel = new HashSet<string>();
 			HashSet<string> fuseToForBackAxleFrontAxle = new HashSet<string>();
-			
+
 			fuseToForLeftWheel.Add ("front_axle_front_left_wheel_attach");
 			fuseToForBackAxleFrontAxle.Add ("front_axle_back_axle_attach");
-			
+
 			fuseMapping.Add ("front_left_wheel_front_axle_attach", fuseToForLeftWheel);
 			fuseMapping.Add ("back_axle_front_axle_attach", fuseToForBackAxleFrontAxle);
 
@@ -746,18 +746,18 @@ public class FuseEvent : MonoBehaviour {
 			HashSet<string> fuseToForLongLSide = new HashSet<string>();
 			HashSet<string> fuseToForLongLTop = new HashSet<string>();
 			HashSet<string> fuseToForLongLCorner = new HashSet<string>();
-			
+
 			fuseToForLongLBack.Add("block_juts_long_l_back_attach");
 			fuseToForLongLSide.Add("block_juts_long_l_side_attach");
 			fuseToForLongLTop.Add("block_juts_long_l_top_attach");
 			fuseToForLongLCorner.Add ("corner_long_l_attach");
-			
+
 			fuseMapping.Add("long_l_block_juts_back_attach",fuseToForLongLBack);
 			fuseMapping.Add("long_l_block_juts_side_attach",fuseToForLongLSide);
 			fuseMapping.Add("long_l_block_juts_top_attach",fuseToForLongLTop);
 			fuseMapping.Add("long_l_corner_attach",fuseToForLongLCorner);
-			
-			
+
+
 			HashSet<string> fuseToForConnectorCorner = new HashSet<string>();
 			HashSet<string> fuseToForConnectorDiagonalSide = new HashSet<string>();
 			HashSet<string> fuseToForConnectorDiagonalTop = new HashSet<string>();
@@ -767,11 +767,11 @@ public class FuseEvent : MonoBehaviour {
 			fuseMapping.Add("connector_corner_attach",fuseToForConnectorCorner);
 			fuseMapping.Add("connector_diagonal_side_attach",fuseToForConnectorDiagonalSide);
 			fuseMapping.Add("connector_diagonal_top_attach",fuseToForConnectorDiagonalTop);
-			
+
 			HashSet<string> fuseToForBigCornerLongL = new HashSet<string>();
 			fuseToForBigCornerLongL.Add("long_l_big_corner_attach");
 			fuseMapping.Add("big_corner_long_l_attach",fuseToForBigCornerLongL);
-			
+
 			HashSet<string> fuseToForCornerLongL = new HashSet<string>();
 			HashSet<string> fuseToForCornerBlockJuts = new HashSet<string>();
 			HashSet<string> fuseToForCornerConnector = new HashSet<string>();
@@ -788,14 +788,14 @@ public class FuseEvent : MonoBehaviour {
 			fuseToForDiagonalConnectorTop.Add("connector_diagonal_top_attach");
 			fuseMapping.Add("diagonal_connector_side_attach",fuseToForDiagonalConnectorSide);
 			fuseMapping.Add("diagonal_connector_top_attach",fuseToForDiagonalConnectorTop);
-			
+
 		}else if (mode.Equals ("vest")) {
-			
+
 			HashSet<string> fuseToForBackStrapRight = new HashSet<string>();
 			HashSet<string> fuseToForBackStrapSide = new HashSet<string>();
 			HashSet<string> fuseToForLeftStrapBottom = new HashSet<string>();
 			HashSet<string> fuseToForLeftStrapSide = new HashSet<string>();
-			HashSet<string> fuseToForLeftStrapTop = new HashSet<string>();			
+			HashSet<string> fuseToForLeftStrapTop = new HashSet<string>();
 			HashSet<string> fuseToForRightStrapBottom = new HashSet<string>();
 			HashSet<string> fuseToForRightStrapTop = new HashSet<string>();
 			HashSet<string> fuseToForVestDiamond = new HashSet<string>();
@@ -807,7 +807,7 @@ public class FuseEvent : MonoBehaviour {
 			fuseToForRightStrapBottom.Add("vest_base_right_strap_bottom_attach");
 			fuseToForRightStrapTop.Add("vest_base_right_strap_top_attach");
 			fuseToForVestDiamond.Add("vest_base_vest_diamond_attach");
-			
+
 			fuseMapping.Add("back_strap_right_strap_attach",fuseToForBackStrapRight);
 			fuseMapping.Add("back_strap_short_back_strap_long_attach",fuseToForBackStrapSide);
 			fuseMapping.Add("left_strap_vest_base_bottom_attach",fuseToForLeftStrapBottom);
@@ -820,44 +820,44 @@ public class FuseEvent : MonoBehaviour {
 
 			fuseToForLeftStrapSide.Add("back_strap_short_back_strap_long_attach");
 			fuseToForRightStrap.Add("back_strap_right_strap_attach");
-			
+
 			fuseMapping.Add("back_strap_long_back_strap_short_attach",fuseToForLeftStrapSide);
 			fuseMapping.Add("right_strap_back_strap_attach",fuseToForRightStrap);
 
 			HashSet<string> fuseToForVestBaseBottom = new HashSet<string>();
 			HashSet<string> fuseToForVestBaseTop = new HashSet<string>();
-			
+
 			fuseToForVestBaseBottom.Add("left_strap_vest_base_bottom_attach");
 			fuseToForVestBaseTop.Add("left_strap_vest_base_top_attach");
-			
+
 			fuseMapping.Add("vest_base_left_strap_bottom_attach",fuseToForVestBaseBottom);
 			fuseMapping.Add("vest_base_left_strap_top_attach",fuseToForVestBaseTop);
 
 			HashSet<string> fuseToForVestDiamond2 = new HashSet<string>();
-			
+
 			fuseToForVestDiamond2.Add("left_vest_oval_vest_diamond_attach");
-			
+
 			fuseMapping.Add("vest_diamond_left_vest_oval_attach",fuseToForVestDiamond2);
-			
+
 			HashSet<string> fuseToForLeftVestOval = new HashSet<string>();
 			HashSet<string> fuseToForRightVestOval = new HashSet<string>();
 			HashSet<string> fuseToForVestBase = new HashSet<string>();
 			HashSet<string> fuseToForVestOval = new HashSet<string>();
-			
+
 			fuseToForLeftVestOval.Add("vest_diamond_left_vest_oval_attach");
 			fuseToForRightVestOval.Add("vest_diamond_right_vest_oval_attach");
 			fuseToForVestBase.Add("vest_diamond_vest_base_attach");
 			fuseToForVestOval.Add("vest_diamond_vest_oval_attach");
-			
+
 			fuseMapping.Add("left_vest_oval_vest_diamond_attach",fuseToForLeftVestOval);
 			fuseMapping.Add("right_vest_oval_vest_diamond_attach",fuseToForRightVestOval);
 			fuseMapping.Add("vest_base_vest_diamond_attach",fuseToForVestBase);
 			fuseMapping.Add("vest_oval_vest_diamond_attach",fuseToForVestOval);
 
 			HashSet<string> fuseToForVestDiamond3 = new HashSet<string>();
-			
+
 			fuseToForVestDiamond3.Add("vest_oval_vest_diamond_attach");
-			
+
 			fuseMapping.Add("vest_diamond_vest_oval_attach",fuseToForVestDiamond3);
 
 		} else if (mode.Equals ("engine")) {
@@ -883,7 +883,7 @@ public class FuseEvent : MonoBehaviour {
 			fuseMapping.Add("engine_right_engine_base_attach",fuseToForEngineRight);
 
 		}
-		
+
 	// 		Old, difficult Rocket Boots level
 	//		else if (mode.Equals ("boot")) {
 	//			fuseSet1.Add ("Sole_Heel_Top_Attach");
@@ -972,18 +972,18 @@ public class FuseEvent : MonoBehaviour {
 //		HashSet<string> fuseToForRightTri = new HashSet<string>();
 //		fuseToForRightTri.Add ("ring_right_tri_attach");
 //		fuseMapping.Add ("right_tri_ring_attach", fuseToForRightTri);
-		
+
 	}
 
 	public void startLevelTimer() {
 		levelTimer = Time.time;
-		
+
 	}
-	
+
 	public void stopLevelTimer() {
 		levelTimer = Time.time - levelTimer;
 	}
-	
+
 	public void printLevelData() {
 		//SimpleData.WriteStringToFile("ConstructionData.txt", Time.time + ",CONSTRUCTION,FINISHED," + mode + "," + levelTimer);
 		//int xRotations = rotateGizmo.xRots;
@@ -1002,7 +1002,7 @@ public class FuseEvent : MonoBehaviour {
 		//	SimpleData.WriteStringToFile ("ConstructionData.txt", Time.time + ",CONSTRUCTION,AVG_ROTATIONS_PER_FUSE_ATTEMPT," + totalRotations / numFuseAttempts);
 		//else
 		//	SimpleData.WriteStringToFile ("ConstructionData.txt", Time.time + ",CONSTRUCTION,AVG_ROTATIONS_PER_FUSE_ATTEMPT,0");
-		
+
 		sr.Close();
 	}
 
@@ -1054,6 +1054,8 @@ public class FuseEvent : MonoBehaviour {
 		//foreach(string s in fuseMapping[selectedObject.name]) {
 		//	print (s);
 		//}
+
+		Debug.Log("[FuseEvent] " + selectedObject);
 		if(selectedObject == null) {
 			//player tries to connect when there is no active part (only at beginning)
 			//print ("Select the black regions you want to join together!");
@@ -1067,13 +1069,13 @@ public class FuseEvent : MonoBehaviour {
 			data_failureType = "Wrong_Face";
 
 		} else if(fuseMapping[selectedObject.name].Contains(selectedFuseTo.name) && positionMatches (selectedObject, selectedFuseTo)) {
-	
+
 			print ("Successful fuse!");
 			fuseStatus="success";
 			source.PlayOneShot (success);
 			selectedObject.GetComponent<FuseBehavior>().fuse(selectedFuseTo.name, selectedFuseTo.transform.parent.gameObject.GetComponent<IsFused>().locationTag);
 
-	
+
 
 			fuseCleanUp();
 			fuseCount++;
@@ -1097,7 +1099,7 @@ public class FuseEvent : MonoBehaviour {
 				StartCoroutine (FadeAudio (fadeTime, Fade.Out));
 			}
 			else
-			{ 
+			{
 				// For April 2017 Study. Creates next part.
 				if (order != null)
 					order.NextPart();
@@ -1283,7 +1285,7 @@ public class FuseEvent : MonoBehaviour {
 			GameObject thumb = GameObject.Find ("thumbPrefab(Clone)");
 			GameObject armDec = GameObject.Find ("arm_decPrefab(Clone)");
 			GameObject palmDec = GameObject.Find ("palm_decPrefab(Clone)");
-			
+
 			armWhole.transform.parent = group.transform;
 			palm.transform.parent = group.transform;
 			fingers.transform.parent = group.transform;
@@ -1297,7 +1299,7 @@ public class FuseEvent : MonoBehaviour {
 			GameObject middleT = GameObject.Find ("middle_tPrefab(Clone)");
 			GameObject ulCorner = GameObject.Find ("ul_cornerPrefab(Clone)");
 			GameObject zigzag = GameObject.Find ("zigzagPrefab(Clone)");
-			
+
 			postWhole.transform.parent = group.transform;
 			c.transform.parent = group.transform;
 			hangingL.transform.parent = group.transform;
@@ -1331,7 +1333,7 @@ public class FuseEvent : MonoBehaviour {
 			GameObject engineLeft = GameObject.Find ("engine_leftPrefab(Clone)");
 			GameObject engineTopRight = GameObject.Find ("engine_top_rightPrefab(Clone)");
 			GameObject engineRight = GameObject.Find ("engine_rightPrefab(Clone)");
-			
+
 			engineWhole.transform.parent = group.transform;
 			engineFront.transform.parent = group.transform;
 			engineTop.transform.parent = group.transform;
@@ -1345,7 +1347,7 @@ public class FuseEvent : MonoBehaviour {
 			GameObject leftVestOval = GameObject.Find ("left_vest_ovalPrefab(Clone)");
 			GameObject vestDiamond = GameObject.Find ("vest_diamondPrefab(Clone)");
 			GameObject vestOval = GameObject.Find ("vest_ovalPrefab(Clone)");
-			
+
 			vestBase.transform.parent = group.transform;
 			backStrap.transform.parent = group.transform;
 			leftStrap.transform.parent = group.transform;
@@ -1402,14 +1404,14 @@ public class FuseEvent : MonoBehaviour {
 //		leftTri.transform.parent = group.transform;
 //		rightTri.transform.parent = group.transform;
 	}
-		
+
 
 	IEnumerator FadeAudio (float timer, Fade fadeType) {
 		float start = fadeType == Fade.In? 0.0F : 1.0F;
 		float end = fadeType == Fade.In? 1.0F : 0.0F;
 		float i = 0.0F;
 		float step = 1.0F/timer;
-		
+
 		while (i <= 1.0F) {
 			i += step * Time.deltaTime;
 			source.volume = Mathf.Lerp(start, end, i);
@@ -1428,7 +1430,7 @@ public class FuseEvent : MonoBehaviour {
 		disableConnectButton();
 		disableRotationButtons();
 	}
-		
+
 	public bool positionMatches(GameObject selectedObj, GameObject fuseTo) {
 
 		string newFuseToName = fuseTo.name + fuseTo.transform.parent.gameObject.GetComponent<IsFused>().locationTag;
@@ -1449,8 +1451,6 @@ public class FuseEvent : MonoBehaviour {
 		return acceptable;
 	}
 
-	
-	
 	// Update is called once per frame
 	void Update () {
 		if(!tutorialOn && done ()) {
@@ -1464,4 +1464,18 @@ public class FuseEvent : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 		}
 	}
+
+	// Gesture Version
+	public bool IsFuseMappingExist (GameObject selectFuseTo, GameObject selectObject) {
+		return fuseMapping[selectObject.name].Contains(selectFuseTo.name);
+        // try {
+        //     if (fuseMapping[selectObject.name].Contains(selectFuseTo.name)) {
+        //         return true;
+        //     }
+        // }
+        // catch(Exception ex) {}
+        // finally {}
+
+        // return false;
+    }
 }
