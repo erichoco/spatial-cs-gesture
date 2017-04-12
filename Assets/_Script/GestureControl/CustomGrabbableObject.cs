@@ -6,10 +6,14 @@ public class CustomGrabbableObject : GrabbableObject {
 	Collider collider;
 	Rigidbody rb;
 
+	bool isGrabbed;
+
 	// Use this for initialization
 	void Start () {
 		collider = GetComponent<Collider>();
 		rb = GetComponent<Rigidbody>();
+
+		isGrabbed = false;
 	}
 
 	// Update is called once per frame
@@ -20,16 +24,24 @@ public class CustomGrabbableObject : GrabbableObject {
 		}
 	}
 
+	public bool IsGrabbed() {
+		return isGrabbed;
+	}
+
 	public override void OnGrab() {
 		Debug.Log("[Grabbable] OnGrab");
 		base.OnGrab();
 		rb.isKinematic = false;
+
+		isGrabbed = true;
 	}
 
 	public override void OnRelease() {
 		base.OnRelease();
 		rb.isKinematic = true;
 		snapObject();
+
+		isGrabbed = false;
 	}
 
 	// Fix object angle in 3 directions to 0, 90, 180, or 270.
