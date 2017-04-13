@@ -1055,7 +1055,6 @@ public class FuseEvent : MonoBehaviour {
 		//	print (s);
 		//}
 
-		Debug.Log("[FuseEvent] " + selectedObject);
 		if(selectedObject == null) {
 			//player tries to connect when there is no active part (only at beginning)
 			//print ("Select the black regions you want to join together!");
@@ -1467,15 +1466,9 @@ public class FuseEvent : MonoBehaviour {
 
 	// Gesture Version
 	public bool IsFuseMappingExist (GameObject selectFuseTo, GameObject selectObject) {
-		return fuseMapping[selectObject.name].Contains(selectFuseTo.name);
-        // try {
-        //     if (fuseMapping[selectObject.name].Contains(selectFuseTo.name)) {
-        //         return true;
-        //     }
-        // }
-        // catch(Exception ex) {}
-        // finally {}
-
-        // return false;
-    }
+		// Debug.Log("[FuseEvent]: select " + selectObject.name);
+		// Debug.Log("[FuseEvent]: Fuse Mapping Exist " + fuseMapping.ContainsKey(selectObject.name));
+		return fuseMapping.ContainsKey(selectObject.name) &&
+			   fuseMapping[selectObject.name].Contains(selectFuseTo.name);
+	}
 }

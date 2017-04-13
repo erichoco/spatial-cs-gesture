@@ -1,26 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// using Leap;
 
 public class CustomGrabbableObject : GrabbableObject {
 	Collider collider;
 	Rigidbody rb;
 
+
+	GameObject hand;
+	bool isHandExist;
 	bool isGrabbed;
 
 	// Use this for initialization
 	void Start () {
 		collider = GetComponent<Collider>();
 		rb = GetComponent<Rigidbody>();
+		hand = null;
 
+		isHandExist = false;
 		isGrabbed = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		GameObject go = GameObject.Find("RigidRoundHand(Clone)");
-		if (go == null) {
-			snapObject();
+		if (isHandExist) {
+			if (hand == null) {
+				Debug.Log("Hand disappear!");
+				snapObject();
+				isHandExist = false;
+			}
+		} else {
+			hand = GameObject.Find("RigidRoundHand(Clone)");
+			isHandExist = (hand != null);
 		}
 	}
 

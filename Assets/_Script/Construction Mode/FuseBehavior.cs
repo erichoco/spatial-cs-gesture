@@ -16,12 +16,18 @@ public class FuseBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		if(this.name.Equals("rocket_boots_start") || this.name.Equals ("base")) {
+		isFused = true;
+		tagged = false;
+	}
+
+	// Fix for gesture version, need to set isFused to false before starting
+	// (CreatPart___.cs would set all isFused to true
+	void Start () {
+		if (this.name.Equals("rocket_boots_start") || this.name.Equals ("base")) {
 			isFused = true;
 		} else {
 			isFused = false;
 		}
-		tagged = false;
 	}
 
 	// Update is called once per frame
@@ -40,7 +46,7 @@ public class FuseBehavior : MonoBehaviour {
 
 	public void setButtonTo(GameObject newButton) {
 		assignedButton = newButton;
-		
+
 	}
 
 	public Vector3 getFuseLocation(string fuseTo) {

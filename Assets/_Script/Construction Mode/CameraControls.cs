@@ -66,15 +66,12 @@ public class CameraControls : MonoBehaviour
 	}
 
 	public void GrabView(float rot_x, float rot_y)
-    {
-        Vector3 eulerRotation = transform.localRotation.eulerAngles;
-        eulerRotation.x += rot_y * orbitSpeed;
-        eulerRotation.y += rot_x * orbitSpeed;
-
-        eulerRotation.z = 0f;
-
-        transform.localRotation = Quaternion.Euler(eulerRotation);
-        transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
-
-    }
+	{
+		Vector3 eulerRotation = transform.localRotation.eulerAngles;
+		eulerRotation.x += rot_y * orbitSpeed;
+		eulerRotation.y += rot_x * orbitSpeed;
+		eulerRotation.z = 0f;
+		transform.localRotation = Quaternion.Euler(eulerRotation);
+		transform.position = (transform.localRotation * (Vector3.forward * -distance)) + orbitPoint;
+	}
 }
