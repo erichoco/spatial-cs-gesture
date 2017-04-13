@@ -80,7 +80,8 @@ public class FuseBehavior : MonoBehaviour {
 		//Destroy(gameObject.GetComponent<SelectBehavior>());
 
 		isFused = true;
-		parent.GetComponent<IsFused>().isFused = true;
+		IsFused pIsFused = parent.GetComponent<IsFused>();
+		pIsFused.OnFuse();
 		//FuseBehavior[] fuseBehaviors = parent.transform.GetComponentsInChildren<FuseBehavior>();
 		//for (int i = 0; i < fuseBehaviors.Length; i++) {
 		//	fuseBehaviors[i].isFused = true;
@@ -101,7 +102,6 @@ public class FuseBehavior : MonoBehaviour {
 					gameObject.transform.parent.gameObject.GetComponent<IsFused>().locationTag = s;
 				}
 			}
-
 		}
 	}
 }

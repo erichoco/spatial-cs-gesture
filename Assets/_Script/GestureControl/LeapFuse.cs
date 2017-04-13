@@ -50,6 +50,34 @@ public class LeapFuse : MonoBehaviour {
 				list.Add(GameObject.Find("smallbox_yellow_longbox_attach"));
 				break;
 
+			// rocket boots
+			case "startObject":
+				list.Add(GameObject.Find("heel_midfoot_attach"));
+				list.Add(GameObject.Find("heel_widening_attach"));
+				break;
+			case "ballfootPrefab(Clone)":
+				list.Add(GameObject.Find("ballfoot_midfoot_attach"));
+				list.Add(GameObject.Find("ballfoot_toe_attach"));
+				break;
+			case "midfootPrefab(Clone)":
+				list.Add(GameObject.Find("midfoot_ballfoot_attach"));
+				list.Add(GameObject.Find("midfoot_heel_attach"));
+				break;
+			case "calf_harderPrefab(Clone)":
+				list.Add(GameObject.Find("calf_trim_attach"));
+				list.Add(GameObject.Find("calf_widening_attach"));
+				break;
+			case "toeHarderPrefab(Clone)":
+				list.Add(GameObject.Find("toe_ballfoot_attach"));
+				break;
+			case "trimHarderPrefab(Clone)":
+				list.Add(GameObject.Find("trim_calf_attach"));
+				break;
+			case "wideningPrefab(Clone)":
+				list.Add(GameObject.Find("widening_calf_attach"));
+				list.Add(GameObject.Find("widening_heel_attach"));
+				break;
+
 			//construction
 			case "BodyPrefab(Clone)":
 				list.Add(GameObject.Find("Body_Bottom_Attach"));
@@ -76,6 +104,7 @@ public class LeapFuse : MonoBehaviour {
 				list.Add(GameObject.Find("Sole_Heel_Side_Attach"));
 				break;
 
+			/*
 			//axe
 			case "startObject":
 				list.Add(GameObject.Find("shaft_haft_attach"));
@@ -99,6 +128,7 @@ public class LeapFuse : MonoBehaviour {
 			case "haftPrefab(Clone)":
 				list.Add(GameObject.Find("haft_shaft_attach"));
 				break;
+			*/
 
 			//key 1
 			case "dangly_T_complete":
