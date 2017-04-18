@@ -59,6 +59,9 @@ public class GrabbingHand : MonoBehaviour {
   protected Vector3 object_pinch_offset_;
   protected Quaternion palm_rotation_;
 
+  // For Construction @ptchiu
+  protected Quaternion init_palm_rotation_;
+
   void Start() {
     pinch_state_ = PinchState.kReleased;
     active_object_ = null;
@@ -163,6 +166,9 @@ public class GrabbingHand : MonoBehaviour {
     if (grabbable != null) {
       // Notify grabbable object that it was grabbed.
       grabbable.OnGrab();
+
+      // For Construction @ptchiu
+      init_palm_rotation_ = palm_rotation_;
 
       if (grabbable.useAxisAlignment) {
         // If this option is enabled we only want to align the object axis with the palm axis
@@ -276,8 +282,13 @@ public class GrabbingHand : MonoBehaviour {
       angle = 360 - angle;
       axis = -axis;
     }
-    if (angle != 0)
-      active_object_.GetComponent<Rigidbody>().angularVelocity = angle * axis;
+    if (angle != 0) {
+      // For Construction @ptchiu
+      if (Quaternion.Angle(init_palm_rotation_, palm_rotation_) > 30)
+        active_object_.GetComponent<Rigidbody>().angularVelocity = angle * axis;
+      else
+        active_object_.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    }
   }
 
   // If we are releasing the object only apply a weaker force to the object
@@ -325,8 +336,10 @@ public class GrabbingHand : MonoBehaviour {
         OnRelease();
       else if (new_pinch_state == PinchState.kPinched)
         StartPinch();
-      else if (active_object_ != null)
-        ContinueSoftPinch();
+      // For Construction @ptchiu
+      // else if (active_object_ != null)
+        // ContinueSoftPinch();
+
     }
     else {
       if (new_pinch_state == PinchState.kPinched)

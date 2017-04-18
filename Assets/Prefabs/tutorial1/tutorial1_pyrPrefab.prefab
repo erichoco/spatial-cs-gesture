@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 449538}
   - component: {fileID: 3360596}
   - component: {fileID: 2352576}
-  - component: {fileID: 6530918}
   - component: {fileID: 11465194}
   - component: {fileID: 11471348}
   m_Layer: 0
@@ -192,18 +191,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: 977758321b3ad2147ae6536edefeab8d, type: 3}
---- !u!65 &6530918
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 171310}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.0000002, z: 0}
-  m_Center: {x: 0, y: 0, z: -0.80773365}
 --- !u!95 &9524732
 Animator:
   serializedVersion: 3

@@ -10,7 +10,6 @@ GameObject:
   - component: {fileID: 471654}
   - component: {fileID: 3308358}
   - component: {fileID: 2323354}
-  - component: {fileID: 6422878}
   - component: {fileID: 11460532}
   m_Layer: 0
   m_Name: midfoot_ballfoot_attach
@@ -29,7 +28,6 @@ GameObject:
   - component: {fileID: 462324}
   - component: {fileID: 3321220}
   - component: {fileID: 2319010}
-  - component: {fileID: 6416910}
   - component: {fileID: 11486470}
   m_Layer: 0
   m_Name: midfoot_heel_attach
@@ -328,40 +326,12 @@ MeshCollider:
   m_GameObject: {fileID: 193982}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: c606b18d5fc477c478b8db9456c01937, type: 3}
---- !u!64 &6416910
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 147600}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300004, guid: c606b18d5fc477c478b8db9456c01937, type: 3}
---- !u!64 &6422878
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 141370}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300002, guid: c606b18d5fc477c478b8db9456c01937, type: 3}
 --- !u!64 &6423308
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -370,7 +340,7 @@ MeshCollider:
   m_GameObject: {fileID: 150220}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0

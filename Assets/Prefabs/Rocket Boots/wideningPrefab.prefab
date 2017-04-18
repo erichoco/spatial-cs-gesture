@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 434284}
   - component: {fileID: 3302660}
   - component: {fileID: 2364332}
-  - component: {fileID: 6431828}
   - component: {fileID: 11429888}
   m_Layer: 0
   m_Name: widening_heel_attach
@@ -68,7 +67,6 @@ GameObject:
   - component: {fileID: 427612}
   - component: {fileID: 3306418}
   - component: {fileID: 2302056}
-  - component: {fileID: 6437420}
   - component: {fileID: 11463604}
   m_Layer: 0
   m_Name: widening_calf_attach
@@ -257,40 +255,12 @@ MeshCollider:
   m_GameObject: {fileID: 104004}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300004, guid: 25ba364bf19316e458a22689b6b98923, type: 3}
---- !u!64 &6431828
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 109394}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 25ba364bf19316e458a22689b6b98923, type: 3}
---- !u!64 &6437420
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185922}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300002, guid: 25ba364bf19316e458a22689b6b98923, type: 3}
 --- !u!95 &9568590
 Animator:
   serializedVersion: 3

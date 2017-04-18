@@ -948,6 +948,17 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
   m_PrefabInternal: {fileID: 1252021765}
+--- !u!114 &561897313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 561897312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470870681866743768ef7cc6bdf6d938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &561897315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,18 +971,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: tutorial1
---- !u!114 &561897316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 561897312}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97e83885f53f430291055cb92fc9ef9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parts: []
 --- !u!114 &561897317
 MonoBehaviour:
   m_ObjectHideFlags: 0

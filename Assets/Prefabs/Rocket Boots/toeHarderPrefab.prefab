@@ -67,7 +67,6 @@ GameObject:
   - component: {fileID: 410954}
   - component: {fileID: 3364900}
   - component: {fileID: 2330488}
-  - component: {fileID: 6461916}
   - component: {fileID: 11465944}
   m_Layer: 0
   m_Name: toe_ballfoot_attach
@@ -256,7 +255,7 @@ MeshCollider:
   m_GameObject: {fileID: 146046}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 1
   m_InflateMesh: 0
@@ -270,26 +269,12 @@ MeshCollider:
   m_GameObject: {fileID: 112158}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 1
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 7a5fa10001b871b4bb9464f139c31b0a, type: 3}
---- !u!64 &6461916
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188490}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300002, guid: 7a5fa10001b871b4bb9464f139c31b0a, type: 3}
 --- !u!95 &9566122
 Animator:
   serializedVersion: 3
