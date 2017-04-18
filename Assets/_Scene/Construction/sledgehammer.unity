@@ -172,7 +172,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: d10236f70cb997540a2bf1b759993c99, type: 3}
       propertyPath: m_Name
-      value: Axe_Base
+      value: startObject
       objectReference: {fileID: 0}
     - target: {fileID: 100010, guid: d10236f70cb997540a2bf1b759993c99, type: 3}
       propertyPath: m_TagString

@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 11429888}
   m_Layer: 0
   m_Name: widening_heel_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 11463604}
   m_Layer: 0
   m_Name: widening_calf_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

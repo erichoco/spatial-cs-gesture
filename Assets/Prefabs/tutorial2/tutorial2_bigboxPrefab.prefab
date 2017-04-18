@@ -33,7 +33,7 @@ GameObject:
   - component: {fileID: 11468430}
   m_Layer: 0
   m_Name: bigbox_longbox_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 11456614}
   m_Layer: 0
   m_Name: bigbox_smallbox_blue_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

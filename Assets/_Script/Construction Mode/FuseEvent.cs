@@ -1053,7 +1053,7 @@ public class FuseEvent : MonoBehaviour {
 		selectedFuseTo = GetComponent<SelectPart>().getSelectedFuseTo();
 		//print ("fuseMapping.ContainsKey(" + selectedObject.name + ")?");
 		//print ("In initiateFuse(): selectedObject = " + selectedObject);
-		print ("SelectedObject: " + selectedObject.name + ", SelectedFuseTo: " + selectedFuseTo.name);
+		// print ("SelectedObject: " + selectedObject.name + ", SelectedFuseTo: " + selectedFuseTo.name);
 		//print ("SelectedObjectParent: " + selectedObjectParent.name + ", SelectedFuseToParent: " + selectedFuseToParent.name);
 		//print ("fuseMapping[" + selectedObject.name + "] = " + fuseMapping[selectedObject.name]);
 		//foreach(string s in fuseMapping[selectedObject.name]) {

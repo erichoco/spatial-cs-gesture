@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 11460532}
   m_Layer: 0
   m_Name: midfoot_ballfoot_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,7 +33,7 @@ GameObject:
   - component: {fileID: 11486470}
   m_Layer: 0
   m_Name: midfoot_heel_attach
-  m_TagString: Untagged
+  m_TagString: Attach
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

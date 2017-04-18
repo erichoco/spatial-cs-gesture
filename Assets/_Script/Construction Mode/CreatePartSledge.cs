@@ -34,7 +34,7 @@ public class CreatePartSledge : MonoBehaviour {
 		selectionManager = eventSystem.GetComponent<SelectPart>();
 
 		//CHANGE this string to the name of your starting part
-		startObject = GameObject.Find ("Axe_Base");
+		startObject = GameObject.Find ("startObject");
 
 		//CHANGE these lines so they refer to each black part on your starting part
 		GameObject shaftHaftAttach = GameObject.Find("shaft_haft_attach");

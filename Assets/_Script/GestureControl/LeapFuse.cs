@@ -9,169 +9,6 @@ public class LeapFuse : MonoBehaviour {
 	private List<GameObject> fusedAttachList;
 	private List<GameObject> controlAttachList;
 
-	void AddToList(GameObject parent, List<GameObject> list) {
-		if (parent == null)
-			return;
-
-		switch (parent.name) {
-			//tutorial1
-			case "tutorial1_box":
-				list.Add(GameObject.Find("box_cone_attach"));
-				list.Add(GameObject.Find("box_pyr_attach"));
-				list.Add(GameObject.Find("box_tri_attach"));
-				break;
-			case "tutorial1_conePrefab(Clone)":
-				list.Add(GameObject.Find("cone_box_attach"));
-				break;
-			case "tutorial1_pyrPrefab(Clone)":
-				list.Add(GameObject.Find("pyr_box_attach"));
-			break;
-			case "tutorial1_triPrefab(Clone)":
-				list.Add(GameObject.Find("tri_box_attach"));
-				break;
-
-			//tutorial2
-			case "tutorial2_longbox":
-				list.Add(GameObject.Find("longbox_bigbox_attach"));
-				list.Add(GameObject.Find("longbox_smallbox_yellow_attach"));
-				list.Add(GameObject.Find("longbox_tallbox_attach"));
-				break;
-			case "tutorial2_bigboxPrefab(Clone)":
-				list.Add(GameObject.Find("bigbox_longbox_attach"));
-				list.Add(GameObject.Find("bigbox_smallbox_blue_attach"));
-				break;
-			case "tutorial2_smallbox_bluePrefab(Clone)":
-				list.Add(GameObject.Find("smallbox_blue_bigbox_attach"));
-				break;
-			case "tutorial2_tallboxPrefab(Clone)":
-				list.Add(GameObject.Find("tallbox_longbox_attach"));
-				break;
-			case "tutorial2_smallbox_yellowPrefab(Clone)":
-				list.Add(GameObject.Find("smallbox_yellow_longbox_attach"));
-				break;
-
-			// rocket boots
-			case "startObject":
-				list.Add(GameObject.Find("heel_midfoot_attach"));
-				list.Add(GameObject.Find("heel_widening_attach"));
-				break;
-			case "ballfootPrefab(Clone)":
-				list.Add(GameObject.Find("ballfoot_midfoot_attach"));
-				list.Add(GameObject.Find("ballfoot_toe_attach"));
-				break;
-			case "midfootPrefab(Clone)":
-				list.Add(GameObject.Find("midfoot_ballfoot_attach"));
-				list.Add(GameObject.Find("midfoot_heel_attach"));
-				break;
-			case "calf_harderPrefab(Clone)":
-				list.Add(GameObject.Find("calf_trim_attach"));
-				list.Add(GameObject.Find("calf_widening_attach"));
-				break;
-			case "toeHarderPrefab(Clone)":
-				list.Add(GameObject.Find("toe_ballfoot_attach"));
-				break;
-			case "trimHarderPrefab(Clone)":
-				list.Add(GameObject.Find("trim_calf_attach"));
-				break;
-			case "wideningPrefab(Clone)":
-				list.Add(GameObject.Find("widening_calf_attach"));
-				list.Add(GameObject.Find("widening_heel_attach"));
-				break;
-
-			// sledgehammer
-
-			//construction
-			case "BodyPrefab(Clone)":
-				list.Add(GameObject.Find("Body_Bottom_Attach"));
-				list.Add(GameObject.Find("Body_Top_Attach"));
-				list.Add(GameObject.Find("Body_Side_Attach"));
-				break;
-			case "calfPrefab(Clone)":
-				list.Add(GameObject.Find("Calf_Bottom_Attach"));
-				list.Add(GameObject.Find("Calf_Top_Attach"));
-				break;
-			case "trimPrefab(Clone)":
-				list.Add(GameObject.Find("Top_Trim_Attach"));
-				break;
-			case "ToePrefab(Clone)":
-				list.Add(GameObject.Find("Toe_Bottom_Attach"));
-				list.Add(GameObject.Find("Toe_Side_Attach"));
-				break;
-			case "ToeSolePrefab(Clone)":
-				list.Add(GameObject.Find("Sole_Toe_Top_Attach"));
-				list.Add(GameObject.Find("Sole_Toe_Side_Attach"));
-				break;
-			case "rocket_boots_start":
-				list.Add(GameObject.Find("Sole_Heel_Top_Attach"));
-				list.Add(GameObject.Find("Sole_Heel_Side_Attach"));
-				break;
-
-			/*
-			//axe
-			case "startObject":
-				list.Add(GameObject.Find("shaft_haft_attach"));
-				list.Add(GameObject.Find("shaft_trapezoid_attach"));
-				break;
-			case "bottom_pointPrefab(Clone)":
-				list.Add(GameObject.Find("bottom_point_head_attach"));
-				break;
-			case "trapezoidPrefab(Clone)":
-				list.Add(GameObject.Find("trapezoid_head_attach"));
-				list.Add(GameObject.Find("trapezoid_shaft_attach"));
-				break;
-			case "top_pointPrefab(Clone)":
-				list.Add(GameObject.Find("top_point_head_attach"));
-				break;
-			case "headPrefab(Clone)":
-				list.Add(GameObject.Find("head_bottom_point_attach"));
-				list.Add(GameObject.Find("head_top_point_attach"));
-				list.Add(GameObject.Find("head_trapezoid_attach"));
-				break;
-			case "haftPrefab(Clone)":
-				list.Add(GameObject.Find("haft_shaft_attach"));
-				break;
-			*/
-
-			//key 1
-			case "dangly_T_complete":
-				list.Add(GameObject.Find("dangly_T_upright_L_attach"));
-				list.Add(GameObject.Find("dangly_T_upright_T_attach"));
-				list.Add(GameObject.Find("dangly_T_walking_pants_attach"));
-				break;
-			case "upright_rectPrefab(Clone)":
-				list.Add(GameObject.Find("upright_rect_walking_pants_attach"));
-				break;
-			case "upright_LPrefab(Clone)":
-				list.Add(GameObject.Find("upright_L_dangly_T_attach"));
-				list.Add(GameObject.Find("upright_L_waluigi_attach"));
-				break;
-			case "upright_TPrefab(Clone)":
-				list.Add(GameObject.Find("upright_T_dangly_T_attach"));
-				break;
-			case "waluigiPrefab(Clone)":
-				list.Add(GameObject.Find("waluigi_upright_L_attach"));
-				break;
-			case "walking_pantsPrefab(Clone)":
-				list.Add(GameObject.Find("walking_pants_dangly_T_attach"));
-				list.Add(GameObject.Find("walking_pants_upright_rect_attach"));
-				break;
-			default:
-				break;
-		}
-	}
-
-	void AddAttachList(GameObject parent, List<GameObject> list) {
-		if (parent == null) return;
-		Transform parentT = parent.transform;
-		foreach (Transform childT in parentT) {
-			if (childT.CompareTag("Attach")) {
-				list.Add(childT.gameObject);
-				// Debug.Log(childT.gameObject);
-			}
-		}
-		// Debug.Log("----");
-	}
-
 	void Start () {
 		eventSystem = GameObject.Find("EventSystem");
 		fusedDict = new Dictionary<string, GameObject>();
@@ -182,6 +19,17 @@ public class LeapFuse : MonoBehaviour {
 	void FixedUpdate () {
 		updateAttachList();
 		setAttachObjects();
+	}
+
+	// Add child objects for attachment to list
+	void addAttachList(GameObject parent, List<GameObject> list) {
+		if (parent == null) return;
+		Transform parentT = parent.transform;
+		foreach (Transform childT in parentT) {
+			if (childT.CompareTag("Attach")) {
+				list.Add(childT.gameObject);
+			}
+		}
 	}
 
 	// Update object in control to control list
@@ -198,10 +46,10 @@ public class LeapFuse : MonoBehaviour {
 			if (!fusedDict.ContainsKey(part) && go != null) {
 				if (go.GetComponent<IsFused>().isFused) {
 					fusedDict.Add(part, go);
-					AddAttachList(go, fusedAttachList);
+					addAttachList(go, fusedAttachList);
 				} else {
 					goToControl = go;
-					AddAttachList(goToControl, controlAttachList);
+					addAttachList(goToControl, controlAttachList);
 				}
 			}
 		}

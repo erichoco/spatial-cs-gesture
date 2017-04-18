@@ -214,7 +214,7 @@ public class LeapStatic : MonoBehaviour {
 				constructionObject.Add("Spike");
 				numConstructionObject = 11;
 
-				objectName.Add("Axe_Base");
+				objectName.Add("startObject");
 				objectName.Add("bottom_point_leftPrefab(Clone)");
 				objectName.Add("bottom_point_rightPrefab(Clone)");
 				objectName.Add("haft_harderPrefab(Clone)");
