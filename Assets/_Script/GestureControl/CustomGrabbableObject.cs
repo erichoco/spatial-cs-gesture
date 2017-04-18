@@ -26,7 +26,6 @@ public class CustomGrabbableObject : GrabbableObject {
 	void Update () {
 		if (isHandExist) {
 			if (hand == null) {
-				Debug.Log("Hand disappear!");
 				snapObject();
 				isHandExist = false;
 			}

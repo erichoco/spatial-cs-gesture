@@ -15,6 +15,7 @@ TagManager:
   - RotationGizmo
   - Breakable
   - FullPlayer
+  - Attach
   layers:
   - Default
   - TransparentFX

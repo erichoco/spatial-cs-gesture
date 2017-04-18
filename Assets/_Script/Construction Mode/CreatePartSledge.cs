@@ -34,7 +34,7 @@ public class CreatePartSledge : MonoBehaviour {
 		selectionManager = eventSystem.GetComponent<SelectPart>();
 
 		//CHANGE this string to the name of your starting part
-		startObject = GameObject.Find ("startObject");
+		startObject = GameObject.Find ("Axe_Base");
 
 		//CHANGE these lines so they refer to each black part on your starting part
 		GameObject shaftHaftAttach = GameObject.Find("shaft_haft_attach");
@@ -57,9 +57,9 @@ public class CreatePartSledge : MonoBehaviour {
 	// (looking at boot from the front)
 
 
-	//CHANGE these next 5 methods so that they refer to the 5 prefabs you made. This requires you to 
-	// change most of the variables and strings in each method. For now, set the fuseLocation to the 
-	// location of whatever part you're going to attach it to, set the fuseRotation to the location 
+	//CHANGE these next 5 methods so that they refer to the 5 prefabs you made. This requires you to
+	// change most of the variables and strings in each method. For now, set the fuseLocation to the
+	// location of whatever part you're going to attach it to, set the fuseRotation to the location
 	// (0,0,0), and make acceptableRotations contain only one rotation: Quaternion.Euler (0,0,0). Later,
 	// you will come back and change fuseLocation, fuseRotation, and acceptableRotations after testing.
 
@@ -383,7 +383,7 @@ public class CreatePartSledge : MonoBehaviour {
 		Quaternion acceptableRotation3 = Quaternion.Euler (0,270,270);
 		Quaternion acceptableRotation4 = Quaternion.Euler (270,180,0);
 
-		Quaternion[] acceptableRotations = {acceptableRotation1,acceptableRotation2, 
+		Quaternion[] acceptableRotations = {acceptableRotation1,acceptableRotation2,
 			acceptableRotation3, acceptableRotation4};
 		fusePositions.Add ("shaft_trapezoid_attach", acceptableRotations);
 
@@ -415,12 +415,12 @@ public class CreatePartSledge : MonoBehaviour {
 		rotateZButton.transform.GetComponent<RotateButton>().setObjectToRotate(toRotate);
 	}
 
-	//CHANGE these next 5 methods so that they refer to the 5 prefabs you made. This requires you to 
-	// change most of the variables and strings in each method.	
+	//CHANGE these next 5 methods so that they refer to the 5 prefabs you made. This requires you to
+	// change most of the variables and strings in each method.
 	public void createBottomPointLeft() {
 		if(!partCreated[0]) {
 			clearPartsCreated();
-			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated		
+			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
 			Quaternion fuseToRotation = Quaternion.Euler (0,90,0);
 			GameObject newBottomPointLeft = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[0], pos, fuseToRotation)));
 
@@ -482,7 +482,7 @@ public class CreatePartSledge : MonoBehaviour {
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
 			Quaternion fuseToRotation = Quaternion.Euler (270,270,0);
-			GameObject newHaft = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[2], pos, fuseToRotation)));	
+			GameObject newHaft = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[2], pos, fuseToRotation)));
 
 			Transform haftShaftAttach = newHaft.transform.FindChild("haft_shaft_attach");
 
@@ -492,7 +492,7 @@ public class CreatePartSledge : MonoBehaviour {
 			haftShaftAttach.gameObject.GetComponent<FuseBehavior>().setFuseTo(fuseAtts);
 			haftShaftAttach.gameObject.GetComponent<FuseBehavior>().setButtonTo(GameObject.Find ("Haft"));
 
-			instantiated[2] = newHaft;	
+			instantiated[2] = newHaft;
 			partCreated[2] = true;
 			selectionManager.newPartCreated("haftPrefab(Clone)");
 
@@ -556,7 +556,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[4]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (0,180,0);		
+			Quaternion fuseToRotation = Quaternion.Euler (0,180,0);
 			GameObject newSmallTip = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[4], pos, fuseToRotation)));
 
 			Transform smallTipTrapezoidAttach = newSmallTip.transform.FindChild("small_tip_small_trapezoid_attach");
@@ -581,7 +581,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[5]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (270,90,0);		
+			Quaternion fuseToRotation = Quaternion.Euler (270,90,0);
 			GameObject newSmallTrapezoid = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[5], pos, fuseToRotation)));
 
 			Transform smallTrapezoidSmallTipAttach = newSmallTrapezoid.transform.FindChild("small_trapezoid_small_tip_attach");
@@ -611,7 +611,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[6]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (0,90,270);		
+			Quaternion fuseToRotation = Quaternion.Euler (0,90,270);
 			GameObject newSpike = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[6], pos, fuseToRotation)));
 
 			Transform spikeShaftAttach = newSpike.transform.FindChild("spike_shaft_attach");
@@ -636,7 +636,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[7]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (0,180,0);		
+			Quaternion fuseToRotation = Quaternion.Euler (0,180,0);
 			GameObject newTip = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[7], pos, fuseToRotation)));
 
 			Transform tipHeadAttach = newTip.transform.FindChild("tip_head_attach");
@@ -661,7 +661,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[8]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (0,0,180);		
+			Quaternion fuseToRotation = Quaternion.Euler (0,0,180);
 			GameObject newTopPointLeft = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[8], pos, fuseToRotation)));
 
 			Transform topPointLeftHeadAttach = newTopPointLeft.transform.FindChild("top_point_left_head_attach");
@@ -691,7 +691,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[9]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (90,90,0);		
+			Quaternion fuseToRotation = Quaternion.Euler (90,90,0);
 			GameObject newTopPointRight = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[9], pos, fuseToRotation)));
 
 			Transform topPointRightHeadAttach = newTopPointRight.transform.FindChild("top_point_right_head_attach");
@@ -721,7 +721,7 @@ public class CreatePartSledge : MonoBehaviour {
 		if(!partCreated[10]){
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
-			Quaternion fuseToRotation = Quaternion.Euler (0,90,270);		
+			Quaternion fuseToRotation = Quaternion.Euler (0,90,270);
 			GameObject newTrapezoid = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[10], pos, fuseToRotation)));
 
 			Transform trapezoidShaftAttach = newTrapezoid.transform.FindChild("trapezoid_shaft_attach");

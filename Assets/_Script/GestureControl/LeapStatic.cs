@@ -199,6 +199,35 @@ public class LeapStatic : MonoBehaviour {
 				objectName.Add("wideningPrefab(Clone)");
 				break;
 
+			case "sledgehammer":
+
+				constructionObject.Add("BottomPointRight");
+				constructionObject.Add("BottomPointLeft");
+				constructionObject.Add("Haft");
+				constructionObject.Add("Head");
+				constructionObject.Add("SmallTip");
+				constructionObject.Add("Trapezoid");
+				constructionObject.Add("TopPointLeft");
+				constructionObject.Add("TopPointRight");
+				constructionObject.Add("SmallTrapezoid");
+				constructionObject.Add("Tip");
+				constructionObject.Add("Spike");
+				numConstructionObject = 11;
+
+				objectName.Add("Axe_Base");
+				objectName.Add("bottom_point_leftPrefab(Clone)");
+				objectName.Add("bottom_point_rightPrefab(Clone)");
+				objectName.Add("haft_harderPrefab(Clone)");
+				objectName.Add("head_harderPrefab(Clone)");
+				objectName.Add("small_tipPrefab(Clone)");
+				objectName.Add("small_trapezoidPrefab(Clone)");
+				objectName.Add("spikePrefab(Clone)");
+				objectName.Add("tipPrefab(Clone)");
+				objectName.Add("top_point_leftPrefab(Clone)");
+				objectName.Add("top_point_rightPrefab(Clone)");
+				objectName.Add("trapezoid_harderPrefab(Clone)");
+				break;
+
 			case "construction":
 				//SimpleData.WriteStringToFile("LeapData.txt", Time.time + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 0 + ";" + 2);//time,one/two,L/R,Gesture,Success,Scene
 				constructionObject.Add("Body");

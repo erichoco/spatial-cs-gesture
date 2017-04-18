@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class LeapFuse : MonoBehaviour {
 	private GameObject eventSystem;
 
-	private Dictionary<String, GameObject> fusedDict = new Dictionary<string, GameObject>();
-	private List<GameObject> fusedAttachList = new List<GameObject>() ;
-	private List<GameObject> controlAttachList = new List<GameObject>();
+	private Dictionary<String, GameObject> fusedDict;
+	private List<GameObject> fusedAttachList;
+	private List<GameObject> controlAttachList;
 
 	void AddToList(GameObject parent, List<GameObject> list) {
 		if (parent == null)
@@ -77,6 +77,8 @@ public class LeapFuse : MonoBehaviour {
 				list.Add(GameObject.Find("widening_calf_attach"));
 				list.Add(GameObject.Find("widening_heel_attach"));
 				break;
+
+			// sledgehammer
 
 			//construction
 			case "BodyPrefab(Clone)":
@@ -158,8 +160,23 @@ public class LeapFuse : MonoBehaviour {
 		}
 	}
 
+	void AddAttachList(GameObject parent, List<GameObject> list) {
+		if (parent == null) return;
+		Transform parentT = parent.transform;
+		foreach (Transform childT in parentT) {
+			if (childT.CompareTag("Attach")) {
+				list.Add(childT.gameObject);
+				// Debug.Log(childT.gameObject);
+			}
+		}
+		// Debug.Log("----");
+	}
+
 	void Start () {
 		eventSystem = GameObject.Find("EventSystem");
+		fusedDict = new Dictionary<string, GameObject>();
+		fusedAttachList = new List<GameObject>();
+		controlAttachList = new List<GameObject>();
 	}
 
 	void FixedUpdate () {
@@ -181,10 +198,10 @@ public class LeapFuse : MonoBehaviour {
 			if (!fusedDict.ContainsKey(part) && go != null) {
 				if (go.GetComponent<IsFused>().isFused) {
 					fusedDict.Add(part, go);
-					AddToList(go, fusedAttachList);
+					AddAttachList(go, fusedAttachList);
 				} else {
 					goToControl = go;
-					AddToList(goToControl, controlAttachList);
+					AddAttachList(goToControl, controlAttachList);
 				}
 			}
 		}
