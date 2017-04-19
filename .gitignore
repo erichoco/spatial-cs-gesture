@@ -32,3 +32,4 @@ log.csv
 
 # Player Data
 /Assets/Player_at_time*
+/Assets/LogData*
