@@ -548,9 +548,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Congratulations!
+  m_Text: 'Congratulations - you built the Axe!
 
-    You built the Sledgehammer!'
+'
 --- !u!222 &115846946
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1239,11 +1239,7 @@ RectTransform:
   m_LocalScale: {x: 0.7916358, y: 0.8081401, z: 1}
   m_Children: []
   m_Father: {fileID: 297973224}
-<<<<<<< HEAD
   m_RootOrder: 11
-=======
-  m_RootOrder: 12
->>>>>>> 292feb4... Add button in tutorial 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1704,10 +1700,6 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22416944, guid: 24da4f141e0e7904785a13b81dd4bcea, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 183646, guid: 24da4f141e0e7904785a13b81dd4bcea, type: 2}
-      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2263,11 +2255,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11491522, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}
       propertyPath: m_Text
-<<<<<<< HEAD
       value: CLAIM
-=======
-      value: End Game
->>>>>>> 292feb4... Add button in tutorial 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}
@@ -2302,11 +2290,7 @@ RectTransform:
   m_Children:
   - {fileID: 248195666}
   m_Father: {fileID: 297973224}
-<<<<<<< HEAD
   m_RootOrder: 12
-=======
-  m_RootOrder: 11
->>>>>>> 292feb4... Add button in tutorial 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -2980,7 +2964,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0}
   m_SizeDelta: {x: 376, y: 418}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1232480375
@@ -3292,7 +3276,6 @@ MonoBehaviour:
   rotationWrong: {fileID: 1706258294}
   getPassword: {fileID: 1060378456}
   claimItem: {fileID: 13824565}
-  claimItem2: {fileID: 0}
   rotateGizmo: {fileID: 0}
   victoryPrefab: {fileID: 121312, guid: 98faeccb7663b08489d5910c8d37988b, type: 2}
   rotatePanelGroup: {fileID: 297973225}
@@ -3614,7 +3597,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 90, y: 15.0998535}
+  m_AnchoredPosition: {x: 89.99989, y: 15.099936}
   m_SizeDelta: {x: 289.32, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1355786379
