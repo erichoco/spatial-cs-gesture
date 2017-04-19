@@ -1143,9 +1143,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11491522, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}
       propertyPath: m_Text
-      value: 'I''m ready!
-
-'
+      value: I'm ready!
       objectReference: {fileID: 0}
     - target: {fileID: 11491522, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}
       propertyPath: m_FontData.m_FontSize
@@ -2818,7 +2816,11 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
+<<<<<<< HEAD
   m_AnchoredPosition: {x: -10, y: 6.3999023}
+=======
+  m_AnchoredPosition: {x: -9.999817, y: 6.399994}
+>>>>>>> 292feb4... Add button in tutorial 2
   m_SizeDelta: {x: 140, y: 60}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1560150033
@@ -4227,6 +4229,10 @@ Prefab:
     - target: {fileID: 11497094, guid: 24da4f141e0e7904785a13b81dd4bcea, type: 2}
       propertyPath: m_Text
       value: Try, try again until you've built the whole object! You got this.
+      objectReference: {fileID: 0}
+    - target: {fileID: 183646, guid: 24da4f141e0e7904785a13b81dd4bcea, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24da4f141e0e7904785a13b81dd4bcea, type: 2}

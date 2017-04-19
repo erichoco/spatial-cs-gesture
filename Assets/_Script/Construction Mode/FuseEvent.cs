@@ -38,6 +38,8 @@ public class FuseEvent : MonoBehaviour {
 	public Text rotationWrong;
 	public Text getPassword;
 	public Button claimItem;    // NEW ADDITION. A button which appears upon completion of an item to claim it in exploration mode.
+	public Button claimItem2; // For April 2017 Study
+
 	public RotationGizmo rotateGizmo;	// NEW ADDITION. when completing a fusion, disable the rotation gizmo.
 	public GameObject victoryPrefab;
 	public CanvasGroup rotatePanelGroup;
@@ -120,6 +122,15 @@ public class FuseEvent : MonoBehaviour {
 						//LoadUtils.UnloadScene("tutorial2");
 						SceneManager.LoadScene("rocketBoots");
 						break;
+
+					case "rocketBoots":
+						Debug.Log("Should End Game");
+						break;
+
+					case "sledgehammer":
+						Debug.Log("Should End Game");
+						break;
+
 					case "boot":
 						// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
 						//SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
@@ -205,6 +216,31 @@ public class FuseEvent : MonoBehaviour {
 			Debug.Log("Made it to this point");
 			Debug.Log("Disabling goToNextTutorial button!");
 			claimItem.gameObject.SetActive(false);
+		}
+
+		// For April 2017 Study
+		if (claimItem2 != null)
+		{
+			claimItem2.onClick.AddListener(() => {
+				SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+				switch (mode)
+				{
+					case "tutorial2":
+						ConversationTrigger.AddToken("done_with_tutorial_2");
+						SceneManager.LoadScene("sledgehammer");
+						break;
+
+					default:
+						Debug.Log("Not Yet Implemented: " + mode);
+						break;
+				}
+				// Update the build button based on the now-removed parts.
+				BuildButton.CheckRecipes();
+
+			});
+			Debug.Log("Made it to this point");
+			Debug.Log("Disabling goToNextTutorial button!");
+			claimItem2.gameObject.SetActive(false);
 		}
 
 		// Infinite energy if running construction mode separately.
@@ -1094,6 +1130,10 @@ public class FuseEvent : MonoBehaviour {
 				GameObject.Find("Back Button").SetActive(false);
 
 				claimItem.gameObject.SetActive(true);
+
+				// For April 2017 Study
+				if (claimItem2 != null) claimItem2.gameObject.SetActive(true);
+
 				congrats.enabled = true;
 
 				musicSource.Stop();
