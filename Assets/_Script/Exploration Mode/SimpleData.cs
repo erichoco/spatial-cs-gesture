@@ -38,6 +38,11 @@ public class SimpleData : MonoBehaviour
 	static GameObject go;
 	static SingletonAttachPoint sap;
 
+	// For April 2017 Study
+	public static string date;
+	public static string username;
+	public static string logDirectory;
+
 	void Awake ()
 	{
 		CreateInitialFiles();
@@ -67,15 +72,15 @@ public class SimpleData : MonoBehaviour
 		sw_Position.Close();
 		sw_Position = File.CreateText(folder + "/" + "PositionData_" + sceneName + ".txt");
 	}
-	
+
 	void Update ()
 	{
-		// Press minus to load and display data.		
+		// Press minus to load and display data.
 		if (Input.GetKeyDown(KeyCode.Minus))
 		{
 			LoadData();
 		}
-		
+
 		// Timer for recording positional data points.
 		timer += Time.deltaTime;
 		if (timer >= dataInterval)
@@ -183,7 +188,13 @@ public class SimpleData : MonoBehaviour
 	// // IsInBuiltExecutable, Timestamp, NameOfSaveGame, OriginScene, DataIdentifier, Modifier, Modifier, Modifier, Modifier, Value
 	public static void WriteDataPoint(string data_identifier, string modifier_a, string modifier_b, string modifier_c, string modifier_d, string value)
 	{
-		StreamWriter sw = new StreamWriter(Application.dataPath + "/log.csv", true);
+		if (!Directory.Exists(logDirectory)) {
+			Debug.Log("[SimpleData]: Logging directory not setup. Call `SetupLogDirectory` before `WriteDataPoint`. Setting player name to Unknown");
+			// return;
+			SetupLogDirectory("Unknown");
+		}
+
+		StreamWriter sw = new StreamWriter(logDirectory + "/log.csv", true);
 
 		// Setup first piece of information.
 		string isInBuiltExecutable = "True";
@@ -206,7 +217,7 @@ public class SimpleData : MonoBehaviour
 			originScene = "Highland";
 
 		// Combine entire string
-		string datapoint = isInBuiltExecutable + "," + timestamp + "," + nameOfSaveGame + "," + 
+		string datapoint = isInBuiltExecutable + "," + timestamp + "," + nameOfSaveGame + "," +
 						   originScene + "," + data_identifier + "," + modifier_a + "," + modifier_b +
 						   "," + modifier_c + "," + modifier_d + "," + value;
 
@@ -214,6 +225,8 @@ public class SimpleData : MonoBehaviour
 		sw.WriteLine(datapoint);
 		sw.Close();
 
+		// Disable for April 2017 Study
+		/*
 		// Write string to server.
 		if (go == null || sap == null)
 		{
@@ -221,7 +234,21 @@ public class SimpleData : MonoBehaviour
 			sap = go.GetComponent<SingletonAttachPoint>();
 		}
 		sap.StartCoroutine(SendToServer(datapoint));
-		
+		*/
+
+	}
+
+	// For April 2017 Study
+	public static void SetupLogDirectory(string name) {
+		date = DateTime.Today.ToString("MMdd");
+		username = name;
+		logDirectory = Application.dataPath + "/LogData/" + date + "-" + name;
+		Directory.CreateDirectory(logDirectory);
+
+		// Write header line for current trial
+		StreamWriter sw = new StreamWriter(logDirectory + "/log.csv", true);
+		sw.WriteLine("New Trial," + DateTime.Now.ToString("G"));
+		sw.Close();
 	}
 
 	static IEnumerator SendToServer(string alldata)

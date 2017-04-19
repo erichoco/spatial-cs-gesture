@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 
 
@@ -7,15 +8,27 @@ public class SimpleSceneChange : MonoBehaviour
 {
 	public static float startTime = 0f;
 
+	string username;
+
 	void Start ()
 	{
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
 	}
 
+	// For April 2017 Study
+	public void GetUsername(InputField input)
+	{
+		if (input.text.Length > 0)
+			username = input.text;
+		else
+			username = "Unknown";
+	}
+
 	public void StartGameSwitch(string sceneName)
 	{
 		startTime = Time.time;
+		SimpleData.SetupLogDirectory(username);
 		SceneManager.LoadScene(sceneName);
 	}
 
