@@ -81,6 +81,8 @@ public class FuseEvent : MonoBehaviour {
 		// For April 2017 Study. Creates first part.
 		if (order != null)
 			order.NextPart();
+		// For April 2017 Study
+		SimpleData.WriteDataPoint("Enter_Scene", "", "", "", "", "Start_Construction");
 	}
 
 	void Awake ()
@@ -116,6 +118,7 @@ public class FuseEvent : MonoBehaviour {
 						//LoadUtils.UnloadScene("tutorial1");
 						SceneManager.LoadScene("tutorial2");
 						break;
+
 					case "tutorial2":
 						ConversationTrigger.AddToken("done_with_tutorial_2");
 						//LoadUtils.LoadScene("rocketBoots");
@@ -124,17 +127,9 @@ public class FuseEvent : MonoBehaviour {
 						break;
 
 					case "rocketBoots":
-						Debug.Log("Should End Game");
-						break;
-
-					case "sledgehammer":
-						Debug.Log("Should End Game");
-						break;
-
-					case "boot":
 						// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
-						//SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
-						SceneManager.LoadScene("sledgehammer");
+						SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
+						SceneManager.LoadScene("SimpleMenu");
 						// !!!
 
 						RocketBoots.ActivateBoots();
@@ -150,7 +145,8 @@ public class FuseEvent : MonoBehaviour {
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("rocketBoots");
 						break;
-					case "axe":
+
+					case "sledgehammer":
 						// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
 						SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
 						SceneManager.LoadScene("SimpleMenu");
@@ -174,6 +170,7 @@ public class FuseEvent : MonoBehaviour {
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("sledgehammer");
 						break;
+
 					case "key1":
 						ConversationTrigger.AddToken("player_has_key1");
 						InventoryController.items.Remove("Key 1 Dangly T");
@@ -186,6 +183,7 @@ public class FuseEvent : MonoBehaviour {
 						LoadUtils.LoadScene(InventoryController.levelName);
 						LoadUtils.UnloadScene("key1");
 						break;
+
 					case "ffa":
 						ConversationTrigger.AddToken("player_has_ffa");
 						InventoryController.items.Remove("FFA Blue Tri");

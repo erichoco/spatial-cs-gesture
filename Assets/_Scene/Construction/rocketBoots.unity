@@ -2808,7 +2808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8daa7e2be9c48d94ea0d4cd4ad5e46a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: boot
+  mode: rocketBoots
   connectButton: {fileID: 1418366674}
 --- !u!114 &1321869684
 MonoBehaviour:
@@ -2854,6 +2854,7 @@ MonoBehaviour:
   rotationWrong: {fileID: 12051097}
   getPassword: {fileID: 1667494523}
   claimItem: {fileID: 581119306}
+  claimItem2: {fileID: 0}
   rotateGizmo: {fileID: 0}
   victoryPrefab: {fileID: 121312, guid: 98faeccb7663b08489d5910c8d37988b, type: 2}
   rotatePanelGroup: {fileID: 473907162}
