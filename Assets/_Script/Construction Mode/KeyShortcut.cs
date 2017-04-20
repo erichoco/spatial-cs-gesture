@@ -9,7 +9,6 @@ public class KeyShortcut : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		fuse = null;
 		// initPos should be the same with createLoc in CreatePart__
 		initPos = new Vector3(-40, 25, 100);
 	}
