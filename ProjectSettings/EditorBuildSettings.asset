@@ -5,53 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_Scene/Level1.unity
-  - enabled: 0
-    path: Assets/_Scene/Level2.unity
-  - enabled: 0
-    path: Assets/_Scene/Construction/passwordScreen.unity
   - enabled: 1
     path: Assets/_Scene/SimpleMenu.unity
-  - enabled: 1
-    path: Assets/_Scene/Canyon2.unity
-  - enabled: 1
-    path: Assets/_Scene/RuinedCity.unity
-  - enabled: 1
-    path: Assets/_Scene/CityVault.unity
+    guid: 44cbba9283d28724caee14e003ed2bd5
   - enabled: 1
     path: Assets/_Scene/Construction/tutorial1.unity
+    guid: 05b765d7c6c812044a105c0d57a9aa75
   - enabled: 1
     path: Assets/_Scene/Construction/tutorial2.unity
-  - enabled: 0
-    path: Assets/_Scene/Construction/construction.unity
-  - enabled: 0
-    path: Assets/_Scene/Construction/introConstruction.unity
-  - enabled: 0
-    path: Assets/_Scene/Construction/axe.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/key1.unity
-  - enabled: 0
-    path: Assets/_Scene/Construction/ffa.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/spaceshipHull.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/catapult.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/key2.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/fireProofVest.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/key3.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/spaceshipEngine.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/forceGloves.unity
+    guid: 53bc5d79c762e2d42beb61acbccfe321
   - enabled: 1
     path: Assets/_Scene/Construction/rocketBoots.unity
+    guid: 8999d9ca749e3f246a5253637f4fb644
   - enabled: 1
     path: Assets/_Scene/Construction/sledgehammer.unity
-  - enabled: 1
-    path: Assets/_Scene/Construction/ffaHarder.unity
-  - enabled: 1
-    path: Assets/_Scene/EmptyScene.unity
+    guid: d94dc883a06fbad4f98fec2959c391c4
