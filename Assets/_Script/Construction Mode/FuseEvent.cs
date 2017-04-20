@@ -107,137 +107,14 @@ public class FuseEvent : MonoBehaviour {
 		// New addition for claim item button.
 		if (claimItem != null)
 		{
-			claimItem.onClick.AddListener(() => {
-				SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
-				switch (mode)
-				{
-					// Changing This for April 2017 Study.
-					case "tutorial1":
-						ConversationTrigger.AddToken("done_with_tutorial_1");
-						//LoadUtils.LoadScene("tutorial2");
-						//LoadUtils.UnloadScene("tutorial1");
-						SceneManager.LoadScene("tutorial2");
-						break;
-
-					case "tutorial2":
-						ConversationTrigger.AddToken("done_with_tutorial_2");
-						//LoadUtils.LoadScene("rocketBoots");
-						//LoadUtils.UnloadScene("tutorial2");
-						SceneManager.LoadScene("rocketBoots");
-						break;
-
-					case "rocketBoots":
-						// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
-						SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
-						SceneManager.LoadScene("SimpleMenu");
-						// !!!
-
-						RocketBoots.ActivateBoots();
-						InventoryController.items.Remove("Rocket Boots Body");
-						InventoryController.items.Remove("Rocket Boots Calf");
-						InventoryController.items.Remove("Rocket Boots Sole");
-						InventoryController.items.Remove("Rocket Boots Toe");
-						InventoryController.items.Remove("Rocket Boots Toe Sole");
-						InventoryController.items.Remove("Rocket Boots Trim");
-						InventoryController.items.Remove("Rocket Boots Widening");
-						InventoryController.ConvertInventoryToTokens();
-						//RecipesDB.unlockedRecipes.Remove(RecipesDB.RocketBoots);
-						LoadUtils.LoadScene(InventoryController.levelName);
-						LoadUtils.UnloadScene("rocketBoots");
-						break;
-
-					case "sledgehammer":
-						// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
-						SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
-						SceneManager.LoadScene("SimpleMenu");
-						// !!!
-
-						Sledgehammer.ActivateSledgehammer();
-						InventoryController.items.Remove("Sledgehammer Trapezoid");
-						InventoryController.items.Remove("Sledgehammer Top Point");
-						InventoryController.items.Remove("Sledgehammer Shaft");
-						InventoryController.items.Remove("Sledgehammer Head");
-						InventoryController.items.Remove("Sledgehammer Haft");
-						InventoryController.items.Remove("Sledgehammer Bottom Point");
-						InventoryController.items.Remove("Sledgehammer Bottom Point Right");
-						InventoryController.items.Remove("Sledgehammer Trapezoid");
-						InventoryController.items.Remove("Sledgehammer Top Point Right");
-						InventoryController.items.Remove("Sledgehammer Small Tip");
-						InventoryController.items.Remove("Sledgehammer Small Trap");
-						InventoryController.items.Remove("Sledgehammer Tip");
-
-						InventoryController.ConvertInventoryToTokens();
-						LoadUtils.LoadScene(InventoryController.levelName);
-						LoadUtils.UnloadScene("sledgehammer");
-						break;
-
-					case "key1":
-						ConversationTrigger.AddToken("player_has_key1");
-						InventoryController.items.Remove("Key 1 Dangly T");
-						InventoryController.items.Remove("Key 1 Upright L");
-						InventoryController.items.Remove("Key 1 Upright Rect");
-						InventoryController.items.Remove("Key 1 Upright T");
-						InventoryController.items.Remove("Key 1 Walking Pants");
-						InventoryController.items.Remove("Key 1 Waluigi");
-						InventoryController.ConvertInventoryToTokens();
-						LoadUtils.LoadScene(InventoryController.levelName);
-						LoadUtils.UnloadScene("key1");
-						break;
-
-					case "ffa":
-						ConversationTrigger.AddToken("player_has_ffa");
-						InventoryController.items.Remove("FFA Blue Tri");
-						InventoryController.items.Remove("FFA Center Box");
-						InventoryController.items.Remove("FFA Center Tri");
-						InventoryController.items.Remove("FFA Handle Bottom");
-						InventoryController.items.Remove("FFA Handle Top");
-						InventoryController.items.Remove("FFA Left Tri");
-						InventoryController.items.Remove("FFA Right Tri");
-						InventoryController.items.Remove("FFA Right Tri Chunk");
-						InventoryController.items.Remove("FFA Ring Large");
-						InventoryController.items.Remove("FFA Ring Long");
-						InventoryController.items.Remove("FFA Ring Small");
-						InventoryController.items.Remove("FFA Scalene");
-						InventoryController.ConvertInventoryToTokens();
-						LoadUtils.LoadScene(InventoryController.levelName);
-						LoadUtils.UnloadScene("ffaHarder");
-						break;
-
-					default:
-						Debug.Log("Not Yet Implemented: " + mode);
-						break;
-				}
-				// Update the build button based on the now-removed parts.
-				BuildButton.CheckRecipes();
-
-			});
-			Debug.Log("Made it to this point");
-			Debug.Log("Disabling goToNextTutorial button!");
+			claimItem.onClick.AddListener(() => ClaimButtonListener(1));
 			claimItem.gameObject.SetActive(false);
 		}
 
 		// For April 2017 Study
 		if (claimItem2 != null)
 		{
-			claimItem2.onClick.AddListener(() => {
-				SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
-				switch (mode)
-				{
-					case "tutorial2":
-						ConversationTrigger.AddToken("done_with_tutorial_2");
-						SceneManager.LoadScene("sledgehammer");
-						break;
-
-					default:
-						Debug.Log("Not Yet Implemented: " + mode);
-						break;
-				}
-				// Update the build button based on the now-removed parts.
-				BuildButton.CheckRecipes();
-
-			});
-			Debug.Log("Made it to this point");
-			Debug.Log("Disabling goToNextTutorial button!");
+			claimItem2.onClick.AddListener(() => ClaimButtonListener(2));
 			claimItem2.gameObject.SetActive(false);
 		}
 
@@ -1117,7 +994,7 @@ public class FuseEvent : MonoBehaviour {
 
 			fuseCleanUp();
 			fuseCount++;
-			if(done ()) {
+			if(done()) {
 				stopLevelTimer();
 				printLevelData();
 				tutorialOn = false;
@@ -1491,6 +1368,138 @@ public class FuseEvent : MonoBehaviour {
 			print ("Angle: " + angle + ", Current Rotation: " + currentRotation.eulerAngles + " accepted: " + acceptedRotations[i].eulerAngles);
 		}
 		return acceptable;
+	}
+
+	public void ClaimButtonListener(int buttonId) {
+		SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+		switch (mode) {
+			// Changing This for April 2017 Study.
+			case "tutorial1":
+				ConversationTrigger.AddToken("done_with_tutorial_1");
+				SceneManager.LoadScene("tutorial2");
+				//LoadUtils.LoadScene("tutorial2");
+				//LoadUtils.UnloadScene("tutorial1");
+				break;
+
+			case "tutorial2":
+				ConversationTrigger.AddToken("done_with_tutorial_2");
+				if (buttonId == 1) {
+					SceneManager.LoadScene("rocketBoots");
+				} else if (buttonId == 2) {
+					SceneManager.LoadScene("sledgehammer");
+				}
+				//LoadUtils.LoadScene("rocketBoots");
+				//LoadUtils.UnloadScene("tutorial2");
+				break;
+
+			case "rocketBoots":
+				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
+				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
+				SceneManager.LoadScene("SimpleMenu");
+				// !!!
+
+				RocketBoots.ActivateBoots();
+				InventoryController.items.Remove("Rocket Boots Body");
+				InventoryController.items.Remove("Rocket Boots Calf");
+				InventoryController.items.Remove("Rocket Boots Sole");
+				InventoryController.items.Remove("Rocket Boots Toe");
+				InventoryController.items.Remove("Rocket Boots Toe Sole");
+				InventoryController.items.Remove("Rocket Boots Trim");
+				InventoryController.items.Remove("Rocket Boots Widening");
+				InventoryController.ConvertInventoryToTokens();
+				//RecipesDB.unlockedRecipes.Remove(RecipesDB.RocketBoots);
+				LoadUtils.LoadScene(InventoryController.levelName);
+				LoadUtils.UnloadScene("rocketBoots");
+				break;
+
+			case "sledgehammer":
+				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
+				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
+				SceneManager.LoadScene("SimpleMenu");
+				// !!!
+
+				Sledgehammer.ActivateSledgehammer();
+				InventoryController.items.Remove("Sledgehammer Trapezoid");
+				InventoryController.items.Remove("Sledgehammer Top Point");
+				InventoryController.items.Remove("Sledgehammer Shaft");
+				InventoryController.items.Remove("Sledgehammer Head");
+				InventoryController.items.Remove("Sledgehammer Haft");
+				InventoryController.items.Remove("Sledgehammer Bottom Point");
+				InventoryController.items.Remove("Sledgehammer Bottom Point Right");
+				InventoryController.items.Remove("Sledgehammer Trapezoid");
+				InventoryController.items.Remove("Sledgehammer Top Point Right");
+				InventoryController.items.Remove("Sledgehammer Small Tip");
+				InventoryController.items.Remove("Sledgehammer Small Trap");
+				InventoryController.items.Remove("Sledgehammer Tip");
+
+				InventoryController.ConvertInventoryToTokens();
+				LoadUtils.LoadScene(InventoryController.levelName);
+				LoadUtils.UnloadScene("sledgehammer");
+				break;
+
+			case "key1":
+				ConversationTrigger.AddToken("player_has_key1");
+				InventoryController.items.Remove("Key 1 Dangly T");
+				InventoryController.items.Remove("Key 1 Upright L");
+				InventoryController.items.Remove("Key 1 Upright Rect");
+				InventoryController.items.Remove("Key 1 Upright T");
+				InventoryController.items.Remove("Key 1 Walking Pants");
+				InventoryController.items.Remove("Key 1 Waluigi");
+				InventoryController.ConvertInventoryToTokens();
+				LoadUtils.LoadScene(InventoryController.levelName);
+				LoadUtils.UnloadScene("key1");
+				break;
+
+			case "ffa":
+				ConversationTrigger.AddToken("player_has_ffa");
+				InventoryController.items.Remove("FFA Blue Tri");
+				InventoryController.items.Remove("FFA Center Box");
+				InventoryController.items.Remove("FFA Center Tri");
+				InventoryController.items.Remove("FFA Handle Bottom");
+				InventoryController.items.Remove("FFA Handle Top");
+				InventoryController.items.Remove("FFA Left Tri");
+				InventoryController.items.Remove("FFA Right Tri");
+				InventoryController.items.Remove("FFA Right Tri Chunk");
+				InventoryController.items.Remove("FFA Ring Large");
+				InventoryController.items.Remove("FFA Ring Long");
+				InventoryController.items.Remove("FFA Ring Small");
+				InventoryController.items.Remove("FFA Scalene");
+				InventoryController.ConvertInventoryToTokens();
+				LoadUtils.LoadScene(InventoryController.levelName);
+				LoadUtils.UnloadScene("ffaHarder");
+				break;
+
+			default:
+				Debug.Log("Not Yet Implemented: " + mode);
+				break;
+		}
+		// Update the build button based on the now-removed parts.
+		BuildButton.CheckRecipes();
+	}
+
+	// For April 2017 Study
+	public void LevelDone() {
+		stopLevelTimer();
+		printLevelData();
+		tutorialOn = false;
+		rotatePanelGroup.alpha = 0;
+		bottomPanelGroup.alpha = 0;
+		congratsPanelGroup.GetComponent<Image>().CrossFadeAlpha(255, 4, false);
+		finishedImage.enabled = false;
+		GameObject.Find("Back Button").SetActive(false);
+
+		claimItem.gameObject.SetActive(true);
+
+		// For April 2017 Study
+		if (claimItem2 != null) claimItem2.gameObject.SetActive(true);
+
+		congrats.enabled = true;
+
+		musicSource.Stop();
+		mainCam.transform.position = new Vector3(-90,80,-3.36f);
+		mainCam.transform.rotation = Quaternion.Euler(new Vector3(15,0,0));
+		source.Play ();
+		StartCoroutine (FadeAudio (fadeTime, Fade.Out));
 	}
 
 	// Update is called once per frame

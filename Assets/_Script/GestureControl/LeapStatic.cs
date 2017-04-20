@@ -287,6 +287,20 @@ public class LeapStatic : MonoBehaviour {
 		//recordParams();
 	}
 
+	// Get object currently controlling
+	public static GameObject GetControlObject() {
+		GameObject activeGo = null;
+		foreach (string part in objectName) {
+			GameObject go = GameObject.Find(part);
+			if (go != null && !go.GetComponent<IsFused>().isFused) {
+				// Should only be one object in control;
+				activeGo = go;
+				break;
+			}
+		}
+		return activeGo;
+	}
+
 	/* Returns the indices of active objects in @constructionObject */
 	public static List<int> GetActiveObjects()
 	{
