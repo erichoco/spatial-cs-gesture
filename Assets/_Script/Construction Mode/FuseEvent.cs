@@ -36,6 +36,7 @@ public class FuseEvent : MonoBehaviour {
 	public Text congrats;
 	public Text shapesWrong;
 	public Text rotationWrong;
+	public Text distanceWrong;  // For April 2017 Study
 	public Text getPassword;
 	public Button claimItem;    // NEW ADDITION. A button which appears upon completion of an item to claim it in exploration mode.
 	public Button claimItem2; // For April 2017 Study
@@ -976,21 +977,34 @@ public class FuseEvent : MonoBehaviour {
 			//print ("Select the black regions you want to join together!");
 			source.PlayOneShot (failure);
 
-		} else if (!fuseMapping.ContainsKey (selectedObject.name)){
+		} else if (!fuseMapping.ContainsKey(selectedObject.name)){
 			print ("Invalid fuse: Cannot fuse " + selectedObject.name + " to " + selectedFuseTo.name);
 			//display error on screen for 1 sec
 			StartCoroutine(errorWrongFace());
 			data_fuseStatus = "Failure";
 			data_failureType = "Wrong_Face";
 
+		} else if (!fuseMapping[selectedObject.name].Contains(selectedFuseTo.name)) {
+			print ("Invalid fuse: Cannot fuse " + selectedObject.name + " to " + selectedFuseTo.name);
+			StartCoroutine(errorWrongFace());
+			data_fuseStatus = "Failure";
+			data_failureType = "Wrong_Face";
+
+		} else if (fuseMapping[selectedObject.name].Contains(selectedFuseTo.name) && !positionMatches (selectedObject, selectedFuseTo)){
+			//rotation isn't right - tell player this or let them figure it out themselves?
+			StartCoroutine(errorWrongRotation());
+			data_fuseStatus = "Failure";
+			data_failureType = "Wrong_Rotation";
+			print ("Invalid fuse: Correct fuse selection, but the orientation isn't right!");
+		} else if (Vector3.Distance(selectedObject.transform.position, selectedFuseTo.transform.position) > 40) {
+			// For April 2017 Study - Gesture
+			StartCoroutine(errorWrongDistance());
 		} else if(fuseMapping[selectedObject.name].Contains(selectedFuseTo.name) && positionMatches (selectedObject, selectedFuseTo)) {
 
 			print ("Successful fuse!");
 			fuseStatus="success";
 			source.PlayOneShot (success);
 			selectedObject.GetComponent<FuseBehavior>().fuse(selectedFuseTo.name, selectedFuseTo.transform.parent.gameObject.GetComponent<IsFused>().locationTag);
-
-
 
 			fuseCleanUp();
 			fuseCount++;
@@ -1016,28 +1030,11 @@ public class FuseEvent : MonoBehaviour {
 				mainCam.transform.rotation = Quaternion.Euler(new Vector3(15,0,0));
 				source.Play ();
 				StartCoroutine (FadeAudio (fadeTime, Fade.Out));
-			}
-			else
-			{
+			} else {
 				// For April 2017 Study. Creates next part.
 				if (order != null)
 					order.NextPart();
 			}
-
-
-
-		} else if (!fuseMapping[selectedObject.name].Contains (selectedFuseTo.name)) {
-			print ("Invalid fuse: Cannot fuse " + selectedObject.name + " to " + selectedFuseTo.name);
-			StartCoroutine(errorWrongFace());
-			data_fuseStatus = "Failure";
-			data_failureType = "Wrong_Face";
-
-		} else if (fuseMapping[selectedObject.name].Contains (selectedFuseTo.name) && !positionMatches (selectedObject, selectedFuseTo)){
-			//rotation isn't right - tell player this or let them figure it out themselves?
-			StartCoroutine(errorWrongRotation());
-			data_fuseStatus = "Failure";
-			data_failureType = "Wrong_Rotation";
-			print ("Invalid fuse: Correct fuse selection, but the orientation isn't right!");
 		} else {
 			//this shouldn't happen
 			print ("MYSTERIOUS FUSE ERROR");
@@ -1065,6 +1062,16 @@ public class FuseEvent : MonoBehaviour {
 		source.PlayOneShot (failure);
 		yield return new WaitForSeconds(1f);
 		rotationWrong.enabled=false;
+		errorPanelGroup.alpha = 0;
+	}
+
+	IEnumerator errorWrongDistance() {
+		fuseStatus="wrongDistance";
+		errorPanelGroup.alpha = 1;
+		distanceWrong.enabled = true;
+		source.PlayOneShot (failure);
+		yield return new WaitForSeconds(1f);
+		distanceWrong.enabled=false;
 		errorPanelGroup.alpha = 0;
 	}
 

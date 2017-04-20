@@ -9,6 +9,8 @@ public class LeapFuse : MonoBehaviour {
 	private List<GameObject> fusedAttachList;
 	private List<GameObject> controlAttachList;
 
+	public bool IsDistClose;
+
 	void Start () {
 		eventSystem = GameObject.Find("EventSystem");
 		fusedDict = new Dictionary<string, GameObject>();
@@ -59,9 +61,10 @@ public class LeapFuse : MonoBehaviour {
 	void setAttachObjects() {
 		foreach (GameObject control in controlAttachList) {
 			foreach (GameObject fused in fusedAttachList) {
-				if (!fused.GetComponent<FuseBehavior>().isFused &&
-					Vector3.Distance(control.transform.position, fused.transform.position) < 40 &&
-					eventSystem.GetComponent<FuseEvent>().IsFuseMappingExist(fused, control)) {
+				if (fused.GetComponent<FuseBehavior>().isFused) {
+					continue;
+				}
+				if (eventSystem.GetComponent<FuseEvent>().IsFuseMappingExist(fused, control)) {
 					// Debug.Log("[LeapFuse] " + control);
 					// Debug.Log("[LeapFuse] " + fused);
 					// Debug.Log("[LeapFuse] setting objects");
