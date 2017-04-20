@@ -436,7 +436,7 @@ MonoBehaviour:
   rightHandAxis: {x: 0, y: 0, z: 0}
   objectAxis: {x: 0, y: 0, z: 0}
   rotateQuickly: 1
-  centerGrabbedObject: 0
+  centerGrabbedObject: 1
   breakableJoint: {fileID: 0}
   breakForce: 0
   breakTorque: 0

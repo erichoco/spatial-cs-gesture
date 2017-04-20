@@ -9,8 +9,6 @@ public class LeapFuse : MonoBehaviour {
 	private List<GameObject> fusedAttachList;
 	private List<GameObject> controlAttachList;
 
-	public bool IsDistClose;
-
 	void Start () {
 		eventSystem = GameObject.Find("EventSystem");
 		fusedDict = new Dictionary<string, GameObject>();

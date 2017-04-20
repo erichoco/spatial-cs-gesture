@@ -40,10 +40,8 @@ public class CustomGrabbableObject : GrabbableObject {
 	}
 
 	public override void OnGrab() {
-		Debug.Log("[Grabbable] OnGrab");
 		base.OnGrab();
 		rb.isKinematic = false;
-
 		isGrabbed = true;
 	}
 
