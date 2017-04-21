@@ -2371,7 +2371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 376, y: 418}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1232480375
@@ -2548,9 +2548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'CLAIM
-
-'
+  m_Text: End Game
 --- !u!222 &1270560183
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2754,7 +2752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a62bd1f9e428d64fb664298c3add03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: rocketBoots
+  mode: boot
   source: {fileID: 369571929}
   musicSource: {fileID: 1868226679}
   success: {fileID: 8300000, guid: ae9e829741082eb4093adf3c61753e96, type: 3}

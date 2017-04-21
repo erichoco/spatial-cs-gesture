@@ -1389,10 +1389,10 @@ public class FuseEvent : MonoBehaviour {
 				//LoadUtils.UnloadScene("tutorial2");
 				break;
 
-			case "rocketBoots":
+			case "boot":
 				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
-				//SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
-				SceneManager.LoadScene("sledgehammer");
+				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
+				SceneManager.LoadScene("SimpleMenu");
 				// !!!
 
 				RocketBoots.ActivateBoots();
@@ -1409,7 +1409,7 @@ public class FuseEvent : MonoBehaviour {
 				LoadUtils.UnloadScene("rocketBoots");
 				break;
 
-			case "sledgehammer":
+			case "axe":
 				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
 				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
 				SceneManager.LoadScene("SimpleMenu");
