@@ -24,6 +24,10 @@ public class GestureController : MonoBehaviour {
 	FuseEvent fuseEvent;
 	CameraControls cameraControl;
 
+	// Boundaries of gesture movements
+	public Vector3 MaxMovement = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
+	public Vector3 MinMovement = new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity);
+
 	void Start () {
 		controller = new Controller();
 

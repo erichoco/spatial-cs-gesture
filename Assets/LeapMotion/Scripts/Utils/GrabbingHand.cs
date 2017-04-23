@@ -71,6 +71,13 @@ public class GrabbingHand : MonoBehaviour {
     filtered_pinch_position_ = Vector3.zero;
     object_pinch_offset_ = Vector3.zero;
     palm_rotation_ = Quaternion.identity;
+
+    // For April 2017 Study
+    GestureController gc = GameObject.Find("HandController").GetComponent<GestureController>();
+    if (gc != null) {
+        maxMovement = gc.MaxMovement;
+        minMovement = gc.MinMovement;
+    }
   }
 
   void OnDestroy() {
@@ -268,6 +275,7 @@ public class GrabbingHand : MonoBehaviour {
     target_position.x = Mathf.Clamp(target_position.x, minMovement.x, maxMovement.x);
     target_position.y = Mathf.Clamp(target_position.y, minMovement.y, maxMovement.y);
     target_position.z = Mathf.Clamp(target_position.z, minMovement.z, maxMovement.z);
+    Debug.Log("[Grabbing Hand]" + target_position.ToString());
     Vector3 velocity = (target_position - active_object_.transform.position) / Time.deltaTime;
     active_object_.GetComponent<Rigidbody>().velocity = velocity;
 
