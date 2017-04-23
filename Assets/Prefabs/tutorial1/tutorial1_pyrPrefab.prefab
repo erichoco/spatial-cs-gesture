@@ -312,7 +312,7 @@ MonoBehaviour:
   useAxisAlignment: 0
   rightHandAxis: {x: 0, y: 0, z: 0}
   objectAxis: {x: 0, y: 0, z: 0}
-  rotateQuickly: 1
+  rotateQuickly: 0
   centerGrabbedObject: 1
   breakableJoint: {fileID: 0}
   breakForce: 0

@@ -1342,15 +1342,15 @@ MonoBehaviour:
     m_Bits: 4294967295
   grabTriggerDistance: 0.8
   releaseTriggerDistance: 1
-  grabObjectDistance: 20
-  releaseBreakDistance: 12
+  grabObjectDistance: 40
+  releaseBreakDistance: 20
   releaseStrengthCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  rotationFiltering: 0.4
+  rotationFiltering: 0.8
   positionFiltering: 0.4
   minConfidence: 0.1
   maxMovement: {x: Infinity, y: Infinity, z: Infinity}

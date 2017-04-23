@@ -45,7 +45,7 @@ public class SimpleData : MonoBehaviour
 
 	void Awake ()
 	{
-		CreateInitialFiles();
+		// CreateInitialFiles();
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>();
 		go = Instantiate(Resources.Load("Prefabs/Empty") as GameObject);
 		sap = go.GetComponent<SingletonAttachPoint>();
