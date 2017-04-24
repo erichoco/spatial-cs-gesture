@@ -971,6 +971,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: tutorial1
+  MaxMovement: {x: 30, y: 90, z: 140}
+  MinMovement: {x: -140, y: -30, z: 30}
 --- !u!114 &561897317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,6 +1453,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11476892, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
+      propertyPath: orbitPoint.y
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
   m_IsPrefabParent: 0
@@ -1609,7 +1615,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -120
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1647,27 +1653,27 @@ Prefab:
         type: 2}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalScale.x
-      value: 250
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalScale.y
-      value: 250
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalScale.z
-      value: 250
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.x
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.y
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.z
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: enableRecordPlayback

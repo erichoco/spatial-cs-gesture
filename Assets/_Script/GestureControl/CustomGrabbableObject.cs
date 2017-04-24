@@ -57,8 +57,7 @@ public class CustomGrabbableObject : GrabbableObject {
 	// }
 
 	public override void OnGrab() {
-		if (!isReleased) return;
-		if (!gController.IsControlEnabled()) return;
+		if (!isReleased || !gController.IsControlEnabled()) return;
 		base.OnGrab();
 		rb.isKinematic = false;
 		isReleased = false;
@@ -74,7 +73,7 @@ public class CustomGrabbableObject : GrabbableObject {
 
 	public override void OnStartHover() {
 		base.OnStartHover();
-		if (isReleased) {
+		if (isReleased && gController.IsControlEnabled()) {
 			highlightChildren();
 		}
 	}

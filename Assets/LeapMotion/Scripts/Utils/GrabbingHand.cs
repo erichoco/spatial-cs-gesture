@@ -274,7 +274,6 @@ public class GrabbingHand : MonoBehaviour {
     target_position.x = Mathf.Clamp(target_position.x, minMovement.x, maxMovement.x);
     target_position.y = Mathf.Clamp(target_position.y, minMovement.y, maxMovement.y);
     target_position.z = Mathf.Clamp(target_position.z, minMovement.z, maxMovement.z);
-    Debug.Log("[Grabbing Hand]" + target_position.ToString());
     Vector3 velocity = (target_position - active_object_.transform.position) / Time.deltaTime;
     active_object_.GetComponent<Rigidbody>().velocity = velocity;
 

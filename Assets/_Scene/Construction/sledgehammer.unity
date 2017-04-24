@@ -2781,7 +2781,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 426536, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -25
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 426536, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2810,6 +2810,10 @@ Prefab:
     - target: {fileID: 426536, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476892, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
+      propertyPath: orbitPoint.y
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddb395dde3bbfa34a94c77156d1da4d6, type: 2}
@@ -4555,7 +4559,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -120
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: m_LocalPosition.z
@@ -4595,15 +4599,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.x
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.y
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: handMovementScale.z
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9f2277f2b4414ff9abf05e783890171, type: 2}
       propertyPath: leftGraphicsModel
@@ -4656,6 +4660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: sledgehammer
+  MaxMovement: {x: Infinity, y: Infinity, z: Infinity}
+  MinMovement: {x: -Infinity, y: -Infinity, z: -Infinity}
 --- !u!114 &1874356729
 MonoBehaviour:
   m_ObjectHideFlags: 0

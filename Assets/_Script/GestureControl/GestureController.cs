@@ -8,6 +8,7 @@ public class GestureController : MonoBehaviour {
 
 	// Grabbing
 	float grabDuration;
+	float grabDuration1;
 
 	// Clapping
 	const int POS_LIST_SIZE = 5;
@@ -34,6 +35,7 @@ public class GestureController : MonoBehaviour {
 		controller = new Controller();
 
 		grabDuration = 0f;
+		grabDuration1 = 0f;
 
 		leftHandPosList = new List<Vector3>();
 		rightHandPosList = new List<Vector3>();
@@ -57,7 +59,9 @@ public class GestureController : MonoBehaviour {
 
 		controlEnabled = false;
 		if (hands.Count == 2) {
-			if (checkOneGrabStarted(hands)) {
+			if (checkTwoGrabStarted(hands)) {
+				fuseEvent.initiateFuse();
+			} else if (checkOneGrabStarted(hands)) {
 				Vector grabVelocity = frame.Hands[0].PalmVelocity;
 				cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
 			}
@@ -67,11 +71,6 @@ public class GestureController : MonoBehaviour {
 		} else if (hands.Count == 1) {
 			controlEnabled = true;
 		}
-		// Rotate camera to change perspective
-		// if (checkRotatingView(hands)) {
-		// 	Vector grabVelocity = frame.Hands[0].PalmVelocity;
-		// 	cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
-		// }
 	}
 
 	public bool IsControlEnabled() {
@@ -80,6 +79,15 @@ public class GestureController : MonoBehaviour {
 
 	bool checkRotatingView(HandList hands) {
 		return true;
+	}
+
+	bool checkTwoGrabStarted(HandList hands) {
+		if (hands[0].GrabStrength > 0.8 && hands[1].GrabStrength > 0.8) {
+			grabDuration1 += 0.02f;
+			return grabDuration1 > LeapStatic.minGrabTime;
+		}
+		grabDuration1 = 0f;
+		return false;
 	}
 
 	bool checkOneGrabStarted(HandList hands) {
