@@ -969,7 +969,7 @@ public class FuseEvent : MonoBehaviour {
 		//print ("SelectedObjectParent: " + selectedObjectParent.name + ", SelectedFuseToParent: " + selectedFuseToParent.name);
 		//print ("fuseMapping[" + selectedObject.name + "] = " + fuseMapping[selectedObject.name]);
 		//foreach(string s in fuseMapping[selectedObject.name]) {
-		//	print (s);
+		//	print(s);
 		//}
 
 		if(selectedObject == null) {

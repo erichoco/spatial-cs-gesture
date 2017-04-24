@@ -483,10 +483,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1645d83ba265c4970bfdc04089958a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useAxisAlignment: 1
+  useAxisAlignment: 0
   rightHandAxis: {x: 0, y: 0, z: 0}
   objectAxis: {x: 0, y: 0, z: 0}
-  rotateQuickly: 1
+  rotateQuickly: 0
   centerGrabbedObject: 1
   breakableJoint: {fileID: 0}
   breakForce: 0

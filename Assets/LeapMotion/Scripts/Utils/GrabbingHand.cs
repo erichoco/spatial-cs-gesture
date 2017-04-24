@@ -75,8 +75,8 @@ public class GrabbingHand : MonoBehaviour {
     // For April 2017 Study
     GestureController gc = GameObject.Find("HandController").GetComponent<GestureController>();
     if (gc != null) {
-        maxMovement = gc.MaxMovement;
-        minMovement = gc.MinMovement;
+      maxMovement = gc.MaxMovement;
+      minMovement = gc.MinMovement;
     }
   }
 
@@ -112,7 +112,6 @@ public class GrabbingHand : MonoBehaviour {
   // Notify grabbable objects when they are ready to grab :)
   protected void Hover() {
     Collider hover = FindClosestGrabbableObject(current_pinch_position_);
-    // Debug.Log(hover);
 
     if (hover != active_object_ && active_object_ != null) {
       GrabbableObject old_grabbable = active_object_.GetComponent<GrabbableObject>();

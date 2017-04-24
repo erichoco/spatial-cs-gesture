@@ -24,6 +24,8 @@ public class GestureController : MonoBehaviour {
 	FuseEvent fuseEvent;
 	CameraControls cameraControl;
 
+	bool controlEnabled;
+
 	// Boundaries of gesture movements
 	public Vector3 MaxMovement = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
 	public Vector3 MinMovement = new Vector3(-Mathf.Infinity, -Mathf.Infinity, -Mathf.Infinity);
@@ -45,20 +47,48 @@ public class GestureController : MonoBehaviour {
 		fuseEvent = GameObject.Find("EventSystem").GetComponent<FuseEvent>();
 		cameraControl = GameObject.Find("ConstructionCamRig").GetComponent<CameraControls>();
 		GameObject.Find("RotationGizmo").SetActive(false);
+
+		controlEnabled = false;
 	}
 
 	void Update () {
 		Frame frame = controller.Frame();
 		HandList hands = frame.Hands;
 
+		controlEnabled = false;
 		if (hands.Count == 2) {
-			if (checkGrabStarted(hands)) {
+			if (checkOneGrabStarted(hands)) {
 				Vector grabVelocity = frame.Hands[0].PalmVelocity;
 				cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
-			} else if (checkClapped(hands)) {
-				fuseEvent.initiateFuse();
 			}
+			/* else if (checkClapped(hands)) {
+			 	fuseEvent.initiateFuse();
+			}*/
+		} else if (hands.Count == 1) {
+			controlEnabled = true;
 		}
+		// Rotate camera to change perspective
+		// if (checkRotatingView(hands)) {
+		// 	Vector grabVelocity = frame.Hands[0].PalmVelocity;
+		// 	cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
+		// }
+	}
+
+	public bool IsControlEnabled() {
+		return controlEnabled;
+	}
+
+	bool checkRotatingView(HandList hands) {
+		return true;
+	}
+
+	bool checkOneGrabStarted(HandList hands) {
+		if (hands[0].GrabStrength > 0.8 || hands[1].GrabStrength > 0.8) {
+			grabDuration += 0.02f;
+			return grabDuration > LeapStatic.minGrabTime;
+		}
+		grabDuration = 0f;
+		return false;
 	}
 
 	bool checkGrabStarted(HandList hands) {
