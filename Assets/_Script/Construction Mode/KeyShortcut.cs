@@ -24,6 +24,10 @@ public class KeyShortcut : MonoBehaviour {
 			if (go != null) {
 				go.transform.position = initPos;
 			}
+		} else if (Input.GetKeyDown("c")) {
+			if (fuse != null) {
+				fuse.initiateFuse();
+			}
 		}
 	}
 }
