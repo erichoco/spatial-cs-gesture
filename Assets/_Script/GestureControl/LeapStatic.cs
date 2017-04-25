@@ -16,7 +16,7 @@ public class LeapStatic : MonoBehaviour {
 	public static int dragStable = 2;
 
 	//two hands
-	public static float grabViewFactor = 200f; //higher -> less sensitive
+	public static float grabViewFactor = 400f; //higher -> less sensitive
 	public static float connectTimeLimited = 2f; //higher -> velocity lower allowed
 
 	public static float minGripTime = 0.1f;

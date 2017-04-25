@@ -59,9 +59,7 @@ public class GestureController : MonoBehaviour {
 
 		controlEnabled = false;
 		if (hands.Count == 2) {
-			if (checkTwoGrabStarted(hands)) {
-				fuseEvent.initiateFuse();
-			} else if (checkOneGrabStarted(hands)) {
+			if (checkOneGrabStarted(hands)) {
 				Vector grabVelocity = frame.Hands[0].PalmVelocity;
 				cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
 			}
@@ -75,10 +73,6 @@ public class GestureController : MonoBehaviour {
 
 	public bool IsControlEnabled() {
 		return controlEnabled;
-	}
-
-	bool checkRotatingView(HandList hands) {
-		return true;
 	}
 
 	bool checkTwoGrabStarted(HandList hands) {

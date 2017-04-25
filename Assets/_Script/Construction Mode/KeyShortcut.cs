@@ -24,7 +24,7 @@ public class KeyShortcut : MonoBehaviour {
 			if (go != null) {
 				go.transform.position = initPos;
 			}
-		} else if (Input.GetKeyDown("c")) {
+		} else if (Input.GetKeyDown("space")) {
 			if (fuse != null) {
 				fuse.initiateFuse();
 			}
