@@ -117,42 +117,42 @@ public class CustomGrabbableObject : GrabbableObject {
 	void logRotationAxis() {
 		Vector3 crossUp = Vector3.Cross(initUp, transform.up);
 		if (crossUp.x > 0.5) {
-			Debug.Log("+x");
+			// Debug.Log("+x");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "X");
 		} else if (crossUp.x < -0.5) {
-			Debug.Log("-x");
+			// Debug.Log("-x");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "X");
 		} else if (crossUp.y > 0.5) {
-			Debug.Log("+y");
+			// Debug.Log("+y");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Y");
 		} else if (crossUp.y < -0.5) {
-			Debug.Log("-y");
+			// Debug.Log("-y");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Y");
 		} else if (crossUp.z > 0.5) {
-			Debug.Log("+z");
+			// Debug.Log("+z");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Z");
 		} else if (crossUp.z < -0.5) {
-			Debug.Log("-z");
+			// Debug.Log("-z");
 			SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Z");
 		} else {
 			Vector3 crossForward = Vector3.Cross(initForward, transform.forward);
 			if (crossForward.x > 0.5) {
-				Debug.Log("+x");
+				// Debug.Log("+x");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "X");
 			} else if (crossForward.x < -0.5) {
-				Debug.Log("-x");
+				// Debug.Log("-x");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "X");
 			} else if (crossForward.y > 0.5) {
-				Debug.Log("+y");
+				// Debug.Log("+y");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Y");
 			} else if (crossForward.y < -0.5) {
-				Debug.Log("-y");
+				// Debug.Log("-y");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Y");
 			} else if (crossForward.z > 0.5) {
-				Debug.Log("+z");
+				// Debug.Log("+z");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Z");
 			} else if (crossForward.z < -0.5) {
-				Debug.Log("-z");
+				// Debug.Log("-z");
 				SimpleData.WriteDataPoint("Rotate_Object", gameObject.name, "", "", "", "Z");
 			}
 		}

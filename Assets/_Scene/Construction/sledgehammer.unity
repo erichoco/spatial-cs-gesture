@@ -2336,7 +2336,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11491522, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}
       propertyPath: m_Text
-      value: CLAIM
+      value: End Game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad89286775433fd4cace6f35a7c5e113, type: 2}

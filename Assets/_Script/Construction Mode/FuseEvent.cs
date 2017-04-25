@@ -124,7 +124,8 @@ public class FuseEvent : MonoBehaviour {
 		{
 			// Special stuff happens because we are just running construction mode without exploration mode.
 			runningJustConstructionMode = true;
-			SimpleData.CreateInitialFiles();
+			// Commented out for April 2017 Study
+			// SimpleData.CreateInitialFiles();
 
 			//! Is this a really bad idea?
 			//SaveController.filename += "_CONSTRUCTION-ONLY";
@@ -1378,7 +1379,9 @@ public class FuseEvent : MonoBehaviour {
 	}
 
 	public void ClaimButtonListener(int buttonId) {
-		SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+		if (done()) {
+			SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+		}
 		switch (mode) {
 			// Changing This for April 2017 Study.
 			case "tutorial1":
@@ -1399,13 +1402,13 @@ public class FuseEvent : MonoBehaviour {
 				//LoadUtils.UnloadScene("tutorial2");
 				break;
 
-			case "rocketBoots":
+			case "boot":
 				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
 				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
 				SceneManager.LoadScene("SimpleMenu");
 				// !!!
 
-				RocketBoots.ActivateBoots();
+				/*RocketBoots.ActivateBoots();
 				InventoryController.items.Remove("Rocket Boots Body");
 				InventoryController.items.Remove("Rocket Boots Calf");
 				InventoryController.items.Remove("Rocket Boots Sole");
@@ -1416,16 +1419,16 @@ public class FuseEvent : MonoBehaviour {
 				InventoryController.ConvertInventoryToTokens();
 				//RecipesDB.unlockedRecipes.Remove(RecipesDB.RocketBoots);
 				LoadUtils.LoadScene(InventoryController.levelName);
-				LoadUtils.UnloadScene("rocketBoots");
+				LoadUtils.UnloadScene("rocketBoots");*/
 				break;
 
-			case "sledgehammer":
+			case "axe":
 				// THIS LINE HAS BEEN ADDED FOR THE APRIL 2017 STUDY
 				SimpleData.WriteDataPoint("Finished_Study", "", "", "", "", "");
 				SceneManager.LoadScene("SimpleMenu");
 				// !!!
 
-				Sledgehammer.ActivateSledgehammer();
+				/*Sledgehammer.ActivateSledgehammer();
 				InventoryController.items.Remove("Sledgehammer Trapezoid");
 				InventoryController.items.Remove("Sledgehammer Top Point");
 				InventoryController.items.Remove("Sledgehammer Shaft");
@@ -1441,7 +1444,7 @@ public class FuseEvent : MonoBehaviour {
 
 				InventoryController.ConvertInventoryToTokens();
 				LoadUtils.LoadScene(InventoryController.levelName);
-				LoadUtils.UnloadScene("sledgehammer");
+				LoadUtils.UnloadScene("sledgehammer");*/
 				break;
 
 			case "key1":

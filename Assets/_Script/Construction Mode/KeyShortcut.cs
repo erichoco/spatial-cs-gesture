@@ -17,6 +17,7 @@ public class KeyShortcut : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown("s")) {
 			if (fuse != null) {
+				SimpleData.WriteDataPoint("Skip_Scene", "", "", "", "", "Incomplete_Construction");
 				fuse.LevelDone();
 			}
 		} else if (Input.GetKeyDown("r")) {
