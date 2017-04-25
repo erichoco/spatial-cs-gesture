@@ -1368,7 +1368,9 @@ public class FuseEvent : MonoBehaviour {
 	}
 
 	public void ClaimButtonListener(int buttonId) {
-		SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+		if (done()) {
+			SimpleData.WriteDataPoint("Left_Scene", "", "", "", "", "Complete_Construction");
+		}
 		switch (mode) {
 			// Changing This for April 2017 Study.
 			case "tutorial1":
@@ -1395,7 +1397,7 @@ public class FuseEvent : MonoBehaviour {
 				SceneManager.LoadScene("SimpleMenu");
 				// !!!
 
-				RocketBoots.ActivateBoots();
+				/*RocketBoots.ActivateBoots();
 				InventoryController.items.Remove("Rocket Boots Body");
 				InventoryController.items.Remove("Rocket Boots Calf");
 				InventoryController.items.Remove("Rocket Boots Sole");
@@ -1406,7 +1408,7 @@ public class FuseEvent : MonoBehaviour {
 				InventoryController.ConvertInventoryToTokens();
 				//RecipesDB.unlockedRecipes.Remove(RecipesDB.RocketBoots);
 				LoadUtils.LoadScene(InventoryController.levelName);
-				LoadUtils.UnloadScene("rocketBoots");
+				LoadUtils.UnloadScene("rocketBoots");*/
 				break;
 
 			case "axe":
@@ -1415,7 +1417,7 @@ public class FuseEvent : MonoBehaviour {
 				SceneManager.LoadScene("SimpleMenu");
 				// !!!
 
-				Sledgehammer.ActivateSledgehammer();
+				/*Sledgehammer.ActivateSledgehammer();
 				InventoryController.items.Remove("Sledgehammer Trapezoid");
 				InventoryController.items.Remove("Sledgehammer Top Point");
 				InventoryController.items.Remove("Sledgehammer Shaft");
@@ -1431,7 +1433,7 @@ public class FuseEvent : MonoBehaviour {
 
 				InventoryController.ConvertInventoryToTokens();
 				LoadUtils.LoadScene(InventoryController.levelName);
-				LoadUtils.UnloadScene("sledgehammer");
+				LoadUtils.UnloadScene("sledgehammer");*/
 				break;
 
 			case "key1":
