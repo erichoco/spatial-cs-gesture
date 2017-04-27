@@ -61,6 +61,7 @@ public class GrabbingHand : MonoBehaviour {
 
   // For Construction @ptchiu
   protected Quaternion init_palm_rotation_;
+  GestureController gc;
 
   void Start() {
     pinch_state_ = PinchState.kReleased;
@@ -72,8 +73,8 @@ public class GrabbingHand : MonoBehaviour {
     object_pinch_offset_ = Vector3.zero;
     palm_rotation_ = Quaternion.identity;
 
-    // For April 2017 Study
-    GestureController gc = GameObject.Find("HandController").GetComponent<GestureController>();
+    // For Construction @ptchiu
+    gc = GameObject.Find("HandController").GetComponent<GestureController>();
     if (gc != null) {
       maxMovement = gc.MaxMovement;
       minMovement = gc.MinMovement;
@@ -270,13 +271,29 @@ public class GrabbingHand : MonoBehaviour {
   protected void ContinueHardPinch() {
     Quaternion target_rotation = palm_rotation_ * rotation_from_palm_;
 
+    // Vector3 target_position = filtered_pinch_position_ + target_rotation * object_pinch_offset_;
+    // target_position.x = Mathf.Clamp(target_position.x, minMovement.x, maxMovement.x);
+    // target_position.y = Mathf.Clamp(target_position.y, minMovement.y, maxMovement.y);
+    // target_position.z = Mathf.Clamp(target_position.z, minMovement.z, maxMovement.z);
+    // Vector3 velocity = (target_position - active_object_.transform.position) / Time.deltaTime;
+    // active_object_.GetComponent<Rigidbody>().velocity = velocity;
+
+    if (gc.GetMode() == 0)
+      UpdateTargetPosition(target_rotation);
+    // else if (gc.GetMode() == 2)
+    //   UpdateTargetRotation(target_rotation);
+  }
+
+  protected void UpdateTargetPosition(Quaternion target_rotation) {
     Vector3 target_position = filtered_pinch_position_ + target_rotation * object_pinch_offset_;
     target_position.x = Mathf.Clamp(target_position.x, minMovement.x, maxMovement.x);
     target_position.y = Mathf.Clamp(target_position.y, minMovement.y, maxMovement.y);
     target_position.z = Mathf.Clamp(target_position.z, minMovement.z, maxMovement.z);
     Vector3 velocity = (target_position - active_object_.transform.position) / Time.deltaTime;
     active_object_.GetComponent<Rigidbody>().velocity = velocity;
+  }
 
+  protected void UpdateTargetRotation(Quaternion target_rotation) {
     Quaternion delta_rotation = target_rotation *
                                 Quaternion.Inverse(active_object_.transform.rotation);
 

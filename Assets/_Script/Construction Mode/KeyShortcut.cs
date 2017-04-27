@@ -29,6 +29,9 @@ public class KeyShortcut : MonoBehaviour {
 			if (fuse != null) {
 				fuse.initiateFuse();
 			}
+		} else if (Input.GetKeyDown("m")) {
+			GestureController gc = GameObject.Find("HandController").GetComponent<GestureController>();
+			gc.SwitchMode();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using Leap;
+using Leap;
 
 public class CustomGrabbableObject : GrabbableObject {
 	Rigidbody rb;
@@ -9,10 +9,17 @@ public class CustomGrabbableObject : GrabbableObject {
 	GestureController gController;
 
 	bool isHandExist;
+	bool isHovering;
 	bool isReleased;
 	Quaternion initAngle;
 	Vector3 initUp;
 	Vector3 initForward;
+
+	// Hand Angles
+	bool isRotating;
+	Quaternion palm_rotation_;
+	Quaternion init_palm_rotation_;
+	Quaternion rotation_from_palm_;
 
 	// Shader for Highlighting
 	Renderer[] childRenderers;
@@ -26,6 +33,7 @@ public class CustomGrabbableObject : GrabbableObject {
 		hand = null;
 
 		isHandExist = false;
+		isHovering = false;
 		isReleased = true;
 		initAngle = transform.rotation;
 		initUp = transform.up;
@@ -41,18 +49,49 @@ public class CustomGrabbableObject : GrabbableObject {
 
 	// Update is called once per frame
 	void Update () {
-		if (isHandExist) {
-			if (hand == null) {
-				snapObject();
-				isHandExist = false;
-			}
-		} else {
+
+		// Hand disappears
+		if (isHandExist && hand == null) {
+			snapObject();
+			isHandExist = false;
+			return;
+		} else if (!isHandExist) {
 			hand = GameObject.Find("RigidRoundHand(Clone)");
 			isHandExist = (hand != null);
 		}
 
-		if (!isReleased && checkRotationAngle()) {
-			OnComplete();
+		// if (!isReleased && checkRotationAngle()) {
+		// 	OnComplete();
+		// }
+
+		// 0: Moving Mode, 1: Rotation Mode
+		if (gController.GetMode() == 0) {
+			rb.angularVelocity = Vector3.zero;
+			isRotating = false;
+
+		} else if (gController.GetMode() == 1) {
+			rb.velocity = Vector3.zero;
+
+			// Rotation enabled
+			if (checkRotationEnabled()) {
+				rb.isKinematic = false;
+				if (!isRotating) {
+					isRotating = true;
+					initPalmRotation();
+				}
+				updatePalmRotation();
+				updateTargetRotation();
+			} else {
+				rb.isKinematic = true;
+				rb.angularVelocity = Vector3.zero;
+				if (isRotating) {
+					isRotating = false;
+					snapObject();
+				}
+			}
+
+		} else {
+			rb.isKinematic = true;
 		}
 	}
 
@@ -61,30 +100,39 @@ public class CustomGrabbableObject : GrabbableObject {
 	// }
 
 	public override void OnGrab() {
-		if (!isReleased || !gController.IsControlEnabled()) return;
+		// if (!isReleased || !gController.IsControlEnabled()) return;
+		if (!gController.IsControlEnabled() || gController.GetMode() != 0) {
+			rb.isKinematic = true;
+			return;
+		}
 		base.OnGrab();
 		rb.isKinematic = false;
 		isReleased = false;
 	}
 
 	public override void OnRelease() {
+		if (gController.GetMode() != 0) return;
 		base.OnRelease();
 		rb.isKinematic = true;
 		isReleased = true;
-		snapObject();
-		unhighlightChildren();
+		// snapObject();
+		// unhighlightChildren();
 	}
 
 	public override void OnStartHover() {
 		base.OnStartHover();
-		if (isReleased && gController.IsControlEnabled()) {
+		// if (isReleased && gController.GetMode() != 0) {
+		// }
 			highlightChildren();
-		}
+			isHovering = true;
 	}
 
 	public override void OnStopHover() {
 		base.OnStopHover();
-		unhighlightChildren();
+		if (isHovering) {
+			unhighlightChildren();
+		}
+		isHovering = false;
 	}
 
 	public void OnComplete() {
@@ -107,6 +155,44 @@ public class CustomGrabbableObject : GrabbableObject {
 		initAngle = transform.rotation;
 		initUp = transform.up;
 		initForward = transform.forward;
+	}
+
+	void initPalmRotation() {
+		HandModel hand_model = hand.GetComponent<HandModel>();
+		palm_rotation_ = hand_model.GetPalmRotation();
+		rotation_from_palm_ = Quaternion.Inverse(palm_rotation_) * transform.rotation;
+		init_palm_rotation_ = palm_rotation_;
+	}
+
+	void updatePalmRotation() {
+		HandModel hand_model = hand.GetComponent<HandModel>();
+		palm_rotation_ = Quaternion.Slerp(palm_rotation_, hand_model.GetPalmRotation(),
+									  1.0f - 0.4f); // rotationFiltering);
+		Debug.Log(palm_rotation_.eulerAngles);
+	}
+
+	void updateTargetRotation() {
+		Quaternion target_rotation = palm_rotation_ * rotation_from_palm_;
+		Quaternion delta_rotation = target_rotation *
+								Quaternion.Inverse(transform.rotation);
+
+		float angle = 0.0f;
+		Vector3 axis = Vector3.zero;
+		delta_rotation.ToAngleAxis(out angle, out axis);
+
+		if (angle >= 180) {
+			angle = 360 - angle;
+			axis = -axis;
+		}
+		if (angle != 0) {
+			rb.angularVelocity = angle * axis;
+		}
+	}
+
+	bool checkRotationEnabled() {
+		Hand hand = gController.GetCurrentHand();
+		return isHovering && gController.IsControlEnabled() &&
+			hand != null && hand.GrabStrength > 0.7;
 	}
 
 	bool checkRotationAngle() {

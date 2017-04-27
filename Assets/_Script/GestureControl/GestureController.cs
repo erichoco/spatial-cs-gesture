@@ -5,6 +5,8 @@ using Leap;
 
 public class GestureController : MonoBehaviour {
 	Controller controller;
+	Hand currentHand;
+	List<Frame> prevFrame;
 
 	// Grabbing
 	float grabDuration;
@@ -26,6 +28,7 @@ public class GestureController : MonoBehaviour {
 	CameraControls cameraControl;
 
 	bool controlEnabled;
+	int controlMode;
 
 	// Boundaries of gesture movements
 	public Vector3 MaxMovement = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
@@ -33,6 +36,7 @@ public class GestureController : MonoBehaviour {
 
 	void Start () {
 		controller = new Controller();
+		currentHand = null;
 
 		grabDuration = 0f;
 		grabDuration1 = 0f;
@@ -51,15 +55,21 @@ public class GestureController : MonoBehaviour {
 		GameObject.Find("RotationGizmo").SetActive(false);
 
 		controlEnabled = false;
+		controlMode = 0;
+
+		prevFrame = new List<Frame>();
+		prevFrame.Add(null);
+		prevFrame.Add(null);
 	}
 
 	void Update () {
 		Frame frame = controller.Frame();
 		HandList hands = frame.Hands;
+		currentHand = null;
 
 		controlEnabled = false;
 		if (hands.Count == 2) {
-			if (checkOneGrabStarted(hands)) {
+			if (checkTwoGrabStarted(hands)) {
 				Vector grabVelocity = frame.Hands[0].PalmVelocity;
 				cameraControl.GrabView(grabVelocity.x / LeapStatic.grabViewFactor, -grabVelocity.y / LeapStatic.grabViewFactor);
 			}
@@ -68,11 +78,32 @@ public class GestureController : MonoBehaviour {
 			}*/
 		} else if (hands.Count == 1) {
 			controlEnabled = true;
+			currentHand = hands[0];
+			//Debug.Log("Strength: " + hands[0].GrabStrength);
 		}
+
+		prevFrame[0] = prevFrame[1];
+		prevFrame[1] = frame;
 	}
 
 	public bool IsControlEnabled() {
 		return controlEnabled;
+	}
+
+	public int GetMode() {
+		return controlMode;
+	}
+
+	public void SwitchMode() {
+		controlMode = (controlMode+1) % 2;
+	}
+
+	public Hand GetCurrentHand() {
+		return currentHand;
+	}
+
+	public Frame GetPrevFrame() {
+		return prevFrame[0];
 	}
 
 	bool checkTwoGrabStarted(HandList hands) {
@@ -181,6 +212,15 @@ public class GestureController : MonoBehaviour {
 		Vector3 sum = new Vector3(0, 0, 0);
 		foreach (Vector3 i in l) sum += i;
 		return sum / l.Count;
+	}
+
+	void rotateObject(Hand hand) {
+		if (hand.GrabStrength > 0.1) return;
+
+		float pitch = hand.Direction.Pitch * Mathf.Rad2Deg * 2;
+		float yaw = hand.Direction.Yaw * Mathf.Rad2Deg * 2;
+		float roll = hand.PalmNormal.Roll * Mathf.Rad2Deg * 2;
+
 	}
 
 }
