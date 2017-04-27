@@ -168,7 +168,6 @@ public class CustomGrabbableObject : GrabbableObject {
 		HandModel hand_model = hand.GetComponent<HandModel>();
 		palm_rotation_ = Quaternion.Slerp(palm_rotation_, hand_model.GetPalmRotation(),
 									  1.0f - 0.4f); // rotationFiltering);
-		Debug.Log(palm_rotation_.eulerAngles);
 	}
 
 	void updateTargetRotation() {

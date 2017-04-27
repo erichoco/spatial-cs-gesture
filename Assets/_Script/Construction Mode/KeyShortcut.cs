@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KeyShortcut : MonoBehaviour {
 	public FuseEvent fuse;
@@ -25,13 +26,19 @@ public class KeyShortcut : MonoBehaviour {
 			if (go != null) {
 				go.transform.position = initPos;
 			}
-		} else if (Input.GetKeyDown("space")) {
+		} else if (Input.GetKeyDown("return")) {
 			if (fuse != null) {
 				fuse.initiateFuse();
 			}
-		} else if (Input.GetKeyDown("m")) {
+		} else if (Input.GetKeyDown("space")) {
 			GestureController gc = GameObject.Find("HandController").GetComponent<GestureController>();
 			gc.SwitchMode();
+			Text t = GameObject.Find("mode panel/Text").GetComponent<Text>();
+			if (gc.GetMode() == 0) {
+				t.text = "MOVE";
+			} else if (gc.GetMode() == 1) {
+				t.text = "ROTATE";
+			}
 		}
 	}
 }
