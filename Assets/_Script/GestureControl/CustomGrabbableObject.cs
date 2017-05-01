@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Leap;
@@ -14,6 +15,10 @@ public class CustomGrabbableObject : GrabbableObject {
 	Quaternion initAngle;
 	Vector3 initUp;
 	Vector3 initForward;
+	int axisFixed;
+
+	// Time buffer for starting rotating and moving
+	float palmFlatDuration;
 
 	// Hand Angles
 	bool isRotating;
@@ -38,6 +43,9 @@ public class CustomGrabbableObject : GrabbableObject {
 		initAngle = transform.rotation;
 		initUp = transform.up;
 		initForward = transform.forward;
+		axisFixed = 0;
+
+		palmFlatDuration = 0f;
 
 		childRenderers = GetComponentsInChildren<Renderer>();
 		initShaders = new List<Shader>();
@@ -48,7 +56,7 @@ public class CustomGrabbableObject : GrabbableObject {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 		// Hand disappears
 		if (isHandExist && hand == null) {
@@ -77,6 +85,7 @@ public class CustomGrabbableObject : GrabbableObject {
 				rb.isKinematic = false;
 				if (!isRotating) {
 					isRotating = true;
+					highlightChildren();
 					initPalmRotation();
 				}
 				updatePalmRotation();
@@ -84,8 +93,10 @@ public class CustomGrabbableObject : GrabbableObject {
 			} else {
 				rb.isKinematic = true;
 				rb.angularVelocity = Vector3.zero;
+				axisFixed = 0;
 				if (isRotating) {
 					isRotating = false;
+					unhighlightChildren();
 					snapObject();
 				}
 			}
@@ -123,14 +134,14 @@ public class CustomGrabbableObject : GrabbableObject {
 		base.OnStartHover();
 		// if (isReleased && gController.GetMode() != 0) {
 		// }
-			highlightChildren();
+			// highlightChildren();
 			isHovering = true;
 	}
 
 	public override void OnStopHover() {
 		base.OnStopHover();
 		if (isHovering) {
-			unhighlightChildren();
+			// unhighlightChildren();
 		}
 		isHovering = false;
 	}
@@ -157,6 +168,33 @@ public class CustomGrabbableObject : GrabbableObject {
 		initForward = transform.forward;
 	}
 
+	// 0: x axis, 1: y axis, 2: z axis
+	void fixAxis() {
+		Quaternion delta = palm_rotation_ * Quaternion.Inverse(Quaternion.identity);
+		Vector3 angle = delta.eulerAngles;
+		if (angle.x >= 180) angle.x = 360 - angle.x;
+		if (angle.y >= 180) angle.y = 360 - angle.y;
+		if (angle.z >= 180) angle.z = 360 - angle.z;
+
+		// Debug.Log(delta.eulerAngles);
+
+		Vector3 eAngles = initAngle.eulerAngles;
+		if (Mathf.Abs(angle.x) > Mathf.Abs(angle.y)
+			&& Mathf.Abs(angle.x) > Mathf.Abs(angle.z)) {
+			// Debug.Log("xxxx");
+			eAngles.z = transform.eulerAngles.z;
+		} else if (Mathf.Abs(angle.y) > Mathf.Abs(angle.x)
+			&& Mathf.Abs(angle.y) > Mathf.Abs(angle.z)) {
+			// Debug.Log("yyyy");
+			eAngles.y = transform.eulerAngles.y;
+		} else if (Mathf.Abs(angle.z) > Mathf.Abs(angle.x)
+			&& Mathf.Abs(angle.z) > Mathf.Abs(angle.y)) {
+			// Debug.Log("zzzz");
+			eAngles.x = transform.eulerAngles.x;
+		}
+		transform.eulerAngles = eAngles;
+	}
+
 	void initPalmRotation() {
 		HandModel hand_model = hand.GetComponent<HandModel>();
 		palm_rotation_ = hand_model.GetPalmRotation();
@@ -179,19 +217,132 @@ public class CustomGrabbableObject : GrabbableObject {
 		Vector3 axis = Vector3.zero;
 		delta_rotation.ToAngleAxis(out angle, out axis);
 
+		int neg = 1;
 		if (angle >= 180) {
 			angle = 360 - angle;
 			axis = -axis;
+			neg = -1;
 		}
+
 		if (angle != 0) {
-			rb.angularVelocity = angle * axis;
+			// Quaternion delta = palm_rotation_ * Quaternion.Inverse(init_palm_rotation_);
+			// Debug.Log(delta.eulerAngles);
+			fixRotationAxis();
+
+			// switch (axisFixed) {
+			// 	case 1:
+			// 		rb.angularVelocity = angle * (neg * Vector3.forward);
+			// 		break;
+			// 	case 2:
+			// 		rb.angularVelocity = angle * (-neg * Vector3.up);
+			// 		break;
+			// 	case 3:
+			// 		rb.angularVelocity = angle * (neg * Vector3.right);
+			// 		break;
+			// 	default:
+			// 		rb.angularVelocity = (angle) * axis;
+			// 		fixRotationAxis();
+			// 		break;
+			// }
+			// rb.angularVelocity = (angle*1.5f) * axis;
 		}
+	}
+
+	void fixRotationAxis() {
+		Vector3 newAngle = initAngle.eulerAngles;
+		// Debug.Log(axisFixed);
+		Quaternion fromInitRotation = palm_rotation_ * Quaternion.Inverse(init_palm_rotation_);
+		float fromInitAngle = 0.0f;
+		Vector3 axis = Vector3.zero;
+		fromInitRotation.ToAngleAxis(out fromInitAngle, out axis);
+
+		if (fromInitAngle >= 180) {
+			fromInitAngle = fromInitAngle - 360;
+		}
+		// Debug.Log("angle: "+ fromInitAngle);
+		// Debug.Log("axis: " + axis);
+		// Debug.Log("Fixed! " + axisFixed);
+		switch (axisFixed) {
+			case 1:
+				// newAngle.x = transform.eulerAngles.x;
+				// Debug.Log("X Orientation " + axis.x);
+				transform.Rotate((Mathf.Sign(axis.x) * Vector3.right) * 1, Space.World);
+
+				// transform.rotation = initAngle * Quaternion.AngleAxis(fromInitAngle,
+				// 	(Mathf.Sign(axis.x) * Vector3.forward));
+				Debug.Log("X " + transform.eulerAngles);
+				break;
+			case 2:
+				// newAngle.y = transform.eulerAngles.y;
+				transform.Rotate((Mathf.Sign(axis.y) * Vector3.up) * 1, Space.World);
+
+				// transform.rotation = initAngle * Quaternion.AngleAxis(fromInitAngle,
+				// 	(Mathf.Sign(axis.y) * Vector3.right));
+				Debug.Log("Y " + transform.eulerAngles);
+				break;
+			case 3:
+				// newAngle.z = transform.eulerAngles.z;
+				transform.Rotate((Mathf.Sign(axis.z) * Vector3.forward) * 1, Space.World);
+
+				// transform.rotation = initAngle * Quaternion.AngleAxis(fromInitAngle,
+				// 	(-Mathf.Sign(axis.z) * Vector3.up));
+				Debug.Log("Z " + transform.eulerAngles);
+				break;
+			case 0:
+				axisFixed = checkFixRotationAxis();
+				if (axisFixed > 0)
+					Debug.Log("Fixed! " + axisFixed);
+				// transform.rotation = initAngle * Quaternion.AngleAxis(fromInitAngle, axis);
+				return;
+			default:
+				break;
+		}
+		// transform.eulerAngles = newAngle;
+	}
+
+	// 0: none, 1: x, 2: y, 3: z
+	int checkFixRotationAxis() {
+		// Check angle difference from initial position
+		// Quaternion fromInitRotation = transform.rotation * Quaternion.Inverse(initAngle);
+		Quaternion fromInitRotation = palm_rotation_ * Quaternion.Inverse(init_palm_rotation_);
+		float fromInitAngle = 0.0f;
+		Vector3 _ = Vector3.zero;
+		fromInitRotation.ToAngleAxis(out fromInitAngle, out _);
+		// Debug.Log("Init " + fromInitAngle);
+		// Fix rotation to one direction
+		if (fromInitAngle > 20) {
+			Quaternion delta = palm_rotation_ * Quaternion.Inverse(init_palm_rotation_);
+			Vector3 angle = delta.eulerAngles;
+			if (angle.x >= 180) angle.x = 360 - angle.x;
+			if (angle.y >= 180) angle.y = 360 - angle.y;
+			if (angle.z >= 180) angle.z = 360 - angle.z;
+			// Debug.Log(angle);
+
+			if (Mathf.Abs(angle.x) > Mathf.Abs(angle.y)
+				&& Mathf.Abs(angle.x) > Mathf.Abs(angle.z)) {
+				return 1;
+			} else if (Mathf.Abs(angle.y) > Mathf.Abs(angle.x)
+				&& Mathf.Abs(angle.y) > Mathf.Abs(angle.z)) {
+				return 2;
+			} else if (Mathf.Abs(angle.z) > Mathf.Abs(angle.x)
+				&& Mathf.Abs(angle.z) > Mathf.Abs(angle.y)) {
+				return 3;
+			}
+		}
+		return 0;
 	}
 
 	bool checkRotationEnabled() {
 		Hand hand = gController.GetCurrentHand();
-		return isHovering && gController.IsControlEnabled() &&
-			hand != null && hand.GrabStrength > 0.7;
+		if (gController.IsControlEnabled() &&
+			hand != null && hand.GrabStrength < 0.3) {
+			if (palmFlatDuration > LeapStatic.minFlatTime) return true;
+			else palmFlatDuration += 0.02f;
+
+		} else {
+			palmFlatDuration = 0;
+		}
+		return false;
 	}
 
 	bool checkRotationAngle() {

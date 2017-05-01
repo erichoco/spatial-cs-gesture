@@ -24,6 +24,8 @@ public class LeapStatic : MonoBehaviour {
 	public static float minGrabTime = 0.2f;
 	public static float maxClapTime = 2f; //higher -> velocity lower allowed
 
+	public static float minFlatTime = 0.5f;
+
 	//bottom panel
 	public static int numConstructionObject;
 	public static List<String> constructionObject = new List<String>();

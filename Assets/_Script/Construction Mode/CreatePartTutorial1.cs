@@ -68,7 +68,7 @@ public class CreatePartTutorial1 : MonoBehaviour {
 		Quaternion acceptableRotation2 = Quaternion.Euler (270,90,0);
 		Quaternion acceptableRotation3 = Quaternion.Euler (270,0,0);
 		Quaternion acceptableRotation4 = Quaternion.Euler (270,270,0);
-		Quaternion[] acceptableRotations = {acceptableRotation1, acceptableRotation2, 
+		Quaternion[] acceptableRotations = {acceptableRotation1, acceptableRotation2,
 			acceptableRotation3, acceptableRotation4};
 		fusePositions.Add ("box_pyr_attach", acceptableRotations);
 
@@ -129,7 +129,7 @@ public class CreatePartTutorial1 : MonoBehaviour {
 		return newAttributes;
 
 	}
-		
+
 	//when a new part is created, clear partsCreated
 	public void clearPartsCreated() {
 		for(int i = 0; i < partCreated.Length; i++) {
@@ -156,7 +156,7 @@ public class CreatePartTutorial1 : MonoBehaviour {
 	public void createPyr() {
 		if(!partCreated[0]) {
 			clearPartsCreated();
-			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated		
+			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
 			Quaternion fuseToRotation = Quaternion.Euler (180,0,90);
 			GameObject newPyr = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[0], pos, fuseToRotation)));
 
@@ -208,7 +208,8 @@ public class CreatePartTutorial1 : MonoBehaviour {
 			clearPartsCreated();
 			Vector3 pos = createLoc; // this is where the object will appear when it's instantiated
 			Quaternion fuseToRotation = Quaternion.Euler (0,90,90);
-			GameObject newCone = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[2], pos, fuseToRotation)));	
+			// Quaternion fuseToRotation = new Quaternion();
+			GameObject newCone = rotateGizmo.Enable(LoadUtils.InstantiateParenter((GameObject)Instantiate (parts[2], pos, fuseToRotation)));
 
 			Transform coneBoxAttach = newCone.transform.FindChild("cone_box_attach");
 
@@ -219,7 +220,7 @@ public class CreatePartTutorial1 : MonoBehaviour {
 			coneBoxAttach.gameObject.GetComponent<FuseBehavior>().setButtonTo(GameObject.Find ("Cone"));
 
 
-			instantiated[2] = newCone;	
+			instantiated[2] = newCone;
 			partCreated[2] = true;
 			selectionManager.newPartCreated("tutorial1_conePrefab(Clone)");
 
