@@ -15,6 +15,10 @@ public class LeapStatic : MonoBehaviour {
 	public static float dragVelocity = 10f;
 	public static int dragStable = 2;
 
+	// For April 2017 Study @ericchiu
+	public static float minStartRotationAngle = 20f;
+	public static float minFlatTime = 0.5f;
+
 	//two hands
 	public static float grabViewFactor = 400f; //higher -> less sensitive
 	public static float connectTimeLimited = 2f; //higher -> velocity lower allowed
@@ -24,7 +28,6 @@ public class LeapStatic : MonoBehaviour {
 	public static float minGrabTime = 0.2f;
 	public static float maxClapTime = 2f; //higher -> velocity lower allowed
 
-	public static float minFlatTime = 0.5f;
 
 	//bottom panel
 	public static int numConstructionObject;
