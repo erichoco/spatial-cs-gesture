@@ -4,27 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Leap;
 
-public class CustomGrabbableObject : GrabbableObject {
+public class CustomGrabbableObject : MonoBehaviour {
 	Rigidbody rb;
-	GameObject hand;
 	GestureController gController;
 
+	GameObject hand;
 	bool isHandExist;
-	bool isHovering;
-	bool isReleased;
-	Quaternion initAngle;
-	Vector3 initUp;
-	Vector3 initForward;
-	int axisFixed;
 
 	// Time buffer for starting rotating and moving
 	float palmFlatDuration;
+	bool isControlling;
+
+	// Hand Position (using some naming convention from Leap Motion GrabbingHand.cs)
+	Vector3 initPosition;
+	Vector3 palm_position_;
+	Vector3 init_palm_position_;
 
 	// Hand Angles
-	bool isRotating;
+	int axisFixed; // 0: None, 1: x-axis, 2: y-axis, 3: z-axis
+	Quaternion initRotation;
 	Quaternion palm_rotation_;
 	Quaternion init_palm_rotation_;
-	Quaternion rotation_from_palm_;
+	// Quaternion rotation_from_palm_;
 
 	// Shader for Highlighting
 	Renderer[] childRenderers;
@@ -35,17 +36,21 @@ public class CustomGrabbableObject : GrabbableObject {
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		gController = GameObject.Find("HandController").GetComponent<GestureController>();
-		hand = null;
 
+		hand = null;
 		isHandExist = false;
-		isHovering = false;
-		isReleased = true;
-		initAngle = transform.rotation;
-		initUp = transform.up;
-		initForward = transform.forward;
-		axisFixed = 0;
 
 		palmFlatDuration = 0f;
+		isControlling = false;
+
+		initPosition = transform.position;
+		palm_position_ = new Vector3();
+		init_palm_position_ = new Vector3();
+
+		axisFixed = 0;
+		initRotation = transform.rotation;
+		palm_rotation_ = new Quaternion();
+		init_palm_rotation_ = new Quaternion();
 
 		childRenderers = GetComponentsInChildren<Renderer>();
 		initShaders = new List<Shader>();
@@ -73,31 +78,50 @@ public class CustomGrabbableObject : GrabbableObject {
 		// 0: Moving Mode, 1: Rotation Mode
 		if (gController.GetMode() == 0) {
 			rb.angularVelocity = Vector3.zero;
-			isRotating = false;
+
+			// Moving starts
+			if (checkControlEnabled()) {
+				rb.isKinematic = false;
+				if (!isControlling) {
+					isControlling = true;
+					highlightChildren();
+					initPalmPosition();
+				}
+				updatePalmPosition();
+				updateTargetPosition();
+			}
+			// Moving stops
+			else {
+				if (isControlling) {
+					isControlling = false;
+					unhighlightChildren();
+					fixObject();
+				}
+				rb.isKinematic = true;
+			}
 
 		} else if (gController.GetMode() == 1) {
 			rb.velocity = Vector3.zero;
+			rb.isKinematic = true;
 
 			// Rotation starts
-			if (checkRotationEnabled()) {
-				rb.isKinematic = false;
-				if (!isRotating) {
-					isRotating = true;
+			if (checkControlEnabled()) {
+				if (!isControlling) {
+					isControlling = true;
 					highlightChildren();
 					initPalmRotation();
 				}
 				updatePalmRotation();
 				updateTargetRotation();
+
 			}
 			// Rotation stops
 			else {
-				if (isRotating) {
-					isRotating = false;
+				if (isControlling) {
+					isControlling = false;
 					unhighlightChildren();
 					fixObject();
 				}
-				rb.isKinematic = true;
-				rb.angularVelocity = Vector3.zero;
 				axisFixed = 0;
 			}
 
@@ -106,86 +130,41 @@ public class CustomGrabbableObject : GrabbableObject {
 		}
 	}
 
-	public override void OnGrab() {
-		// if (!isReleased || !gController.IsControlEnabled()) return;
-		if (!gController.IsControlEnabled() || gController.GetMode() != 0) {
-			rb.isKinematic = true;
-			return;
+	// Check if hand is flat long enough to enable controlling (moving & rotating)
+	bool checkControlEnabled() {
+		Hand hand = gController.GetCurrentHand();
+
+		if (gController.IsControlEnabled() &&
+			hand != null && hand.GrabStrength < LeapStatic.maxFlatStrength) {
+
+			if (palmFlatDuration > LeapStatic.minFlatTime) return true;
+			else palmFlatDuration += 0.02f;
+
+		} else {
+			palmFlatDuration = 0;
 		}
-		base.OnGrab();
-		rb.isKinematic = false;
-		isReleased = false;
+
+		return false;
 	}
 
-	public override void OnRelease() {
-		if (gController.GetMode() != 0) return;
-		base.OnRelease();
-		rb.isKinematic = true;
-		isReleased = true;
-		// fixObject();
-		// unhighlightChildren();
+	void initPalmPosition() {
+		HandModel hand_model = hand.GetComponent<HandModel>();
+		palm_position_ = hand_model.GetPalmPosition();
+		init_palm_position_ = palm_position_;
 	}
 
-	public override void OnStartHover() {
-		base.OnStartHover();
-		// if (isReleased && gController.GetMode() != 0) {
-		// }
-			// highlightChildren();
-			isHovering = true;
+	void updatePalmPosition() {
+		HandModel hand_model = hand.GetComponent<HandModel>();
+		Vector3 current_palm_position_ = hand_model.GetPalmPosition();
+		Vector3 delta_pinch = current_palm_position_ - palm_position_;
+		palm_position_ += (1.0f - 0.6f) // positionFiltering
+								* delta_pinch;
 	}
 
-	public override void OnStopHover() {
-		base.OnStopHover();
-		if (isHovering) {
-			// unhighlightChildren();
-		}
-		isHovering = false;
-	}
-
-	public void OnComplete() {
-		rb.isKinematic = true;
-		fixObject();
-		unhighlightChildren();
-	}
-
-	// Fix object angle in 3 directions to 0, 90, 180, or 270.
-	void fixObject() {
-		Vector3 newAngle = new Vector3();
-		newAngle.x = Mathf.Round(transform.eulerAngles.x/90) * 90;
-		newAngle.y = Mathf.Round(transform.eulerAngles.y/90) * 90;
-		newAngle.z = Mathf.Round(transform.eulerAngles.z/90) * 90;
-		transform.eulerAngles = newAngle;
-		float angle = Quaternion.Angle(initAngle, transform.rotation);
-		if (angle > 50) {
-			logRotationAxis();
-		}
-		initAngle = transform.rotation;
-		initUp = transform.up;
-		initForward = transform.forward;
-	}
-
-	// 0: x axis, 1: y axis, 2: z axis
-	void fixAxis() {
-		Quaternion delta = palm_rotation_ * Quaternion.Inverse(Quaternion.identity);
-		Vector3 angle = delta.eulerAngles;
-		if (angle.x >= 180) angle.x = 360 - angle.x;
-		if (angle.y >= 180) angle.y = 360 - angle.y;
-		if (angle.z >= 180) angle.z = 360 - angle.z;
-
-		// Debug.Log(delta.eulerAngles);
-
-		Vector3 eAngles = initAngle.eulerAngles;
-		if (Mathf.Abs(angle.x) > Mathf.Abs(angle.y)
-			&& Mathf.Abs(angle.x) > Mathf.Abs(angle.z)) {
-			eAngles.z = transform.eulerAngles.z;
-		} else if (Mathf.Abs(angle.y) > Mathf.Abs(angle.x)
-			&& Mathf.Abs(angle.y) > Mathf.Abs(angle.z)) {
-			eAngles.y = transform.eulerAngles.y;
-		} else if (Mathf.Abs(angle.z) > Mathf.Abs(angle.x)
-			&& Mathf.Abs(angle.z) > Mathf.Abs(angle.y)) {
-			eAngles.x = transform.eulerAngles.x;
-		}
-		transform.eulerAngles = eAngles;
+	void updateTargetPosition() {
+		Vector3 target_position = initPosition + (palm_position_ - init_palm_position_);
+		Vector3 velocity = (target_position - transform.position) / Time.deltaTime;
+		rb.velocity = velocity;
 	}
 
 	void initPalmRotation() {
@@ -232,13 +211,13 @@ public class CustomGrabbableObject : GrabbableObject {
 
 		switch (axisFixed) {
 			case 1:
-				transform.Rotate((Mathf.Sign(axis.x) * Vector3.right) * 1.5, Space.World);
+				transform.Rotate((Mathf.Sign(axis.x) * Vector3.right) * 1.2f, Space.World);
 				break;
 			case 2:
-				transform.Rotate((Mathf.Sign(axis.y) * Vector3.up) * 1.5, Space.World);
+				transform.Rotate((Mathf.Sign(axis.y) * Vector3.up) * 1.2f, Space.World);
 				break;
 			case 3:
-				transform.Rotate((Mathf.Sign(axis.z) * Vector3.forward) * 1.5, Space.World);
+				transform.Rotate((Mathf.Sign(axis.z) * Vector3.forward) * 1.2f, Space.World);
 				break;
 			case 0:
 				axisFixed = getFixRotationAxis(angle, deltaPalmRotation.eulerAngles);
@@ -271,25 +250,44 @@ public class CustomGrabbableObject : GrabbableObject {
 		return 0;
 	}
 
-	bool checkRotationEnabled() {
-		Hand hand = gController.GetCurrentHand();
-
-		if (gController.IsControlEnabled() &&
-			hand != null && hand.GrabStrength < 0.3) {
-
-			if (palmFlatDuration > LeapStatic.minFlatTime) return true;
-			else palmFlatDuration += 0.02f;
-
-		} else {
-			palmFlatDuration = 0;
+	// Fix object angle in 3 directions to 0, 90, 180, or 270.
+	void fixObject() {
+		Vector3 newAngle = new Vector3();
+		newAngle.x = Mathf.Round(transform.eulerAngles.x/90) * 90;
+		newAngle.y = Mathf.Round(transform.eulerAngles.y/90) * 90;
+		newAngle.z = Mathf.Round(transform.eulerAngles.z/90) * 90;
+		transform.eulerAngles = newAngle;
+		float angle = Quaternion.Angle(initRotation, transform.rotation);
+		if (angle > 50) {
+			logRotationAxis();
 		}
 
-		return false;
+		initPosition = transform.position;
+		initRotation = transform.rotation;
 	}
 
-	bool checkRotationAngle() {
-		float delta = Quaternion.Angle(initAngle, transform.rotation);
-		return delta > 70;
+	// 0: x axis, 1: y axis, 2: z axis
+	void fixAxis() {
+		Quaternion delta = palm_rotation_ * Quaternion.Inverse(Quaternion.identity);
+		Vector3 angle = delta.eulerAngles;
+		if (angle.x >= 180) angle.x = 360 - angle.x;
+		if (angle.y >= 180) angle.y = 360 - angle.y;
+		if (angle.z >= 180) angle.z = 360 - angle.z;
+
+		// Debug.Log(delta.eulerAngles);
+
+		Vector3 eAngles = initRotation.eulerAngles;
+		if (Mathf.Abs(angle.x) > Mathf.Abs(angle.y)
+			&& Mathf.Abs(angle.x) > Mathf.Abs(angle.z)) {
+			eAngles.z = transform.eulerAngles.z;
+		} else if (Mathf.Abs(angle.y) > Mathf.Abs(angle.x)
+			&& Mathf.Abs(angle.y) > Mathf.Abs(angle.z)) {
+			eAngles.y = transform.eulerAngles.y;
+		} else if (Mathf.Abs(angle.z) > Mathf.Abs(angle.x)
+			&& Mathf.Abs(angle.z) > Mathf.Abs(angle.y)) {
+			eAngles.x = transform.eulerAngles.x;
+		}
+		transform.eulerAngles = eAngles;
 	}
 
 	void logRotationAxis() {

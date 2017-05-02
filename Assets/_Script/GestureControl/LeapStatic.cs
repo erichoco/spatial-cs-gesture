@@ -18,6 +18,7 @@ public class LeapStatic : MonoBehaviour {
 	// For April 2017 Study @ericchiu
 	public static float minStartRotationAngle = 20f;
 	public static float minFlatTime = 0.5f;
+	public static float maxFlatStrength = 0.2f;
 
 	//two hands
 	public static float grabViewFactor = 400f; //higher -> less sensitive

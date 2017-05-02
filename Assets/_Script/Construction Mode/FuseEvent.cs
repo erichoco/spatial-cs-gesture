@@ -1024,6 +1024,8 @@ public class FuseEvent : MonoBehaviour {
 				// For April 2017 Study
 				if (claimItem2 != null) claimItem2.gameObject.SetActive(true);
 
+				GameObject.Find("mode panel").SetActive(false);
+
 				congrats.enabled = true;
 
 				musicSource.Stop();
@@ -1502,6 +1504,8 @@ public class FuseEvent : MonoBehaviour {
 
 		// For April 2017 Study
 		if (claimItem2 != null) claimItem2.gameObject.SetActive(true);
+
+		GameObject.Find("mode panel").SetActive(false);
 
 		congrats.enabled = true;
 
